@@ -13,13 +13,29 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="mainMenuLayout">
+  <widget class="QWidget" name="mainWidget">
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QGridLayout" name="gBox">
+   <widget class="QWidget" name="mainMenuLayout" native="true">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>131</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>9</y>
+       <width>114</width>
+       <height>114</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="mainMenuBox">
       <item row="1" column="0">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -92,8 +108,8 @@
        </spacer>
       </item>
      </layout>
-    </item>
-   </layout>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

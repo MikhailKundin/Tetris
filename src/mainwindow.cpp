@@ -7,6 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	
+	QPalette pal(palette());
+	pal.setColor(QPalette::Background, Qt::black);
+	setAutoFillBackground(true);
+	setPalette(pal);
+	
 	ui->mainMenuLayout->setVisible(false);
 	mainMenuWdt = std::make_unique<MainMenuWdt>(ui->mainMenuWdtPlace);
 	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->minimumSize());
@@ -22,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::openMainMenuLayout()
 {
+	ui->mainWidget->setLayout(ui->mainMenuBox);
 	ui->mainMenuLayout->setVisible(true);
 }
 
