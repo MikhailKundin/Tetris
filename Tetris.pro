@@ -28,11 +28,13 @@ UI_DIR = build/release/bin
 SOURCES += \
     src/mainmenuwdt.cpp \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp \
+    src/playground.cpp
 
 HEADERS += \
 	src/mainmenuwdt.h \
-	src/mainwindow.h
+	src/mainwindow.h \
+	src/playground.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
