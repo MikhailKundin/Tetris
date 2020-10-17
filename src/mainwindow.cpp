@@ -7,9 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	
+	ui->mainMenuLayout->setVisible(false);
 	mainMenuWdt = std::make_unique<MainMenuWdt>(ui->mainMenuWdtPlace);
 	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->minimumSize());
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
+	
+	openMainMenuLayout();
 }
 
 MainWindow::~MainWindow()
