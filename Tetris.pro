@@ -26,9 +26,13 @@ UI_DIR = build/release/bin
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/testgrid.cpp \
+    src/testpaint.cpp
 
-HEADERS +=
+HEADERS += \
+	src/testgrid.h \
+	src/testpaint.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
