@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "mainmenuwdt.h"
+#include "singlewgt.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ private slots:
 private:
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWdt> mainMenuWdt;
+	std::unique_ptr<SingleWgt> singleWdt;
 };
 
 #endif // MAINWINDOW_H

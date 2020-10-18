@@ -5,6 +5,9 @@
 #include <QMap>
 #include <QImage>
 #include "playground.h"
+#include "singlewgt.h"
+#include "pointswgt.h"
+#include "recordtable.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +47,9 @@ int main(int argc, char *argv[])
 //	pg.resize(pg.minimumSize());
 //	pg.show();
 //	pg.update(map);
+	
+//	SingleWgt w;
+//	w.show();
 	
 	return app.exec();
 }

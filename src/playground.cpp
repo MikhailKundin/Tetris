@@ -5,7 +5,7 @@
 
 Playground::Playground(QWidget *parent) : QWidget(parent)
 {
-	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE, ROW_COUNT * BLOCK_SIZE);
+	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE + 1, ROW_COUNT * BLOCK_SIZE + 1);
 }
 
 void Playground::update(const QMap<qint16, QImage *>& map)

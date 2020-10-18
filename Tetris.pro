@@ -30,12 +30,16 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/playground.cpp \
+    src/pointswgt.cpp \
+    src/recordtable.cpp \
     src/singlewgt.cpp
 
 HEADERS += \
 	src/mainmenuwdt.h \
 	src/mainwindow.h \
 	src/playground.h \
+	src/pointswgt.h \
+	src/recordtable.h \
 	src/singlewgt.h
 
 # Default rules for deployment.
@@ -46,6 +50,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 FORMS += \
 	src/mainmenuwdt.ui \
 	src/mainwindow.ui \
+	src/pointswgt.ui \
+	src/recordtable.ui \
 	src/singlewgt.ui
 
 RESOURCES += \

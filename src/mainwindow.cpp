@@ -16,10 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	ui->mainMenuScene->setVisible(false);
 	mainMenuWdt = std::make_unique<MainMenuWdt>(ui->mainMenuWdtPlace);
-	//ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->minimumSize());
-	//ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->geometry().height(), mainMenuWdt->geometry().width());
 	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->size());
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
+	connect(mainMenuWdt.get(), &MainMenuWdt::singleSignal, this, &MainWindow::openSingleLayout);
+	
+	ui->singleScene->setVisible(false);
+	singleWdt = std::make_unique<SingleWgt>(ui->singleWgtPlace);
+	ui->singleWgtPlace->setMinimumSize(singleWdt->size());
 	
 	openMainMenuLayout();
 }
@@ -32,12 +35,18 @@ MainWindow::~MainWindow()
 void MainWindow::openMainMenuLayout()
 {
 	ui->mainWidget->setLayout(ui->mainMenuBox);
-	ui->mainMenuScene->setVisible(true);
+	ui->singleScene->setVisible(false);
+	
+	//ui->mainMenuScene->setVisible(true);
 }
 
 void MainWindow::openSingleLayout()
 {
+	//ui->mainWidget->setLayout(ui->singleBox);
+	ui->singleBox->setParent(ui->mainMenuBox);
+	ui->mainMenuScene->setVisible(false);
 	
+	ui->singleScene->setVisible(true);
 }
 
 void MainWindow::openOnlineLayout()
