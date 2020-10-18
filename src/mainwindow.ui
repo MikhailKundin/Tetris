@@ -17,7 +17,7 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QWidget" name="mainMenuLayout" native="true">
+   <widget class="QWidget" name="mainMenuScene" native="true">
     <property name="geometry">
      <rect>
       <x>9</x>

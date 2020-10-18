@@ -28,6 +28,8 @@ signals:
 	
 private:
 	Ui::MainMenuWdt *ui;
+	
+	std::unique_ptr<QPixmap> logoImg;
 };
 
 #endif // MAINMENUWDT_H

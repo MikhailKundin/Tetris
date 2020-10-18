@@ -29,12 +29,14 @@ SOURCES += \
     src/mainmenuwdt.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/playground.cpp
+    src/playground.cpp \
+    src/singlewgt.cpp
 
 HEADERS += \
 	src/mainmenuwdt.h \
 	src/mainwindow.h \
-	src/playground.h
+	src/playground.h \
+	src/singlewgt.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -43,4 +45,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
 	src/mainmenuwdt.ui \
-	src/mainwindow.ui
+	src/mainwindow.ui \
+	src/singlewgt.ui
+
+RESOURCES += \
+	resources.qrc

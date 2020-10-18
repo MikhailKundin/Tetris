@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -12,9 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
-	ui->mainMenuLayout->setVisible(false);
+	ui->mainMenuScene->setVisible(false);
 	mainMenuWdt = std::make_unique<MainMenuWdt>(ui->mainMenuWdtPlace);
-	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->minimumSize());
+	//ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->minimumSize());
+	//ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->geometry().height(), mainMenuWdt->geometry().width());
+	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->size());
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
 	
 	openMainMenuLayout();
@@ -28,7 +32,7 @@ MainWindow::~MainWindow()
 void MainWindow::openMainMenuLayout()
 {
 	ui->mainWidget->setLayout(ui->mainMenuBox);
-	ui->mainMenuLayout->setVisible(true);
+	ui->mainMenuScene->setVisible(true);
 }
 
 void MainWindow::openSingleLayout()

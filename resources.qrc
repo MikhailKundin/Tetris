@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/Images/Blocks">
+        <file alias="IBlockOriginal.png">etc/Images/Blocks/Original/IBlockOriginal.png</file>
+        <file alias="JBlockOriginal.png">etc/Images/Blocks/Original/JBlockOriginal.png</file>
+        <file alias="LBlockOriginal.png">etc/Images/Blocks/Original/LBlockOriginal.png</file>
+        <file alias="OBlockOriginal.png">etc/Images/Blocks/Original/OBlockOriginal.png</file>
+        <file alias="SBlockOriginal.png">etc/Images/Blocks/Original/SBlockOriginal.png</file>
+        <file alias="TBlockOriginal.png">etc/Images/Blocks/Original/TBlockOriginal.png</file>
+        <file alias="ZBlockOriginal.png">etc/Images/Blocks/Original/ZBlockOriginal.png</file>
+    </qresource>
+    <qresource prefix="/Images/Pictures">
+        <file alias="Logo.png">etc/Images/Pictures/Logo.png</file>
+    </qresource>
+</RCC>
