@@ -9,6 +9,8 @@
 #include "pointswgt.h"
 #include "recordtable.h"
 
+#include <QDebug>
+
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
@@ -50,6 +52,7 @@ int main(int argc, char *argv[])
 	
 //	SingleWgt w;
 //	w.show();
+//	qDebug() << w.minimumSize();
 	
 	return app.exec();
 }

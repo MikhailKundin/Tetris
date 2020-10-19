@@ -27,7 +27,7 @@ private slots:
 private:
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWdt> mainMenuWdt;
-	std::unique_ptr<SingleWgt> singleWdt;
+	std::unique_ptr<SingleWgt> singleWgt;
 };
 
 #endif // MAINWINDOW_H

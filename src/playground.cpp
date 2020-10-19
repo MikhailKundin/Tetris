@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <QRectF>
 
+#include <QDebug>
+
 Playground::Playground(QWidget *parent) : QWidget(parent)
 {
 	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE + 1, ROW_COUNT * BLOCK_SIZE + 1);
@@ -52,7 +54,7 @@ void Playground::drawPalayground()
 		qint16 x = coord % COLUMN_COUNT;
 		qint16 y = coord / COLUMN_COUNT;
 		
-		rect.setRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+		rect.setRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE+1, BLOCK_SIZE+1);
 		painter.drawImage(rect, *it.value());
 	}
 }

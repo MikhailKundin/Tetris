@@ -23,9 +23,16 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	ui->gBox->setAlignment(ui->pointsPlace, Qt::AlignCenter);
 	ui->gBox->setAlignment(ui->playgroundPlace, Qt::AlignRight);
 	ui->gBox->setAlignment(ui->recordTablePlace, Qt::AlignLeft);
+	
+	setMinimumHeight(pg->height() + pointsWgt->height() + 6);
 }
 
 SingleWgt::~SingleWgt()
 {
 	delete ui;
+}
+
+void SingleWgt::update(const QMap<qint16, QImage *> &map) const
+{
+	pg->update(map);
 }

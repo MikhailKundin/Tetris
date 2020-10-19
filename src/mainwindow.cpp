@@ -14,15 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
-	ui->mainMenuScene->setVisible(false);
-	mainMenuWdt = std::make_unique<MainMenuWdt>(ui->mainMenuWdtPlace);
-	ui->mainMenuWdtPlace->setMinimumSize(mainMenuWdt->size());
+	singleWgt = std::make_unique<SingleWgt>();
+	mainMenuWdt = std::make_unique<MainMenuWdt>();
+	
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
 	connect(mainMenuWdt.get(), &MainMenuWdt::singleSignal, this, &MainWindow::openSingleLayout);
-	
-	ui->singleScene->setVisible(false);
-	singleWdt = std::make_unique<SingleWgt>(ui->singleWgtPlace);
-	ui->singleWgtPlace->setMinimumSize(singleWdt->size());
 	
 	openMainMenuLayout();
 }
@@ -34,19 +30,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::openMainMenuLayout()
 {
-	ui->mainWidget->setLayout(ui->mainMenuBox);
-	ui->singleScene->setVisible(false);
+	singleWgt->setParent(nullptr);
 	
-	//ui->mainMenuScene->setVisible(true);
+	ui->scenePlace = mainMenuWdt.get();
+	ui->scenePlace->setMinimumSize(mainMenuWdt->size());
+	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 }
 
 void MainWindow::openSingleLayout()
 {
-	//ui->mainWidget->setLayout(ui->singleBox);
-	ui->singleBox->setParent(ui->mainMenuBox);
-	ui->mainMenuScene->setVisible(false);
+	mainMenuWdt->setParent(nullptr);
 	
-	ui->singleScene->setVisible(true);
+	ui->scenePlace = singleWgt.get();
+	ui->scenePlace->setMinimumSize(singleWgt->size());
+	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 }
 
 void MainWindow::openOnlineLayout()

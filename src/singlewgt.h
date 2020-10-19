@@ -19,6 +19,8 @@ public:
 	explicit SingleWgt(QWidget *parent = nullptr);
 	~SingleWgt();
 	
+	void update(const QMap<qint16, QImage *> &map) const;
+	
 private:
 	Ui::SingleWgt *ui;
 	
