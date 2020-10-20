@@ -26,21 +26,25 @@ UI_DIR = build/release/bin
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/mainmenuwdt.cpp \
     src/main.cpp \
-    src/mainwindow.cpp \
-    src/playground.cpp \
-    src/pointswgt.cpp \
-    src/recordtable.cpp \
-    src/singlewgt.cpp
+    src/model/abstarctfigure.cpp \
+    src/model/block.cpp \
+    src/view/mainmenuwdt.cpp \
+    src/view/mainwindow.cpp \
+    src/view/playground.cpp \
+    src/view/pointswgt.cpp \
+    src/view/recordtable.cpp \
+    src/view/singlewgt.cpp
 
 HEADERS += \
-	src/mainmenuwdt.h \
-	src/mainwindow.h \
-	src/playground.h \
-	src/pointswgt.h \
-	src/recordtable.h \
-	src/singlewgt.h
+	src/model/abstarctfigure.h \
+	src/model/block.h \
+	src/view/mainmenuwdt.h \
+	src/view/mainwindow.h \
+	src/view/playground.h \
+	src/view/pointswgt.h \
+	src/view/recordtable.h \
+	src/view/singlewgt.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -48,11 +52,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-	src/mainmenuwdt.ui \
-	src/mainwindow.ui \
-	src/pointswgt.ui \
-	src/recordtable.ui \
-	src/singlewgt.ui
+	src/view/mainmenuwdt.ui \
+	src/view/mainwindow.ui \
+	src/view/pointswgt.ui \
+	src/view/recordtable.ui \
+	src/view/singlewgt.ui
 
 RESOURCES += \
 	resources.qrc
