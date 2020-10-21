@@ -5,7 +5,8 @@
 
 #include <QDebug>
 
-Playground::Playground(QWidget *parent) : QWidget(parent)
+Playground::Playground(qint8 row, qint8 column, QWidget *parent) : 
+	QWidget(parent), COLUMN_COUNT(column), ROW_COUNT(row)
 {
 	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE + 1, ROW_COUNT * BLOCK_SIZE + 1);
 }

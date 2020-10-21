@@ -8,7 +8,6 @@ class Block
 public:
 	Block();
 	Block(qint16 coord, QImage *image);
-	~Block();
 	
 	void setCoord(qint16 coord);
 	qint16 getCoord() const;

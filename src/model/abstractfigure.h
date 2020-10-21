@@ -28,14 +28,14 @@ protected:
 	enum Rotation {up, down, left, right};
 	Rotation rotation = up;
 	
-	qint16 ROW_COUNT;
-	qint16 COLUMN_COUNT;
+	const qint8 ROW_COUNT;
+	const qint8 COLUMN_COUNT;
 };
 
 class IFigure : public AbstractFigure
 {
 public:
-	IFigure(qint16 row, qint16 column, QImage *image);
+	IFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -44,7 +44,7 @@ public:
 class OFigure : public AbstractFigure
 {
 public:
-	OFigure(qint16 row, qint16 column, QImage *image);
+	OFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -53,7 +53,7 @@ public:
 class TFigure : public AbstractFigure
 {
 public:
-	TFigure(qint16 row, qint16 column, QImage *image);
+	TFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -62,7 +62,7 @@ public:
 class LFigure : public AbstractFigure
 {
 public:
-	LFigure(qint16 row, qint16 column, QImage *image);
+	LFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -71,7 +71,7 @@ public:
 class JFigure : public AbstractFigure
 {
 public:
-	JFigure(qint16 row, qint16 column, QImage *image);
+	JFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -80,7 +80,7 @@ public:
 class SFigure : public AbstractFigure
 {
 public:
-	SFigure(qint16 row, qint16 column, QImage *image);
+	SFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();
@@ -89,7 +89,7 @@ public:
 class ZFigure : public AbstractFigure
 {
 public:
-	ZFigure(qint16 row, qint16 column, QImage *image);
+	ZFigure(qint8 row, qint8 column, QImage *image);
 	
 	virtual void rotate();
 	virtual void backRotate();

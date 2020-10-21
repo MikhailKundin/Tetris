@@ -10,11 +10,6 @@ Block::Block(qint16 coord, QImage *image) : m_coord(coord), m_image(image)
 	
 }
 
-Block::~Block()
-{
-	delete m_image;
-}
-
 void Block::setCoord(qint16 coord)
 {
 	m_coord = coord;

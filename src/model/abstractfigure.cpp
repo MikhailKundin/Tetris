@@ -114,6 +114,8 @@ void IFigure::rotate()
 		y = pairCoord.second;
 		block.setCoord(getSingleCoord({x-1, y+1}));
 		blocks.replace(3, block);
+		
+		rotation = right;
 		break;
 	case right:
 	case left:
@@ -156,6 +158,8 @@ void IFigure::backRotate()
 		y = pairCoord.second;
 		block.setCoord(getSingleCoord({x+1, y-1}));
 		blocks.replace(3, block);
+		
+		rotation = up;
 		break;
 	}
 }
