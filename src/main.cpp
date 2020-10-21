@@ -21,13 +21,24 @@ int main(int argc, char *argv[])
 //	MainWindow window;
 //	window.show();
 	
-//	QImage *green = new QImage(":Image/Blocks/OBlockOriginal.png");
+//	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
 //	qDebug() << green;
 	
 //	Block block(16, green);
 //	qDebug() << block.getBlock();
 //	QRandomGenerator random(QTime::currentTime().msecsSinceStartOfDay());
 //	qDebug() <<  random.generate() % 7;
+	
+//	QMap<qint16, QImage *> map;
+//	map.insert(16, green);
+//	if (!map.value(15))
+//	{
+//		qDebug() << 0;
+//	}
+//	else
+//	{
+//		qDebug() << 1;
+//	}
 	
 	return app.exec();
 }

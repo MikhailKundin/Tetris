@@ -61,9 +61,23 @@ bool AbstractFigure::moveUp()
 	return true;
 }
 
-QList<Block> AbstractFigure::getBlocks()
+QList<QPair<qint16, QImage *> > AbstractFigure::getBlocks()
 {
-	return blocks;
+	QList<QPair<qint16, QImage *> > res;
+	foreach (Block block, blocks)
+	{
+		res.append({block.getCoord(), block.getImage()});
+	}
+	return res;
+}
+
+QList<qint16> AbstractFigure::getCoords()
+{
+	QList<qint16> res;
+	foreach (Block block, blocks)
+	{
+		res.append(block.getCoord());
+	}
 }
 
 QPair<qint16, qint16> AbstractFigure::getPairCoord(qint16 singleCoord)
