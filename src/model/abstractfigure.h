@@ -18,6 +18,7 @@ public:
 	virtual bool backRotate() = 0;
 	
 	QList<QPair<qint16, QImage *> > getBlocks();
+	QList<qint16> getCoords();
 	
 protected:
 	QPair<qint16, qint16> getPairCoord(qint16 singleCoord);

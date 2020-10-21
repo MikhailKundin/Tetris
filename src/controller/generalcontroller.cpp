@@ -214,3 +214,8 @@ bool GeneralController::checkDefeat(QList<qint16> coords)
 {
 	
 }
+
+void GeneralController::setGrid(QList<qint16> coords)
+{
+	
+}

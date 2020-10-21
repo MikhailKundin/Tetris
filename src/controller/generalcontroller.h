@@ -33,6 +33,7 @@ signals:
 	void rotateSignal();
 	void moveDownSignal();
 	void tickSignal();
+	void defeatSignal();
 	
 private:
 	QPair<qint16, qint16> getPairCoord(qint16 singleCoord);
@@ -42,6 +43,8 @@ private:
 	bool checkRow(qint16 y);
 	void deleteRow(qint16 y);
 	bool checkPosition(QList<qint16> coords);
+	bool checkDefeat(QList<qint16> coords);
+	void setGrid(QList<qint16> coords);
 	
 	QImage *IBlock;
 	QImage *OBlock;
