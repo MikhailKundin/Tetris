@@ -3,14 +3,15 @@
 
 #include <QObject>
 #include <QMap>
+#include <QRandomGenerator>
 
 #include "../model/abstractfigure.h"
 
-class GeneralController
+class GeneralController : public QObject
 {
 	Q_OBJECT
 public:
-	GeneralController();
+	GeneralController(qint8 row, qint8 column);
 	virtual ~GeneralController();
 	
 public slots:
@@ -25,18 +26,32 @@ private slots:
 signals:
 	void update();
 	
+	void moveRightSignal();
+	void moveLeftSignal();
+	void rotateSignal();
+	void moveDownSignal();
+	
 private:
-	const QImage *IBlock;
-	const QImage *OBlock;
-	const QImage *TBlock;
-	const QImage *LBlock;
-	const QImage *JBlock;
-	const QImage *SBlock;
-	const QImage *ZBlock;
+	void getNextFigure();
+	
+	QImage *IBlock;
+	QImage *OBlock;
+	QImage *TBlock;
+	QImage *LBlock;
+	QImage *JBlock;
+	QImage *SBlock;
+	QImage *ZBlock;
 	
 	QTimer *timer;
-	
 	QMap<qint16, QImage *> map;
+	AbstractFigure *figure;
+	AbstractFigure *nextFigure;
+	qint32 points = 0;
+	qint16 level = 1;
+	QRandomGenerator random;
+	
+	const qint8 ROW_COUNT;
+	const qint8 COLUMN_COUNT;
 };
 
 #endif // GENERALCONTROLLER_H

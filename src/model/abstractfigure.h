@@ -7,21 +7,22 @@ class AbstractFigure
 {
 	
 public:
-	AbstractFigure(qint16 row, qint16 column);
+	AbstractFigure(qint8 row, qint8 column);
 	virtual ~AbstractFigure() = default;
 	
-	virtual void moveRight();
-	virtual void moveLeft();
-	virtual void moveDown();
-	virtual void moveUp();
-	virtual void rotate() = 0;
-	virtual void backRotate() = 0;
+	virtual bool moveRight();
+	virtual bool moveLeft();
+	virtual bool moveDown();
+	virtual bool moveUp();
+	virtual bool rotate() = 0;
+	virtual bool backRotate() = 0;
 	
 	QList<Block> getBlocks();
 	
 protected:
 	QPair<qint16, qint16> getPairCoord(qint16 singleCoord);
 	qint16 getSingleCoord(QPair<qint16, qint16> pairCoord);
+	bool checkPosition();
 	
 	QList<Block> blocks;
 	
@@ -37,8 +38,8 @@ class IFigure : public AbstractFigure
 public:
 	IFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class OFigure : public AbstractFigure
@@ -46,8 +47,8 @@ class OFigure : public AbstractFigure
 public:
 	OFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class TFigure : public AbstractFigure
@@ -55,8 +56,8 @@ class TFigure : public AbstractFigure
 public:
 	TFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class LFigure : public AbstractFigure
@@ -64,8 +65,8 @@ class LFigure : public AbstractFigure
 public:
 	LFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class JFigure : public AbstractFigure
@@ -73,8 +74,8 @@ class JFigure : public AbstractFigure
 public:
 	JFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class SFigure : public AbstractFigure
@@ -82,8 +83,8 @@ class SFigure : public AbstractFigure
 public:
 	SFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 class ZFigure : public AbstractFigure
@@ -91,8 +92,8 @@ class ZFigure : public AbstractFigure
 public:
 	ZFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual void rotate();
-	virtual void backRotate();
+	virtual bool rotate() override;
+	virtual bool backRotate() override;
 };
 
 #endif // ABSTARCTFIGURE_H

@@ -11,7 +11,7 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	
 	setLayout(ui->gBox);
 	
-	pg = std::make_unique<Playground>(ui->playgroundPlace);
+	pg = std::make_unique<Playground>(20, 10, ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
 	pointsWgt = std::make_unique<PointsWgt>(ui->pointsPlace);

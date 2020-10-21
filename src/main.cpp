@@ -9,6 +9,8 @@
 #include "view/pointswgt.h"
 #include "view/recordtable.h"
 #include "model/block.h"
+#include <QTime>
+#include <QRandomGenerator>
 
 #include <QDebug>
 
@@ -24,6 +26,8 @@ int main(int argc, char *argv[])
 	
 //	Block block(16, green);
 //	qDebug() << block.getBlock();
+//	QRandomGenerator random(QTime::currentTime().msecsSinceStartOfDay());
+//	qDebug() <<  random.generate() % 7;
 	
 	return app.exec();
 }
