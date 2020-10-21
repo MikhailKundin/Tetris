@@ -8,18 +8,19 @@ class Block
 public:
 	Block();
 	Block(qint16 coord, QImage *image);
+	~Block();
 	
 	void setCoord(qint16 coord);
-	qint16 getCoord();
+	qint16 getCoord() const;
 	
 	void setImage(QImage *image);
-	QImage *getImage();
+	QImage *getImage() const;
 	
-	QPair<qint16, QImage *> getBlock();
+	QPair<qint16, QImage *> getBlock() const;
 	
 private:
 	qint16 m_coord;
-	std::unique_ptr<QImage> m_image;
+	QImage *m_image;
 };
 
 #endif // BLOCK_H

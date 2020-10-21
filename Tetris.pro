@@ -27,7 +27,7 @@ UI_DIR = build/release/bin
 
 SOURCES += \
     src/main.cpp \
-    src/model/abstarctfigure.cpp \
+    src/model/abstractfigure.cpp \
     src/model/block.cpp \
     src/view/mainmenuwdt.cpp \
     src/view/mainwindow.cpp \
@@ -37,7 +37,7 @@ SOURCES += \
     src/view/singlewgt.cpp
 
 HEADERS += \
-	src/model/abstarctfigure.h \
+	src/model/abstractfigure.h \
 	src/model/block.h \
 	src/view/mainmenuwdt.h \
 	src/view/mainwindow.h \
