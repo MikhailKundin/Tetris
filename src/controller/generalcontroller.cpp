@@ -134,10 +134,15 @@ void GeneralController::moveDown()
 			figure->moveUp();
 		}
 	}
+	else
+	{
+		spawnNextFigure(oldCoords);
+	}
 }
 
 void GeneralController::tick()
 {
+	qDebug() << map;
 	QList<qint16> coords = figure->getCoords();
 	if (!checkPosition(coords))
 	{
@@ -146,37 +151,16 @@ void GeneralController::tick()
 		emit tickSignal();
 		return;
 	}
-	if (!checkLayer(coords))
+	else if (!checkLayer(coords))
 	{
 		timer->stop();
 		emit defeatSignal(this);
+		return;
 	}
-	
-	qint16 shift = 0;
-	foreach (qint16 coord, coords)
+	else
 	{
-		QPair<qint8, qint8> pairCoord = getPairCoord(coord+shift);
-		if (checkRow(pairCoord.second))
-		{
-			deleteRow(pairCoord.second);
-			shift += COLUMN_COUNT;
-		}
+		spawnNextFigure(coords);
 	}
-	m_points += POINTS[shift / COLUMN_COUNT];
-	level = static_cast<qint16>(m_points / NEW_LEVEL);
-	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
-	if (interval < MIN_INTERVAL)
-	{
-		interval = MIN_INTERVAL;
-	}
-	timer->setInterval(interval);
-	timer->start();
-	
-	figure = nextFigure;
-	getNextFigure();
-	emit tickSignal();
-	emit update(map);
-	tick();
 }
 
 QPair<qint8, qint8> GeneralController::getPairCoord(qint16 singleCoord)
@@ -311,4 +295,33 @@ void GeneralController::deleteFigure(QList<qint16> coords)
 	{
 		map.remove(coord);
 	}
+}
+
+void GeneralController::spawnNextFigure(QList<qint16> coords)
+{
+	qint16 shift = 0;
+	foreach (qint16 coord, coords)
+	{
+		QPair<qint8, qint8> pairCoord = getPairCoord(coord+shift);
+		if (checkRow(pairCoord.second))
+		{
+			deleteRow(pairCoord.second);
+			shift += COLUMN_COUNT;
+		}
+	}
+	m_points += POINTS[shift / COLUMN_COUNT];
+	level = static_cast<qint16>(m_points / NEW_LEVEL);
+	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
+	if (interval < MIN_INTERVAL)
+	{
+		interval = MIN_INTERVAL;
+	}
+	timer->setInterval(interval);
+	timer->start();
+	
+	figure = nextFigure;
+	getNextFigure();
+	emit tickSignal();
+	emit update(map);
+	//tick();
 }

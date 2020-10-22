@@ -47,6 +47,7 @@ private:
 	bool checkLayer(QList<qint16> coords);
 	void setGrid(QList<qint16> coords);
 	void deleteFigure(QList<qint16> coords);
+	void spawnNextFigure(QList<qint16> coords);
 	
 	QImage *IBlock;
 	QImage *OBlock;
