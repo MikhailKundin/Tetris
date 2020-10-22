@@ -7,68 +7,103 @@ AbstractFigure::AbstractFigure(qint8 row, qint8 column) : ROW_COUNT(row), COLUMN
 
 bool AbstractFigure::moveRight()
 {
-	foreach (Block block, blocks)
+	QList<QPair<qint8, qint8> > pairCoords;
+	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		block.setCoord(block.getCoord() + 1);
+		QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
+		pairCoord.first += 1;
+		pairCoords.append(pairCoord);
 	}
-	if (!checkPosition())
+	
+	if (checkPosition(pairCoords))
 	{
-		moveLeft();
+		for (qint8 i = 0; i < blocks.length(); i++)
+		{
+			blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
+		}
+		return true;
+	}
+	else
+	{
 		return false;
 	}
-	return true;
 }
 
 bool AbstractFigure::moveLeft()
 {
-	foreach (Block block, blocks)
+	QList<QPair<qint8, qint8> > pairCoords;
+	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		block.setCoord(block.getCoord() - 1);
+		QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
+		pairCoord.first -= 1;
+		pairCoords.append(pairCoord);
 	}
-	if (!checkPosition())
+	
+	if (checkPosition(pairCoords))
 	{
-		moveRight();
+		for (qint8 i = 0; i < blocks.length(); i++)
+		{
+			blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
+		}
+		return true;
+	}
+	else
+	{
 		return false;
 	}
-	return true;
 }
 
 bool AbstractFigure::moveDown()
 {
-	foreach (Block block, blocks)
+	QList<QPair<qint8, qint8> > pairCoords;
+	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		block.setCoord(block.getCoord() + COLUMN_COUNT);
+		QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
+		pairCoord.second += 1;
+		pairCoords.append(pairCoord);
 	}
-	if (!checkPosition())
+	
+	if (checkPosition(pairCoords))
 	{
-		moveUp();
+		for (qint8 i = 0; i < blocks.length(); i++)
+		{
+			blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
+		}
+		return true;
+	}
+	else
+	{
 		return false;
 	}
-	return true;
 }
 
 bool AbstractFigure::moveUp()
 {
-	foreach (Block block, blocks)
+	QList<QPair<qint8, qint8> > pairCoords;
+	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		block.setCoord(block.getCoord() - COLUMN_COUNT);
+		QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
+		pairCoord.second -= 1;
+		pairCoords.append(pairCoord);
 	}
-	if (!checkPosition())
+	
+	if (checkPosition(pairCoords))
 	{
-		moveDown();
+		for (qint8 i = 0; i < blocks.length(); i++)
+		{
+			blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
+		}
+		return true;
+	}
+	else
+	{
 		return false;
 	}
-	return true;
 }
 
-QList<QPair<qint16, QImage *> > AbstractFigure::getBlocks()
+QList<Block> &AbstractFigure::getBlocks()
 {
-	QList<QPair<qint16, QImage *> > res;
-	foreach (Block block, blocks)
-	{
-		res.append({block.getCoord(), block.getImage()});
-	}
-	return res;
+	return blocks;
 }
 
 QList<qint16> AbstractFigure::getCoords()
@@ -78,17 +113,23 @@ QList<qint16> AbstractFigure::getCoords()
 	{
 		res.append(block.getCoord());
 	}
+	return res;
 }
 
-QPair<qint16, qint16> AbstractFigure::getPairCoord(qint16 singleCoord)
+QImage *AbstractFigure::getImage()
 {
-	qint16 x = singleCoord % COLUMN_COUNT;
-	qint16 y = singleCoord / COLUMN_COUNT;
+	return blocks.at(0).getImage();
+}
+
+QPair<qint8, qint8> AbstractFigure::getPairCoord(qint16 singleCoord)
+{
+	qint8 x = singleCoord % COLUMN_COUNT;
+	qint8 y = static_cast<qint8>(singleCoord / COLUMN_COUNT);
 	
 	return {x, y};
 }
 
-qint16 AbstractFigure::getSingleCoord(QPair<qint16, qint16> pairCoord)
+qint16 AbstractFigure::getSingleCoord(QPair<qint8, qint8> pairCoord)
 {
 	qint16 x = pairCoord.first;
 	qint16 y = pairCoord.second;
@@ -96,13 +137,13 @@ qint16 AbstractFigure::getSingleCoord(QPair<qint16, qint16> pairCoord)
 	return y*COLUMN_COUNT + x;
 }
 
-bool AbstractFigure::checkPosition()
+bool AbstractFigure::checkPosition(QList<QPair<qint8, qint8> > coords)
 {
-	foreach (Block block, blocks)
+	for (qint8 i = 0; i < coords.length(); i++)
 	{
-		QPair<qint16, qint16> pairCoord = getPairCoord(block.getCoord());
-		qint16 x = pairCoord.first;
-		qint16 y = pairCoord.second;
+		QPair<qint8, qint8> coord = coords.at(i);
+		qint8 x = coord.first;
+		qint8 y = coord.second;
 		
 		if (x < 0 || x >= COLUMN_COUNT)
 		{
@@ -118,8 +159,9 @@ bool AbstractFigure::checkPosition()
 
 IFigure::IFigure(qint8 row, qint8 column, QImage *image) : AbstractFigure(row, column)
 {
-	qint16 x, y, coord;
-	qint16 middle = COLUMN_COUNT / 2;
+	qint8 x, y;
+	qint16 coord;
+	qint8 middle = COLUMN_COUNT / 2;
 	
 	x = middle - 2;
 	y = -1;
@@ -144,104 +186,214 @@ IFigure::IFigure(qint8 row, qint8 column, QImage *image) : AbstractFigure(row, c
 
 bool IFigure::rotate()
 {
-	QPair<qint16, qint16> pairCoord;
-	qint16 x, y;
-	Block block;
-	
+	QList<QPair<qint8, qint8> > pairCoords;
 	switch (rotation)
 	{
 	case up:
-	case down:
-		block = blocks[0];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x+2, y-2}));
-		blocks.replace(0, block);
-		
-		block = blocks[1];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x+1, y-1}));
-		blocks.replace(1, block);
-		
-		block = blocks[3];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x-1, y+1}));
-		blocks.replace(3, block);
-		
-		rotation = right;
-		if (!checkPosition())
+		pairCoords = rotateUpRight(1);
+		if (setCoords(pairCoords))
 		{
-			backRotate();
+			rotation = right;
+			return true;
+		}
+		else
+		{
 			return false;
 		}
-		return true;
 	case right:
-	case left:
-		backRotate();
-		if (!checkPosition())
+		pairCoords = rotateRightDown(1);
+		if (setCoords(pairCoords))
 		{
-			rotate();
+			rotation = down;
+			return true;
+		}
+		else
+		{
 			return false;
 		}
-		return true;
+	case down:		
+		pairCoords = rotateDownLeft(1);
+		if (setCoords(pairCoords))
+		{
+			rotation = left;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	case left:
+		pairCoords = rotateLeftUp(1);
+		if (setCoords(pairCoords))
+		{
+			rotation = up;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
-	return false;
 }
 
 bool IFigure::backRotate()
 {
-	QPair<qint16, qint16> pairCoord;
-	qint16 x, y;
-	Block block;
-	
+	QList<QPair<qint8, qint8> > pairCoords;
 	switch (rotation)
 	{
 	case up:
-	case down:
-		rotate();
-		if (!checkPosition())
+		pairCoords = rotateLeftUp(-1);
+		if (setCoords(pairCoords))
 		{
-			backRotate();
+			rotation = left;
+			return true;
+		}
+		else
+		{
 			return false;
 		}
-		return true;
 	case right:
-	case left:
-		block = blocks[0];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x-2, y+2}));
-		blocks.replace(0, block);
-		
-		block = blocks[1];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x-1, y+1}));
-		blocks.replace(1, block);
-		
-		block = blocks[3];
-		pairCoord = getPairCoord(block.getCoord());
-		x = pairCoord.first;
-		y = pairCoord.second;
-		block.setCoord(getSingleCoord({x+1, y-1}));
-		blocks.replace(3, block);
-		
-		rotation = up;
-		if (!checkPosition())
+		pairCoords = rotateUpRight(-1);
+		if (setCoords(pairCoords))
 		{
-			rotate();
+			rotation = up;
+			return true;
+		}
+		else
+		{
 			return false;
+		}
+	case down:		
+		pairCoords = rotateRightDown(-1);
+		if (setCoords(pairCoords))
+		{
+			rotation = right;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	case left:
+		pairCoords = rotateDownLeft(-1);
+		if (setCoords(pairCoords))
+		{
+			rotation = down;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)
+{
+	QList<QPair<qint8, qint8> > pairCoords;
+	QPair<qint8, qint8> pairCoord;
+	
+	pairCoord = getPairCoord(blocks.at(0).getCoord());
+	pairCoord.first += 2*mult;
+	pairCoord.second -= 2*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(1).getCoord());
+	pairCoord.first += 1*mult;
+	pairCoord.second -= 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(3).getCoord());
+	pairCoord.first -= 1*mult;
+	pairCoord.second += 1*mult;
+	pairCoords.append(pairCoord);
+	
+	return pairCoords;
+}
+
+QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult)
+{
+	QList<QPair<qint8, qint8> > pairCoords;
+	QPair<qint8, qint8> pairCoord;
+	
+	pairCoord = getPairCoord(blocks.at(0).getCoord());
+	pairCoord.first += 2*mult;
+	pairCoord.second += 2*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(1).getCoord());
+	pairCoord.first += 1*mult;
+	pairCoord.second += 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(3).getCoord());
+	pairCoord.first -= 1*mult;
+	pairCoord.second -= 1*mult;
+	pairCoords.append(pairCoord);
+	
+	return pairCoords;
+}
+
+QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult)
+{
+	QList<QPair<qint8, qint8> > pairCoords;
+	QPair<qint8, qint8> pairCoord;
+	
+	pairCoord = getPairCoord(blocks.at(0).getCoord());
+	pairCoord.first -= 2*mult;
+	pairCoord.second += 2*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(1).getCoord());
+	pairCoord.first -= 1*mult;
+	pairCoord.second += 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(3).getCoord());
+	pairCoord.first += 1*mult;
+	pairCoord.second -= 1*mult;
+	pairCoords.append(pairCoord);
+	
+	return pairCoords;
+}
+
+QList<QPair<qint8, qint8> > IFigure::rotateLeftUp(qint8 mult)
+{
+	QList<QPair<qint8, qint8> > pairCoords;
+	QPair<qint8, qint8> pairCoord;
+	
+	pairCoord = getPairCoord(blocks.at(0).getCoord());
+	pairCoord.first -= 2*mult;
+	pairCoord.second -= 2*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(1).getCoord());
+	pairCoord.first -= 1*mult;
+	pairCoord.second -= 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(3).getCoord());
+	pairCoord.first += 1*mult;
+	pairCoord.second += 1*mult;
+	pairCoords.append(pairCoord);
+	
+	return pairCoords;
+}
+
+bool IFigure::setCoords(QList<QPair<qint8, qint8> > pairCoords)
+{
+	if (checkPosition(pairCoords))
+	{
+		for (qint8 i = 0; i < blocks.length(); i++)
+		{
+			blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
 		}
 		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 OFigure::OFigure(qint8 row, qint8 column, QImage *image) : AbstractFigure(row, column)

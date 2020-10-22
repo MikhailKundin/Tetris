@@ -17,13 +17,13 @@ public:
 	virtual bool rotate() = 0;
 	virtual bool backRotate() = 0;
 	
-	QList<QPair<qint16, QImage *> > getBlocks();
+	QList<Block> &getBlocks();
 	QList<qint16> getCoords();
 	
 protected:
-	QPair<qint16, qint16> getPairCoord(qint16 singleCoord);
-	qint16 getSingleCoord(QPair<qint16, qint16> pairCoord);
-	bool checkPosition();
+	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
+	qint16 getSingleCoord(QPair<qint8, qint8> pairCoord);
+	bool checkPosition(QList<QPair<qint8, qint8> > coords);
 	
 	QList<Block> blocks;
 	
@@ -41,6 +41,14 @@ public:
 	
 	virtual bool rotate() override;
 	virtual bool backRotate() override;
+	
+private:
+	QList<QPair<qint8, qint8> > rotateUpRight(qint8 mult);
+	QList<QPair<qint8, qint8> > rotateRightDown(qint8 mult);
+	QList<QPair<qint8, qint8> > rotateDownLeft(qint8 mult);
+	QList<QPair<qint8, qint8> > rotateLeftUp(qint8 mult);
+	
+	bool setCoords(QList<QPair<qint8, qint8> > pairCoords);
 };
 
 class OFigure : public AbstractFigure

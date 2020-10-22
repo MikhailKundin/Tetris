@@ -36,14 +36,14 @@ signals:
 	void defeatSignal();
 	
 private:
-	QPair<qint16, qint16> getPairCoord(qint16 singleCoord);
-	qint16 getSingleCoord(QPair<qint16, qint16> pairCoord);
+	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
+	qint16 getSingleCoord(QPair<qint8, qint8> pairCoord);
 	
 	void getNextFigure();
-	bool checkRow(qint16 y);
-	void deleteRow(qint16 y);
+	bool checkRow(qint8 y);
+	void deleteRow(qint8 y);
 	bool checkPosition(QList<qint16> coords);
-	bool checkDefeat(QList<qint16> coords);
+	bool checkLayer(QList<qint16> coords);
 	void setGrid(QList<qint16> coords);
 	
 	QImage *IBlock;

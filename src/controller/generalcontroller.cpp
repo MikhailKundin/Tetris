@@ -43,8 +43,17 @@ void GeneralController::moveRight()
 {
 	if (figure->moveRight())
 	{
-		emit moveRightSignal();
-		emit update();
+		QList<qint16> coords = figure->getCoords();
+		if (checkLayer(coords))
+		{
+			setGrid(coords);
+			emit moveRightSignal();
+			emit update();
+		}
+		else
+		{
+			figure->moveLeft();
+		}
 	}
 }
 
@@ -52,8 +61,17 @@ void GeneralController::moveLeft()
 {
 	if (figure->moveLeft())
 	{
-		emit moveLeftSignal();
-		emit update();
+		QList<qint16> coords = figure->getCoords();
+		if (checkLayer(coords))
+		{
+			setGrid(coords);
+			emit moveLeftSignal();
+			emit update();
+		}
+		else
+		{
+			figure->moveRight();
+		}
 	}
 }
 
@@ -61,8 +79,17 @@ void GeneralController::rotate()
 {
 	if (figure->rotate())
 	{
-		emit rotateSignal();
-		emit update();
+		QList<qint16> coords = figure->getCoords();
+		if (checkLayer(coords))
+		{
+			setGrid(coords);
+			emit rotateSignal();
+			emit update();
+		}
+		else
+		{
+			figure->backRotate();
+		}
 	}
 }
 
@@ -70,8 +97,17 @@ void GeneralController::moveDown()
 {
 	if (figure->moveDown())
 	{
-		emit moveDownSignal();
-		emit update();
+		QList<qint16> coords = figure->getCoords();
+		if (checkLayer(coords))
+		{
+			setGrid(coords);
+			emit moveDownSignal();
+			emit update();
+		}
+		else
+		{
+			figure->moveUp();
+		}
 	}
 }
 
@@ -80,40 +116,50 @@ void GeneralController::tick()
 	QList<qint16> coords = figure->getCoords();
 	if (!checkPosition(coords))
 	{
+		timer->stop();
+		timer->start();
 		moveDown();
 		emit tickSignal();
 		return;
+	}
+	if (!checkLayer(coords))
+	{
+		timer->stop();
+		emit defeatSignal();
 	}
 	
 	qint16 shift = 0;
 	foreach (qint16 coord, coords)
 	{
-		if (checkRow(getPairCoord(coord+shift).second))
+		QPair<qint8, qint8> pairCoord = getPairCoord(coord+shift);
+		if (checkRow(pairCoord.second))
 		{
-			deleteRow(coord+shift);
+			deleteRow(pairCoord.second);
 			shift += COLUMN_COUNT;
 		}
 	}
 	m_points += POINTS[shift / COLUMN_COUNT];
 	level = static_cast<qint16>(m_points / NEW_LEVEL);
 	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
+	timer->stop();
 	timer->setInterval(interval);
+	timer->start();
 	
 	figure = nextFigure;
 	getNextFigure();
-	
-	
+	emit tickSignal();
+	tick();
 }
 
-QPair<qint16, qint16> GeneralController::getPairCoord(qint16 singleCoord)
+QPair<qint8, qint8> GeneralController::getPairCoord(qint16 singleCoord)
 {
-	qint16 x = singleCoord % COLUMN_COUNT;
-	qint16 y = singleCoord / COLUMN_COUNT;
+	qint8 x = singleCoord % COLUMN_COUNT;
+	qint8 y = static_cast<qint8>(singleCoord / COLUMN_COUNT);
 	
 	return {x, y};
 }
 
-qint16 GeneralController::getSingleCoord(QPair<qint16, qint16> pairCoord)
+qint16 GeneralController::getSingleCoord(QPair<qint8, qint8> pairCoord)
 {
 	qint16 x = pairCoord.first;
 	qint16 y = pairCoord.second;
@@ -150,9 +196,9 @@ void GeneralController::getNextFigure()
 	}
 }
 
-bool GeneralController::checkRow(qint16 y)
+bool GeneralController::checkRow(qint8 y)
 {
-	for (qint16 x = 0; x < COLUMN_COUNT; x++)
+	for (qint8 x = 0; x < COLUMN_COUNT; x++)
 	{
 		qint16 coord = getSingleCoord({x, y});
 		if (!map.contains(coord))
@@ -163,9 +209,9 @@ bool GeneralController::checkRow(qint16 y)
 	return true;
 }
 
-void GeneralController::deleteRow(qint16 y)
+void GeneralController::deleteRow(qint8 y)
 {
-	for (qint16 x = 0; x < COLUMN_COUNT; x++)
+	for (qint8 x = 0; x < COLUMN_COUNT; x++)
 	{
 		qint16 coord = getSingleCoord({x, y});
 		map.remove(coord);
@@ -174,7 +220,7 @@ void GeneralController::deleteRow(qint16 y)
 	y--;
 	while (y >= 0)
 	{
-		for (qint16 x = 0; x < COLUMN_COUNT; x++)
+		for (qint8 x = 0; x < COLUMN_COUNT; x++)
 		{
 			qint16 oldCoord = getSingleCoord({x, y});
 			qint16 newCoord = getSingleCoord({x, y+1});
@@ -210,12 +256,22 @@ bool GeneralController::checkPosition(QList<qint16> coords)
 	return false;
 }
 
-bool GeneralController::checkDefeat(QList<qint16> coords)
+bool GeneralController::checkLayer(QList<qint16> coords)
 {
-	
+	foreach (qint16 coord, coords)
+	{
+		if (map.contains(coord))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 void GeneralController::setGrid(QList<qint16> coords)
 {
-	
+	foreach (qint16 coord, coords)
+	{
+		map.insert(coord, figure->getImage());
+	}
 }
