@@ -13,10 +13,8 @@ Playground::Playground(qint8 row, qint8 column, QWidget *parent) :
 
 void Playground::update(const QMap<qint16, QImage *>& map)
 {
-	for (QMap<qint16, QImage *>::const_iterator it = map.constBegin(); it != map.constEnd(); it++)
-	{
-		m_map.insert(it.key(), it.value());
-	}
+	m_map.clear();
+	m_map.insert(map);
 	
 	repaint();
 }

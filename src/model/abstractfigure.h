@@ -19,6 +19,7 @@ public:
 	
 	QList<Block> &getBlocks();
 	QList<qint16> getCoords();
+	QImage *getImage();
 	
 protected:
 	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);

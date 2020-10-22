@@ -15,6 +15,7 @@ public:
 	virtual ~GeneralController();
 	void setPoints(qint32 points);
 	qint32 getPoints();
+	QMap<qint16, QImage *> &getMap();
 	
 public slots:
 	void moveRight();
@@ -26,14 +27,14 @@ private slots:
 	void tick();
 	
 signals:
-	void update();
+	void update(QMap<qint16, QImage *> &);
 	
 	void moveRightSignal();
 	void moveLeftSignal();
 	void rotateSignal();
 	void moveDownSignal();
 	void tickSignal();
-	void defeatSignal();
+	void defeatSignal(GeneralController *);
 	
 private:
 	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
@@ -45,6 +46,7 @@ private:
 	bool checkPosition(QList<qint16> coords);
 	bool checkLayer(QList<qint16> coords);
 	void setGrid(QList<qint16> coords);
+	void deleteFigure(QList<qint16> coords);
 	
 	QImage *IBlock;
 	QImage *OBlock;
@@ -68,6 +70,7 @@ private:
 	const quint16 NEW_LEVEL = 3000;
 	const qint16 START_INTERVAL = 1000;
 	const qreal INTERVAL_DIV = 2;
+	const qint16 MIN_INTERVAL = 1;
 };
 
 #endif // GENERALCONTROLLER_H

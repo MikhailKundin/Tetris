@@ -1,5 +1,7 @@
 #include "abstractfigure.h"
 
+#include <QDebug>
+
 AbstractFigure::AbstractFigure(qint8 row, qint8 column) : ROW_COUNT(row), COLUMN_COUNT(column)
 {
 	
@@ -164,22 +166,22 @@ IFigure::IFigure(qint8 row, qint8 column, QImage *image) : AbstractFigure(row, c
 	qint8 middle = COLUMN_COUNT / 2;
 	
 	x = middle - 2;
-	y = -1;
+	y = 0;
 	coord = getSingleCoord({x, y});
 	blocks.append(Block(coord, image));
 	
 	x = middle - 1;
-	y = -1;
+	y = 0;
 	coord = getSingleCoord({x, y});
 	blocks.append(Block(coord, image));
 	
 	x = middle;
-	y = -1;
+	y = 0;
 	coord = getSingleCoord({x, y});
 	blocks.append(Block(coord, image));
 	
 	x = middle + 1;
-	y = -1;
+	y = 0;
 	coord = getSingleCoord({x, y});
 	blocks.append(Block(coord, image));
 }
@@ -234,6 +236,7 @@ bool IFigure::rotate()
 			return false;
 		}
 	}
+	return false;
 }
 
 bool IFigure::backRotate()
@@ -286,6 +289,7 @@ bool IFigure::backRotate()
 			return false;
 		}
 	}
+	return false;
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)

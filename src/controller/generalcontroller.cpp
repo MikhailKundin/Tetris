@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QtMath>
 
+#include <QDebug>
+
 GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), COLUMN_COUNT(column)
 {
 	IBlock = new QImage(":Images/Blocks/IBlockOriginal.png");
@@ -16,6 +18,16 @@ GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), 
 	ZBlock = new QImage(":Images/Blocks/ZBlockOriginal.png");
 	
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
+	
+	timer = new QTimer;
+	connect(timer, &QTimer::timeout, this, &GeneralController::tick);
+	timer->setInterval(START_INTERVAL);
+	getNextFigure();
+	figure = nextFigure;
+	getNextFigure();
+	setGrid(figure->getCoords());
+	emit update(map);
+	timer->start();
 }
 
 GeneralController::~GeneralController()
@@ -39,16 +51,23 @@ qint32 GeneralController::getPoints()
 	return m_points;
 }
 
+QMap<qint16, QImage *> &GeneralController::getMap()
+{
+	return map;
+}
+
 void GeneralController::moveRight()
 {
+	QList<qint16> oldCoords = figure->getCoords();
 	if (figure->moveRight())
 	{
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
+			deleteFigure(oldCoords);
 			setGrid(coords);
 			emit moveRightSignal();
-			emit update();
+			emit update(map);
 		}
 		else
 		{
@@ -59,14 +78,16 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
+	QList<qint16> oldCoords = figure->getCoords();
 	if (figure->moveLeft())
 	{
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
+			deleteFigure(oldCoords);
 			setGrid(coords);
 			emit moveLeftSignal();
-			emit update();
+			emit update(map);
 		}
 		else
 		{
@@ -77,14 +98,16 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
+	QList<qint16> oldCoords = figure->getCoords();
 	if (figure->rotate())
 	{
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
+			deleteFigure(oldCoords);
 			setGrid(coords);
 			emit rotateSignal();
-			emit update();
+			emit update(map);
 		}
 		else
 		{
@@ -95,14 +118,16 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
+	QList<qint16> oldCoords = figure->getCoords();
 	if (figure->moveDown())
 	{
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
+			deleteFigure(oldCoords);
 			setGrid(coords);
 			emit moveDownSignal();
-			emit update();
+			emit update(map);
 		}
 		else
 		{
@@ -116,7 +141,6 @@ void GeneralController::tick()
 	QList<qint16> coords = figure->getCoords();
 	if (!checkPosition(coords))
 	{
-		timer->stop();
 		timer->start();
 		moveDown();
 		emit tickSignal();
@@ -125,7 +149,7 @@ void GeneralController::tick()
 	if (!checkLayer(coords))
 	{
 		timer->stop();
-		emit defeatSignal();
+		emit defeatSignal(this);
 	}
 	
 	qint16 shift = 0;
@@ -141,13 +165,17 @@ void GeneralController::tick()
 	m_points += POINTS[shift / COLUMN_COUNT];
 	level = static_cast<qint16>(m_points / NEW_LEVEL);
 	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
-	timer->stop();
+	if (interval < MIN_INTERVAL)
+	{
+		interval = MIN_INTERVAL;
+	}
 	timer->setInterval(interval);
 	timer->start();
 	
 	figure = nextFigure;
 	getNextFigure();
 	emit tickSignal();
+	emit update(map);
 	tick();
 }
 
@@ -170,6 +198,7 @@ qint16 GeneralController::getSingleCoord(QPair<qint8, qint8> pairCoord)
 void GeneralController::getNextFigure()
 {
 	qint8 value = random.generate() % 7;
+	value = 0; //-------------------------------DEBUG-----------------------------------------------
 	switch (value)
 	{
 	case 0:
@@ -273,5 +302,13 @@ void GeneralController::setGrid(QList<qint16> coords)
 	foreach (qint16 coord, coords)
 	{
 		map.insert(coord, figure->getImage());
+	}
+}
+
+void GeneralController::deleteFigure(QList<qint16> coords)
+{
+	foreach (qint16 coord, coords)
+	{
+		map.remove(coord);
 	}
 }

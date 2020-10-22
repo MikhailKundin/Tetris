@@ -16,9 +16,10 @@ class SingleWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SingleWgt(QWidget *parent = nullptr);
+	explicit SingleWgt(qint8 row, qint8 column, QWidget *parent = nullptr);
 	~SingleWgt();
 	
+public slots:
 	void update(const QMap<qint16, QImage *> &map) const;
 	
 private:

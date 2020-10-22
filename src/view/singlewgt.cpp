@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-SingleWgt::SingleWgt(QWidget *parent) :
+SingleWgt::SingleWgt(qint8 row, qint8 column, QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::SingleWgt)
 {
@@ -11,7 +11,7 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	
 	setLayout(ui->gBox);
 	
-	pg = std::make_unique<Playground>(20, 10, ui->playgroundPlace);
+	pg = std::make_unique<Playground>(row, column, ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
 	pointsWgt = std::make_unique<PointsWgt>(ui->pointsPlace);

@@ -10,6 +10,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class GeneralController;
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -23,11 +24,15 @@ private slots:
 	void openSingleLayout();
 	void openOnlineLayout();
 	void closeAll();
+	void deleteController(GeneralController *controller);
 	
 private:
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWdt> mainMenuWdt;
-	std::unique_ptr<SingleWgt> singleWgt;
+	std::shared_ptr<SingleWgt> singleWgt;
+	
+	qint8 ROW_COUNT = 20;
+	qint8 COLUMN_COUNT = 10;
 };
 
 #endif // MAINWINDOW_H
