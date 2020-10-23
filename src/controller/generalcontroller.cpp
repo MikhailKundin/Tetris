@@ -105,18 +105,21 @@ void GeneralController::moveLeft()
 void GeneralController::rotate()
 {
 	QList<qint16> oldCoords = figure->getCoords();
+	QList<qint16> newCoords = oldCoords;
 	if (figure->rotate())
 	{
+		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
-			deleteFigure(oldCoords);
-			setFigure(coords);
+			newCoords = coords;
+			setFigure(newCoords);
 			emit rotateSignal();
 			emit update(map);
 		}
 		else
 		{
+			setFigure(newCoords);
 			figure->backRotate();
 		}
 	}
@@ -125,18 +128,21 @@ void GeneralController::rotate()
 void GeneralController::moveDown()
 {
 	QList<qint16> oldCoords = figure->getCoords();
+	QList<qint16> newCoords = oldCoords;
 	if (figure->moveDown())
 	{
+		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
-			deleteFigure(oldCoords);
-			setFigure(coords);
+			newCoords = coords;
+			setFigure(newCoords);
 			emit moveDownSignal();
 			emit update(map);
 		}
 		else
 		{
+			setFigure(newCoords);
 			figure->moveUp();
 		}
 	}
@@ -228,23 +234,33 @@ bool GeneralController::checkRow(qint8 y)
 
 void GeneralController::deleteRow(qint8 y)
 {
+	qint16 coord;
 	for (qint8 x = 0; x < COLUMN_COUNT; x++)
 	{
-		qint16 coord = getSingleCoord({x, y});
+		coord = getSingleCoord({x, y});
 		map.remove(coord);
 	}
 	
-	y--;
-	while (y >= 0)
+	coord = getSingleCoord({0, y});
+	QList<qint16> coordList;
+	QMap<qint16, QImage *>::iterator it = map.end();
+	while (it != map.begin())
 	{
-		for (qint8 x = 0; x < COLUMN_COUNT; x++)
+		it--;
+		qint16 key = it.key();
+		if (key < coord)
 		{
-			qint16 oldCoord = getSingleCoord({x, y});
-			qint16 newCoord = getSingleCoord({x, y+1});
-			QMap<qint16, QImage *>::iterator it = map.find(oldCoord);
-			map.insert(newCoord, it.value());
-			map.remove(oldCoord);
+			coordList.append(key);
 		}
+		else
+		{
+			break;
+		}
+	}
+	foreach (coord, coordList)
+	{
+		map.insert(coord+COLUMN_COUNT, map.value(coord));
+		map.remove(coord);
 	}
 }
 

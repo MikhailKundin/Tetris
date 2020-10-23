@@ -363,6 +363,9 @@ QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)
 	pairCoord.second -= 1*mult;
 	pairCoords.append(pairCoord);
 	
+	pairCoord = getPairCoord(blocks.at(2).getCoord());
+	pairCoords.append(pairCoord);
+	
 	pairCoord = getPairCoord(blocks.at(3).getCoord());
 	pairCoord.first -= 1*mult;
 	pairCoord.second += 1*mult;
@@ -384,6 +387,9 @@ QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult)
 	pairCoord = getPairCoord(blocks.at(1).getCoord());
 	pairCoord.first += 1*mult;
 	pairCoord.second += 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(2).getCoord());
 	pairCoords.append(pairCoord);
 	
 	pairCoord = getPairCoord(blocks.at(3).getCoord());
@@ -409,6 +415,9 @@ QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult)
 	pairCoord.second += 1*mult;
 	pairCoords.append(pairCoord);
 	
+	pairCoord = getPairCoord(blocks.at(2).getCoord());
+	pairCoords.append(pairCoord);
+	
 	pairCoord = getPairCoord(blocks.at(3).getCoord());
 	pairCoord.first += 1*mult;
 	pairCoord.second -= 1*mult;
@@ -430,6 +439,9 @@ QList<QPair<qint8, qint8> > IFigure::rotateLeftUp(qint8 mult)
 	pairCoord = getPairCoord(blocks.at(1).getCoord());
 	pairCoord.first -= 1*mult;
 	pairCoord.second -= 1*mult;
+	pairCoords.append(pairCoord);
+	
+	pairCoord = getPairCoord(blocks.at(2).getCoord());
 	pairCoords.append(pairCoord);
 	
 	pairCoord = getPairCoord(blocks.at(3).getCoord());
