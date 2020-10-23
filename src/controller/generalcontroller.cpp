@@ -25,7 +25,7 @@ GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), 
 	getNextFigure();
 	figure = nextFigure;
 	getNextFigure();
-	setGrid(figure->getCoords());
+	setFigure(figure->getCoords());
 	emit update(map);
 	timer->start();
 }
@@ -59,18 +59,21 @@ QMap<qint16, QImage *> &GeneralController::getMap()
 void GeneralController::moveRight()
 {
 	QList<qint16> oldCoords = figure->getCoords();
+	QList<qint16> newCoords = oldCoords;
 	if (figure->moveRight())
 	{
+		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
-			deleteFigure(oldCoords);
-			setGrid(coords);
+			newCoords = coords;
+			setFigure(newCoords);
 			emit moveRightSignal();
 			emit update(map);
 		}
 		else
 		{
+			setFigure(newCoords);
 			figure->moveLeft();
 		}
 	}
@@ -79,18 +82,21 @@ void GeneralController::moveRight()
 void GeneralController::moveLeft()
 {
 	QList<qint16> oldCoords = figure->getCoords();
+	QList<qint16> newCoords = oldCoords;
 	if (figure->moveLeft())
 	{
+		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
 		if (checkLayer(coords))
 		{
-			deleteFigure(oldCoords);
-			setGrid(coords);
+			newCoords = coords;
+			setFigure(newCoords);
 			emit moveLeftSignal();
 			emit update(map);
 		}
 		else
 		{
+			setFigure(newCoords);
 			figure->moveRight();
 		}
 	}
@@ -105,7 +111,7 @@ void GeneralController::rotate()
 		if (checkLayer(coords))
 		{
 			deleteFigure(oldCoords);
-			setGrid(coords);
+			setFigure(coords);
 			emit rotateSignal();
 			emit update(map);
 		}
@@ -125,7 +131,7 @@ void GeneralController::moveDown()
 		if (checkLayer(coords))
 		{
 			deleteFigure(oldCoords);
-			setGrid(coords);
+			setFigure(coords);
 			emit moveDownSignal();
 			emit update(map);
 		}
@@ -142,16 +148,14 @@ void GeneralController::moveDown()
 
 void GeneralController::tick()
 {
-	qDebug() << map;
 	QList<qint16> coords = figure->getCoords();
 	if (!checkPosition(coords))
 	{
-		timer->start();
 		moveDown();
 		emit tickSignal();
 		return;
 	}
-	else if (!checkLayer(coords))
+	else if (isNegativeCoords(coords))
 	{
 		timer->stop();
 		emit defeatSignal(this);
@@ -281,8 +285,14 @@ bool GeneralController::checkLayer(QList<qint16> coords)
 	return true;
 }
 
-void GeneralController::setGrid(QList<qint16> coords)
+void GeneralController::setFigure(QList<qint16> coords)
 {
+	if (!checkLayer(coords))
+	{
+		timer->stop();
+		emit defeatSignal(this);
+		return;
+	}
 	foreach (qint16 coord, coords)
 	{
 		map.insert(coord, figure->getImage());
@@ -317,11 +327,22 @@ void GeneralController::spawnNextFigure(QList<qint16> coords)
 		interval = MIN_INTERVAL;
 	}
 	timer->setInterval(interval);
-	timer->start();
 	
 	figure = nextFigure;
 	getNextFigure();
 	emit tickSignal();
 	emit update(map);
-	//tick();
+	tick();
+}
+
+bool GeneralController::isNegativeCoords(QList<qint16> coords)
+{
+	foreach (qint16 coord, coords)
+	{
+		if (coord < 0)
+		{
+			return true;
+		}
+	}
+	return false;
 }

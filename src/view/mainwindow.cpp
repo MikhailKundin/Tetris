@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QKeyEvent>
+
 #include "../controller/generalcontroller.h"
 
 #include <QDebug>
@@ -48,9 +50,12 @@ void MainWindow::openSingleLayout()
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
 	GeneralController *controller = new GeneralController(ROW_COUNT, COLUMN_COUNT);
-	singleWgt->update(controller->getMap());
 	connect(controller, &GeneralController::update, singleWgt.get(), &SingleWgt::update);
 	connect(controller, &GeneralController::defeatSignal, this, &MainWindow::deleteController);
+	connect(this, &MainWindow::moveRightSignal, controller, &GeneralController::moveRight);
+	connect(this, &MainWindow::moveLeftSignal, controller, &GeneralController::moveLeft);
+	connect(this, &MainWindow::moveDownSignal, controller, &GeneralController::moveDown);
+	connect(this, &MainWindow::rotateSignal, controller, &GeneralController::rotate);
 }
 
 void MainWindow::openOnlineLayout()
@@ -66,4 +71,28 @@ void MainWindow::closeAll()
 void MainWindow::deleteController(GeneralController *controller)
 {
 	delete controller;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+	int key = e->key();
+	switch(key)
+	{
+	case Qt::Key_Up:
+	case Qt::Key_W:
+		emit rotateSignal();
+		break;
+	case Qt::Key_Down:
+	case Qt::Key_S:
+		emit moveDownSignal();
+		break;
+	case Qt::Key_Right:
+	case Qt::Key_D:
+		emit moveRightSignal();
+		break;
+	case Qt::Key_Left:
+	case Qt::Key_A:
+		emit moveLeftSignal();
+		break;
+	}
 }

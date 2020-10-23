@@ -45,9 +45,10 @@ private:
 	void deleteRow(qint8 y);
 	bool checkPosition(QList<qint16> coords);
 	bool checkLayer(QList<qint16> coords);
-	void setGrid(QList<qint16> coords);
+	void setFigure(QList<qint16> coords);
 	void deleteFigure(QList<qint16> coords);
 	void spawnNextFigure(QList<qint16> coords);
+	bool isNegativeCoords(QList<qint16> coords);
 	
 	QImage *IBlock;
 	QImage *OBlock;

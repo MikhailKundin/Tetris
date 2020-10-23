@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
 	
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
-	~MainWindow();
+	~MainWindow() override;
 	
 private slots:
 	void openMainMenuLayout();
@@ -26,7 +26,15 @@ private slots:
 	void closeAll();
 	void deleteController(GeneralController *controller);
 	
+signals:
+	void moveRightSignal();
+	void moveLeftSignal();
+	void moveDownSignal();
+	void rotateSignal();
+	
 private:
+	void keyPressEvent(QKeyEvent *e) override;
+	
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWdt> mainMenuWdt;
 	std::shared_ptr<SingleWgt> singleWgt;

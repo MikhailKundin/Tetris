@@ -17,12 +17,13 @@ class SingleWgt : public QWidget
 	
 public:
 	explicit SingleWgt(qint8 row, qint8 column, QWidget *parent = nullptr);
-	~SingleWgt();
+	~SingleWgt() override;
 	
 public slots:
 	void update(const QMap<qint16, QImage *> &map) const;
 	
 private:
+	
 	Ui::SingleWgt *ui;
 	
 	std::unique_ptr<Playground> pg;
