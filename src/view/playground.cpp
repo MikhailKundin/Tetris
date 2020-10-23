@@ -11,10 +11,10 @@ Playground::Playground(qint8 row, qint8 column, QWidget *parent) :
 	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE + 1, ROW_COUNT * BLOCK_SIZE + 1);
 }
 
-void Playground::update(const QMap<qint16, QImage *>& map)
+void Playground::update(const QMap<qint16, QImage *>& grid)
 {
-	m_map.clear();
-	m_map.insert(map);
+	m_grid.clear();
+	m_grid.insert(grid);
 	
 	repaint();
 }
@@ -47,7 +47,7 @@ void Playground::drawPalayground()
 {
 	QPainter painter(this);
 	QRectF rect;
-	for (QMap<qint16, QImage *>::const_iterator it = m_map.constBegin(); it != m_map.constEnd(); it++)
+	for (QMap<qint16, QImage *>::const_iterator it = m_grid.constBegin(); it != m_grid.constEnd(); it++)
 	{
 		qint16 coord = it.key();
 		qint16 x = coord % COLUMN_COUNT;

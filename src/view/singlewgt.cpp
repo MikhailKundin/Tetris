@@ -32,7 +32,7 @@ SingleWgt::~SingleWgt()
 	delete ui;
 }
 
-void SingleWgt::update(const QMap<qint16, QImage *> &map) const
+void SingleWgt::update(const QMap<qint16, QImage *> &grid) const
 {
-	pg->update(map);
+	pg->update(grid);
 }

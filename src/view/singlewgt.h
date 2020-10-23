@@ -20,7 +20,7 @@ public:
 	~SingleWgt() override;
 	
 public slots:
-	void update(const QMap<qint16, QImage *> &map) const;
+	void update(const QMap<qint16, QImage *> &grid) const;
 	
 private:
 	

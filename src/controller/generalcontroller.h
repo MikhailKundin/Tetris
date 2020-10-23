@@ -15,7 +15,7 @@ public:
 	virtual ~GeneralController();
 	void setPoints(qint32 points);
 	qint32 getPoints();
-	QMap<qint16, QImage *> &getMap();
+	QMap<qint16, QImage *> &getGrid();
 	
 public slots:
 	void moveRight();
@@ -41,11 +41,11 @@ private:
 	qint16 getSingleCoord(QPair<qint8, qint8> pairCoord);
 	
 	void getNextFigure();
-	bool checkRow(qint8 y);
+	bool isRowFull(qint8 y);
 	void deleteRow(qint8 y);
-	bool checkPosition(QList<qint16> coords);
-	bool checkLayer(QList<qint16> coords);
-	void setFigure(QList<qint16> coords);
+	bool isObstacle(QList<qint16> coords);
+	bool isLayerOverflow(QList<qint16> coords);
+	void addFigure(QList<qint16> coords);
 	void deleteFigure(QList<qint16> coords);
 	void spawnNextFigure(QList<qint16> coords);
 	bool isNegativeCoords(QList<qint16> coords);
@@ -59,7 +59,7 @@ private:
 	QImage *ZBlock;
 	
 	QTimer *timer;
-	QMap<qint16, QImage *> map;
+	QMap<qint16, QImage *> grid;
 	AbstractFigure *figure;
 	AbstractFigure *nextFigure;
 	qint32 m_points = 0;

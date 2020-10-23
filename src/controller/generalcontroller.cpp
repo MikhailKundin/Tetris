@@ -25,8 +25,8 @@ GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), 
 	getNextFigure();
 	figure = nextFigure;
 	getNextFigure();
-	setFigure(figure->getCoords());
-	emit update(map);
+	addFigure(figure->getCoords());
+	emit update(grid);
 	timer->start();
 }
 
@@ -51,9 +51,9 @@ qint32 GeneralController::getPoints()
 	return m_points;
 }
 
-QMap<qint16, QImage *> &GeneralController::getMap()
+QMap<qint16, QImage *> &GeneralController::getGrid()
 {
-	return map;
+	return grid;
 }
 
 void GeneralController::moveRight()
@@ -64,16 +64,16 @@ void GeneralController::moveRight()
 	{
 		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
-		if (checkLayer(coords))
+		if (!isLayerOverflow(coords))
 		{
 			newCoords = coords;
-			setFigure(newCoords);
+			addFigure(newCoords);
 			emit moveRightSignal();
-			emit update(map);
+			emit update(grid);
 		}
 		else
 		{
-			setFigure(newCoords);
+			addFigure(newCoords);
 			figure->moveLeft();
 		}
 	}
@@ -87,16 +87,16 @@ void GeneralController::moveLeft()
 	{
 		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
-		if (checkLayer(coords))
+		if (!isLayerOverflow(coords))
 		{
 			newCoords = coords;
-			setFigure(newCoords);
+			addFigure(newCoords);
 			emit moveLeftSignal();
-			emit update(map);
+			emit update(grid);
 		}
 		else
 		{
-			setFigure(newCoords);
+			addFigure(newCoords);
 			figure->moveRight();
 		}
 	}
@@ -110,16 +110,16 @@ void GeneralController::rotate()
 	{
 		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
-		if (checkLayer(coords))
+		if (!isLayerOverflow(coords))
 		{
 			newCoords = coords;
-			setFigure(newCoords);
+			addFigure(newCoords);
 			emit rotateSignal();
-			emit update(map);
+			emit update(grid);
 		}
 		else
 		{
-			setFigure(newCoords);
+			addFigure(newCoords);
 			figure->backRotate();
 		}
 	}
@@ -133,16 +133,16 @@ void GeneralController::moveDown()
 	{
 		deleteFigure(oldCoords);
 		QList<qint16> coords = figure->getCoords();
-		if (checkLayer(coords))
+		if (!isLayerOverflow(coords))
 		{
 			newCoords = coords;
-			setFigure(newCoords);
+			addFigure(newCoords);
 			emit moveDownSignal();
-			emit update(map);
+			emit update(grid);
 		}
 		else
 		{
-			setFigure(newCoords);
+			addFigure(newCoords);
 			figure->moveUp();
 		}
 	}
@@ -155,7 +155,7 @@ void GeneralController::moveDown()
 void GeneralController::tick()
 {
 	QList<qint16> coords = figure->getCoords();
-	if (!checkPosition(coords))
+	if (!isObstacle(coords))
 	{
 		moveDown();
 		emit tickSignal();
@@ -199,32 +199,32 @@ void GeneralController::getNextFigure()
 		nextFigure = new IFigure(ROW_COUNT, COLUMN_COUNT, IBlock);
 		break;
 	case 1:
-		nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, OBlock);
+		//nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, OBlock);
 		break;
 	case 2:
-		nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, TBlock);
+		//nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, TBlock);
 		break;
 	case 3:
-		nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, LBlock);
+		//nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, LBlock);
 		break;
 	case 4:
-		nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, JBlock);
+		//nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, JBlock);
 		break;
 	case 5:
-		nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, SBlock);
+		//nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, SBlock);
 		break;
 	case 6:
-		nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, ZBlock);
+		//nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, ZBlock);
 		break;
 	}
 }
 
-bool GeneralController::checkRow(qint8 y)
+bool GeneralController::isRowFull(qint8 y)
 {
-	for (qint8 x = 0; x < COLUMN_COUNT; x++)
+	qint16 coord = getSingleCoord({0, y});
+	for (qint8 i = 0; i < COLUMN_COUNT; i++, coord++)
 	{
-		qint16 coord = getSingleCoord({x, y});
-		if (!map.contains(coord))
+		if (!grid.contains(coord))
 		{
 			return false;
 		}
@@ -234,17 +234,16 @@ bool GeneralController::checkRow(qint8 y)
 
 void GeneralController::deleteRow(qint8 y)
 {
-	qint16 coord;
-	for (qint8 x = 0; x < COLUMN_COUNT; x++)
+	qint16 coord = getSingleCoord({0, y});
+	QMap<qint16, QImage *>::iterator it = grid.find(coord);
+	for (qint8 i = 0; i < COLUMN_COUNT; i++)
 	{
-		coord = getSingleCoord({x, y});
-		map.remove(coord);
+		it = grid.erase(it);
 	}
 	
-	coord = getSingleCoord({0, y});
 	QList<qint16> coordList;
-	QMap<qint16, QImage *>::iterator it = map.end();
-	while (it != map.begin())
+	it = grid.end();
+	while (it != grid.begin())
 	{
 		it--;
 		qint16 key = it.key();
@@ -259,18 +258,23 @@ void GeneralController::deleteRow(qint8 y)
 	}
 	foreach (coord, coordList)
 	{
-		map.insert(coord+COLUMN_COUNT, map.value(coord));
-		map.remove(coord);
+		grid.insert(coord+COLUMN_COUNT, grid.value(coord));
+		grid.remove(coord);
 	}
 }
 
-bool GeneralController::checkPosition(QList<qint16> coords)
+void GeneralController::shiftRows(qint8 firstRow)
+{
+	
+}
+
+bool GeneralController::isObstacle(QList<qint16> coords)
 {
 	foreach (qint16 coord, coords)
 	{
 		bool res = true;
 		qint16 downCoord = coord + COLUMN_COUNT;
-		if (map.contains(downCoord))
+		if (grid.contains(downCoord))
 		{
 			foreach(qint16 secondCoord, coords)
 			{
@@ -289,21 +293,21 @@ bool GeneralController::checkPosition(QList<qint16> coords)
 	return false;
 }
 
-bool GeneralController::checkLayer(QList<qint16> coords)
+bool GeneralController::isLayerOverflow(QList<qint16> coords)
 {
 	foreach (qint16 coord, coords)
 	{
-		if (map.contains(coord))
+		if (grid.contains(coord))
 		{
-			return false;
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
-void GeneralController::setFigure(QList<qint16> coords)
+void GeneralController::addFigure(QList<qint16> coords)
 {
-	if (!checkLayer(coords))
+	if (isLayerOverflow(coords))
 	{
 		timer->stop();
 		emit defeatSignal(this);
@@ -311,7 +315,7 @@ void GeneralController::setFigure(QList<qint16> coords)
 	}
 	foreach (qint16 coord, coords)
 	{
-		map.insert(coord, figure->getImage());
+		grid.insert(coord, figure->getImage());
 	}
 }
 
@@ -319,7 +323,7 @@ void GeneralController::deleteFigure(QList<qint16> coords)
 {
 	foreach (qint16 coord, coords)
 	{
-		map.remove(coord);
+		grid.remove(coord);
 	}
 }
 
@@ -329,8 +333,9 @@ void GeneralController::spawnNextFigure(QList<qint16> coords)
 	foreach (qint16 coord, coords)
 	{
 		QPair<qint8, qint8> pairCoord = getPairCoord(coord+shift);
-		if (checkRow(pairCoord.second))
+		if (isRowFull(pairCoord.second))
 		{
+			qDebug() << coords;
 			deleteRow(pairCoord.second);
 			shift += COLUMN_COUNT;
 		}
@@ -347,7 +352,7 @@ void GeneralController::spawnNextFigure(QList<qint16> coords)
 	figure = nextFigure;
 	getNextFigure();
 	emit tickSignal();
-	emit update(map);
+	emit update(grid);
 	tick();
 }
 

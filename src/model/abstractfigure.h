@@ -14,17 +14,23 @@ public:
 	virtual bool moveLeft();
 	virtual bool moveDown();
 	virtual bool moveUp();
-	virtual bool rotate() = 0;
-	virtual bool backRotate() = 0;
+	virtual bool rotate();
+	virtual bool backRotate();
 	
 	QList<Block> &getBlocks();
 	QList<qint16> getCoords();
 	QImage *getImage();
 	
 protected:
+	virtual QList<QPair<qint8, qint8> > rotateUpRight(qint8 mult) = 0;
+	virtual QList<QPair<qint8, qint8> > rotateRightDown(qint8 mult) = 0;
+	virtual QList<QPair<qint8, qint8> > rotateDownLeft(qint8 mult) = 0;
+	virtual QList<QPair<qint8, qint8> > rotateLeftUp(qint8 mult) = 0;
+	
 	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
 	qint16 getSingleCoord(QPair<qint8, qint8> pairCoord);
-	bool checkPosition(QList<QPair<qint8, qint8> > coords);
+	void updateCoords(QList<QPair<qint8, qint8> > pairCoords);
+	bool isOutOfBounds(QList<QPair<qint8, qint8> > coords);
 	
 	QList<Block> blocks;
 	
@@ -40,70 +46,11 @@ class IFigure : public AbstractFigure
 public:
 	IFigure(qint8 row, qint8 column, QImage *image);
 	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-	
 private:
-	QList<QPair<qint8, qint8> > rotateUpRight(qint8 mult);
-	QList<QPair<qint8, qint8> > rotateRightDown(qint8 mult);
-	QList<QPair<qint8, qint8> > rotateDownLeft(qint8 mult);
-	QList<QPair<qint8, qint8> > rotateLeftUp(qint8 mult);
-	
-	bool setCoords(QList<QPair<qint8, qint8> > pairCoords);
-};
-
-class OFigure : public AbstractFigure
-{
-public:
-	OFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-};
-
-class TFigure : public AbstractFigure
-{
-public:
-	TFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-};
-
-class LFigure : public AbstractFigure
-{
-public:
-	LFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-};
-
-class JFigure : public AbstractFigure
-{
-public:
-	JFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-};
-
-class SFigure : public AbstractFigure
-{
-public:
-	SFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
-};
-
-class ZFigure : public AbstractFigure
-{
-public:
-	ZFigure(qint8 row, qint8 column, QImage *image);
-	
-	virtual bool rotate() override;
-	virtual bool backRotate() override;
+	QList<QPair<qint8, qint8> > rotateUpRight(qint8 mult) override;
+	QList<QPair<qint8, qint8> > rotateRightDown(qint8 mult) override;
+	QList<QPair<qint8, qint8> > rotateDownLeft(qint8 mult) override;
+	QList<QPair<qint8, qint8> > rotateLeftUp(qint8 mult) override;
 };
 
 #endif // ABSTARCTFIGURE_H

@@ -8,14 +8,14 @@ class Playground : public QWidget
 {
 public:
 	Playground(qint8 row, qint8 column, QWidget *parent = nullptr);
-	void update(const QMap<qint16, QImage *>& map);
+	void update(const QMap<qint16, QImage *>& grid);
 	
 private:
 	void paintEvent(QPaintEvent *e) override;
 	void drawGrid();
 	void drawPalayground();
 	
-	 QMap<qint16, QImage*> m_map;
+	 QMap<qint16, QImage*> m_grid;
 	
 	const qint8 BLOCK_SIZE = 30;
 	const qint8 COLUMN_COUNT;
