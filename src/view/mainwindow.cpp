@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QKeyEvent>
+#include <QShortcut>
 
 #include "../controller/generalcontroller.h"
 
@@ -18,7 +19,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
-	singleWgt = std::make_shared<SingleWgt>(ROW_COUNT, COLUMN_COUNT);
+	rightDownArr = std::make_unique<QShortcut>(this);
+	leftDownArr = std::make_unique<QShortcut>(this);
+	rightDownEng = std::make_unique<QShortcut>(this);
+	leftDownEng = std::make_unique<QShortcut>(this);
+	rightDownRus = std::make_unique<QShortcut>(this);
+	leftDownRus = std::make_unique<QShortcut>(this);
+	
+	rightDownArr->setKey(Qt::Key_Right + Qt::Key_Down);
+	leftDownArr->setKey(Qt::Key_Left + Qt::Key_Down);
+	rightDownEng->setKey(Qt::Key_D + Qt::Key_S);
+	
+	singleWgt = std::make_unique<SingleWgt>(ROW_COUNT, COLUMN_COUNT);
 	mainMenuWdt = std::make_unique<MainMenuWdt>();
 	
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
@@ -76,23 +88,77 @@ void MainWindow::deleteController(GeneralController *controller)
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
 	int key = e->key();
-	switch(key)
+	QString keyText = e->text();
+	if (keyText == "ц")
 	{
-	case Qt::Key_Up:
-	case Qt::Key_W:
-		emit rotateSignal();
-		break;
-	case Qt::Key_Down:
-	case Qt::Key_S:
-		emit moveDownSignal();
-		break;
-	case Qt::Key_Right:
-	case Qt::Key_D:
-		emit moveRightSignal();
-		break;
-	case Qt::Key_Left:
-	case Qt::Key_A:
-		emit moveLeftSignal();
-		break;
+		key = Qt::Key_W;
+	}
+	else if (keyText == "ы")
+	{
+		key = Qt::Key_S;
+	}
+	else if (keyText == "в")
+	{
+		key = Qt::Key_D;
+	}
+	else if (keyText == "ф")
+	{
+		key = Qt::Key_A;
+	}
+	
+	if (!keyList.contains(key))
+	{
+		keyList.append(key);
+	}
+	
+	foreach (key, keyList)
+	{
+		switch(key)
+		{
+		case Qt::Key_Up:
+		case Qt::Key_W:
+			emit rotateSignal();
+			break;
+		case Qt::Key_Down:
+		case Qt::Key_S:
+			emit moveDownSignal();
+			break;
+		case Qt::Key_Right:
+		case Qt::Key_D:
+			emit moveRightSignal();
+			break;
+		case Qt::Key_Left:
+		case Qt::Key_A:
+			emit moveLeftSignal();
+			break;
+		}
+	}
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *e)
+{
+	int key = e->key();
+	QString keyText = e->text();
+	if (keyText == "ц")
+	{
+		key = Qt::Key_W;
+	}
+	else if (keyText == "ы")
+	{
+		key = Qt::Key_S;
+	}
+	else if (keyText == "в")
+	{
+		key = Qt::Key_D;
+	}
+	else if (keyText == "ф")
+	{
+		key = Qt::Key_A;
+	}
+	
+	qint32 index = index = keyList.indexOf(key);
+	if (index != -1)
+	{
+		keyList.removeAt(index);
 	}
 }

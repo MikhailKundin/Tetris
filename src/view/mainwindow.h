@@ -34,10 +34,20 @@ signals:
 	
 private:
 	void keyPressEvent(QKeyEvent *e) override;
+	void keyReleaseEvent(QKeyEvent *e) override;
 	
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWdt> mainMenuWdt;
-	std::shared_ptr<SingleWgt> singleWgt;
+	std::unique_ptr<SingleWgt> singleWgt;
+	
+	std::unique_ptr<QShortcut> rightDownArr;
+	std::unique_ptr<QShortcut> leftDownArr;
+	std::unique_ptr<QShortcut> rightDownEng;
+	std::unique_ptr<QShortcut> leftDownEng;
+	std::unique_ptr<QShortcut> rightDownRus;
+	std::unique_ptr<QShortcut> leftDownRus;
+	
+	QList<qint32> keyList;
 	
 	qint8 ROW_COUNT = 20;
 	qint8 COLUMN_COUNT = 10;

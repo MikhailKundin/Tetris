@@ -34,7 +34,9 @@ signals:
 	void rotateSignal();
 	void moveDownSignal();
 	void tickSignal();
-	void defeatSignal(GeneralController *);
+	void defeatSignal(GeneralController *controller);
+	void newPointsSignal(qint32 points);
+	void newLevelSignal(qint16 level);
 	
 private:
 	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
@@ -43,11 +45,14 @@ private:
 	void getNextFigure();
 	bool isRowFull(qint8 y);
 	void deleteRow(qint8 y);
+	void shiftRows(qint8 firstRow, qint8 count);
 	bool isObstacle(QList<qint16> coords);
 	bool isLayerOverflow(QList<qint16> coords);
 	void addFigure(QList<qint16> coords);
 	void deleteFigure(QList<qint16> coords);
-	void spawnNextFigure(QList<qint16> coords);
+	void checkRows(QList<qint16> coords);
+	void addPoints(qint32 count);
+	void setTimerInterval();
 	bool isNegativeCoords(QList<qint16> coords);
 	
 	QImage *IBlock;

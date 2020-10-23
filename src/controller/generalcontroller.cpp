@@ -148,7 +148,12 @@ void GeneralController::moveDown()
 	}
 	else
 	{
-		spawnNextFigure(oldCoords);
+		checkRows(oldCoords);
+		figure = nextFigure;
+		getNextFigure();
+		emit tickSignal();
+		emit update(grid);
+		tick();
 	}
 }
 
@@ -169,7 +174,12 @@ void GeneralController::tick()
 	}
 	else
 	{
-		spawnNextFigure(coords);
+		checkRows(coords);
+		figure = nextFigure;
+		getNextFigure();
+		emit tickSignal();
+		emit update(grid);
+		tick();
 	}
 }
 
@@ -240,32 +250,27 @@ void GeneralController::deleteRow(qint8 y)
 	{
 		it = grid.erase(it);
 	}
-	
+}
+
+void GeneralController::shiftRows(qint8 firstRow, qint8 count)
+{
 	QList<qint16> coordList;
-	it = grid.end();
+	qint16 coord = getSingleCoord({COLUMN_COUNT-1, firstRow});
+	QMap<qint16, QImage *>::iterator it = grid.end();
 	while (it != grid.begin())
 	{
 		it--;
 		qint16 key = it.key();
-		if (key < coord)
+		if (key <= coord)
 		{
 			coordList.append(key);
-		}
-		else
-		{
-			break;
 		}
 	}
 	foreach (coord, coordList)
 	{
-		grid.insert(coord+COLUMN_COUNT, grid.value(coord));
+		grid.insert(coord + COLUMN_COUNT*count, grid.value(coord));
 		grid.remove(coord);
 	}
-}
-
-void GeneralController::shiftRows(qint8 firstRow)
-{
-	
 }
 
 bool GeneralController::isObstacle(QList<qint16> coords)
@@ -327,33 +332,51 @@ void GeneralController::deleteFigure(QList<qint16> coords)
 	}
 }
 
-void GeneralController::spawnNextFigure(QList<qint16> coords)
+void GeneralController::checkRows(QList<qint16> coords)
 {
-	qint16 shift = 0;
+	qint8 rowCount = 0;
+	qint8 topRow = ROW_COUNT;
 	foreach (qint16 coord, coords)
 	{
-		QPair<qint8, qint8> pairCoord = getPairCoord(coord+shift);
+		QPair<qint8, qint8> pairCoord = getPairCoord(coord);
 		if (isRowFull(pairCoord.second))
 		{
-			qDebug() << coords;
+			if (pairCoord.second < topRow)
+			{
+				topRow = pairCoord.second;
+			}
 			deleteRow(pairCoord.second);
-			shift += COLUMN_COUNT;
+			rowCount++;
 		}
 	}
-	m_points += POINTS[shift / COLUMN_COUNT];
-	level = static_cast<qint16>(m_points / NEW_LEVEL);
+	if (rowCount != 0)
+	{
+		shiftRows(topRow+1, rowCount);
+		addPoints(POINTS[rowCount-1]);
+	}
+}
+
+void GeneralController::addPoints(qint32 count)
+{
+	m_points += count;
+	emit newPointsSignal(m_points);
+	
+	qint32 newLevel = static_cast<qint16>(m_points / NEW_LEVEL);
+	if (level != newLevel)
+	{
+		setTimerInterval();
+		emit newLevelSignal(level);
+	}
+}
+
+void GeneralController::setTimerInterval()
+{
 	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
 	if (interval < MIN_INTERVAL)
 	{
 		interval = MIN_INTERVAL;
 	}
 	timer->setInterval(interval);
-	
-	figure = nextFigure;
-	getNextFigure();
-	emit tickSignal();
-	emit update(grid);
-	tick();
 }
 
 bool GeneralController::isNegativeCoords(QList<qint16> coords)
