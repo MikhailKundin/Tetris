@@ -35,7 +35,7 @@ protected:
 	QList<Block> blocks;
 	
 	enum Rotation {up, down, left, right};
-	Rotation rotation = up;
+	qint8 rotation = up;
 	
 	const qint8 ROW_COUNT;
 	const qint8 COLUMN_COUNT;

@@ -19,6 +19,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
+	blocks.insert(GeneralController::Figures::I, new QImage(":Images/Blocks/IBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::O, new QImage(":Images/Blocks/OBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::T, new QImage(":Images/Blocks/TBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::L, new QImage(":Images/Blocks/LBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::J, new QImage(":Images/Blocks/JBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
+	blocks.insert(GeneralController::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
+	
 	rightDownArr = std::make_unique<QShortcut>(this);
 	leftDownArr = std::make_unique<QShortcut>(this);
 	rightDownEng = std::make_unique<QShortcut>(this);
@@ -42,6 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 	delete ui;
+	
+	foreach (QImage *block, blocks)
+	{
+		delete block;
+	}
 }
 
 void MainWindow::openMainMenuLayout()
@@ -61,7 +74,7 @@ void MainWindow::openSingleLayout()
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	GeneralController *controller = new GeneralController(ROW_COUNT, COLUMN_COUNT);
+	GeneralController *controller = new GeneralController(ROW_COUNT, COLUMN_COUNT, blocks);
 	connect(controller, &GeneralController::update, singleWgt.get(), &SingleWgt::update);
 	connect(controller, &GeneralController::defeatSignal, this, &MainWindow::deleteController);
 	connect(this, &MainWindow::moveRightSignal, controller, &GeneralController::moveRight);

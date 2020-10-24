@@ -51,6 +51,8 @@ private:
 	
 	qint8 ROW_COUNT = 20;
 	qint8 COLUMN_COUNT = 10;
+	
+	QMap<qint8, QImage *> blocks;
 };
 
 #endif // MAINWINDOW_H

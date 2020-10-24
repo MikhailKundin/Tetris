@@ -11,11 +11,13 @@ class GeneralController : public QObject
 {
 	Q_OBJECT
 public:
-	GeneralController(qint8 row, qint8 column);
+	GeneralController(qint8 row, qint8 column, QMap<qint8, QImage *> &blocks);
 	virtual ~GeneralController();
 	void setPoints(qint32 points);
 	qint32 getPoints();
 	QMap<qint16, QImage *> &getGrid();
+	
+	enum Figures {I, O, T, L, J, S, Z};
 	
 public slots:
 	void moveRight();
@@ -37,36 +39,32 @@ signals:
 	void defeatSignal(GeneralController *controller);
 	void newPointsSignal(qint32 points);
 	void newLevelSignal(qint16 level);
+	void newFigureSignal(qint8 thirdFigure);
 	
 private:
-	QPair<qint8, qint8> getPairCoord(qint16 singleCoord);
-	qint16 getSingleCoord(QPair<qint8, qint8> pairCoord);
+	QPair<qint8, qint8> getCoord(qint16 cell);
+	qint16 getCell(QPair<qint8, qint8> coord);
 	
 	void getNextFigure();
-	bool isRowFull(qint8 y);
-	void deleteRow(qint8 y);
-	void shiftRows(qint8 firstRow, qint8 count);
-	bool isObstacle(QList<qint16> coords);
-	bool isLayerOverflow(QList<qint16> coords);
-	void addFigure(QList<qint16> coords);
-	void deleteFigure(QList<qint16> coords);
-	void checkRows(QList<qint16> coords);
+	bool isRowFull(qint8 rowNumber);
+	void deleteRow(qint8 rowNumber);
+	void shiftRows(qint8 bottomRow, qint8 count);
+	bool isObstacle(QList<qint16> cells);
+	bool isLayerOverflow(QList<qint16> cells);
+	void addFigure(QList<qint16> cells);
+	void deleteFigure(QList<qint16> cells);
+	void checkRows(QList<qint16> cells);
 	void addPoints(qint32 count);
 	void setTimerInterval();
-	bool isNegativeCoords(QList<qint16> coords);
+	bool isNegativeCoords(QList<qint16> cells);
 	
-	QImage *IBlock;
-	QImage *OBlock;
-	QImage *TBlock;
-	QImage *LBlock;
-	QImage *JBlock;
-	QImage *SBlock;
-	QImage *ZBlock;
+	QMap<qint8, QImage *> m_blocks;
 	
-	QTimer *timer;
+	std::unique_ptr<QTimer> timer;
 	QMap<qint16, QImage *> grid;
 	AbstractFigure *figure;
 	AbstractFigure *nextFigure;
+	qint8 thirdFigure;
 	qint32 m_points = 0;
 	qint16 level = 1;
 	QRandomGenerator random;

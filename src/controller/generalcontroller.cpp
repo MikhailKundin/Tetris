@@ -7,20 +7,13 @@
 
 #include <QDebug>
 
-GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), COLUMN_COUNT(column)
+GeneralController::GeneralController(qint8 row, qint8 column, QMap<qint8, QImage *> &blocks)
+	: m_blocks(blocks), ROW_COUNT(row), COLUMN_COUNT(column)
 {
-	IBlock = new QImage(":Images/Blocks/IBlockOriginal.png");
-	OBlock = new QImage(":Images/Blocks/OBlockOriginal.png");
-	TBlock = new QImage(":Images/Blocks/TBlockOriginal.png");
-	LBlock = new QImage(":Images/Blocks/LBlockOriginal.png");
-	JBlock = new QImage(":Images/Blocks/JBlockOriginal.png");
-	SBlock = new QImage(":Images/Blocks/SBlockOriginal.png");
-	ZBlock = new QImage(":Images/Blocks/ZBlockOriginal.png");
-	
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
 	
-	timer = new QTimer;
-	connect(timer, &QTimer::timeout, this, &GeneralController::tick);
+	timer = std::make_unique<QTimer>();
+	connect(timer.get(), &QTimer::timeout, this, &GeneralController::tick);
 	timer->setInterval(START_INTERVAL);
 	getNextFigure();
 	figure = nextFigure;
@@ -32,13 +25,8 @@ GeneralController::GeneralController(qint8 row, qint8 column) : ROW_COUNT(row), 
 
 GeneralController::~GeneralController()
 {
-	delete IBlock;
-	delete OBlock;
-	delete TBlock;
-	delete LBlock;
-	delete JBlock;
-	delete SBlock;
-	delete ZBlock;
+	delete figure;
+	delete nextFigure;
 }
 
 void GeneralController::setPoints(qint32 points)
@@ -183,58 +171,60 @@ void GeneralController::tick()
 	}
 }
 
-QPair<qint8, qint8> GeneralController::getPairCoord(qint16 singleCoord)
+QPair<qint8, qint8> GeneralController::getCoord(qint16 cell)
 {
-	qint8 x = singleCoord % COLUMN_COUNT;
-	qint8 y = static_cast<qint8>(singleCoord / COLUMN_COUNT);
+	qint8 x = cell % COLUMN_COUNT;
+	qint8 y = static_cast<qint8>(cell / COLUMN_COUNT);
 	
 	return {x, y};
 }
 
-qint16 GeneralController::getSingleCoord(QPair<qint8, qint8> pairCoord)
+qint16 GeneralController::getCell(QPair<qint8, qint8> coord)
 {
-	qint16 x = pairCoord.first;
-	qint16 y = pairCoord.second;
+	qint16 x = coord.first;
+	qint16 y = coord.second;
 	
 	return y*COLUMN_COUNT + x;
 }
 
 void GeneralController::getNextFigure()
 {
-	qint8 value = random.generate() % 7;
+	qint8 value = thirdFigure;
+	thirdFigure = random.generate() % 7;
+	emit newFigureSignal(thirdFigure);
 	value = 0; //-------------------------------DEBUG-----------------------------------------------
 	switch (value)
 	{
-	case 0:
-		nextFigure = new IFigure(ROW_COUNT, COLUMN_COUNT, IBlock);
+	case Figures::I:
+		nextFigure = new IFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::I));
 		break;
-	case 1:
+	case Figures::O:
 		//nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, OBlock);
 		break;
-	case 2:
+	case Figures::T:
 		//nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, TBlock);
 		break;
-	case 3:
+	case Figures::L:
 		//nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, LBlock);
 		break;
-	case 4:
+	case Figures::J:
 		//nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, JBlock);
 		break;
-	case 5:
+	case Figures::S:
 		//nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, SBlock);
 		break;
-	case 6:
+	case Figures::Z:
 		//nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, ZBlock);
 		break;
 	}
 }
 
-bool GeneralController::isRowFull(qint8 y)
+bool GeneralController::isRowFull(qint8 rowNumber)
 {
-	qint16 coord = getSingleCoord({0, y});
-	for (qint8 i = 0; i < COLUMN_COUNT; i++, coord++)
+	qint16 cell = getCell({0, rowNumber});
+	for (qint8 i = 0; i < COLUMN_COUNT; i++, cell++)
 	{
-		if (!grid.contains(coord))
+		if (!grid.contains(cell))
 		{
 			return false;
 		}
@@ -242,46 +232,46 @@ bool GeneralController::isRowFull(qint8 y)
 	return true;
 }
 
-void GeneralController::deleteRow(qint8 y)
+void GeneralController::deleteRow(qint8 rowNumber)
 {
-	qint16 coord = getSingleCoord({0, y});
-	QMap<qint16, QImage *>::iterator it = grid.find(coord);
+	qint16 cell = getCell({0, rowNumber});
+	QMap<qint16, QImage *>::iterator it = grid.find(cell);
 	for (qint8 i = 0; i < COLUMN_COUNT; i++)
 	{
 		it = grid.erase(it);
 	}
 }
 
-void GeneralController::shiftRows(qint8 firstRow, qint8 count)
+void GeneralController::shiftRows(qint8 bottomRow, qint8 count)
 {
-	QList<qint16> coordList;
-	qint16 coord = getSingleCoord({COLUMN_COUNT-1, firstRow});
+	QList<qint16> cells;
+	qint16 cell = getCell({COLUMN_COUNT-1, bottomRow});
 	QMap<qint16, QImage *>::iterator it = grid.end();
 	while (it != grid.begin())
 	{
 		it--;
 		qint16 key = it.key();
-		if (key <= coord)
+		if (key <= cell)
 		{
-			coordList.append(key);
+			cells.append(key);
 		}
 	}
-	foreach (coord, coordList)
+	foreach (cell, cells)
 	{
-		grid.insert(coord + COLUMN_COUNT*count, grid.value(coord));
-		grid.remove(coord);
+		grid.insert(cell + COLUMN_COUNT*count, grid.value(cell));
+		grid.remove(cell);
 	}
 }
 
-bool GeneralController::isObstacle(QList<qint16> coords)
+bool GeneralController::isObstacle(QList<qint16> cells)
 {
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
 		bool res = true;
-		qint16 downCoord = coord + COLUMN_COUNT;
+		qint16 downCoord = cell + COLUMN_COUNT;
 		if (grid.contains(downCoord))
 		{
-			foreach(qint16 secondCoord, coords)
+			foreach(qint16 secondCoord, cells)
 			{
 				if (downCoord == secondCoord)
 				{
@@ -298,11 +288,11 @@ bool GeneralController::isObstacle(QList<qint16> coords)
 	return false;
 }
 
-bool GeneralController::isLayerOverflow(QList<qint16> coords)
+bool GeneralController::isLayerOverflow(QList<qint16> cells)
 {
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
-		if (grid.contains(coord))
+		if (grid.contains(cell))
 		{
 			return true;
 		}
@@ -310,35 +300,35 @@ bool GeneralController::isLayerOverflow(QList<qint16> coords)
 	return false;
 }
 
-void GeneralController::addFigure(QList<qint16> coords)
+void GeneralController::addFigure(QList<qint16> cells)
 {
-	if (isLayerOverflow(coords))
+	if (isLayerOverflow(cells))
 	{
 		timer->stop();
 		emit defeatSignal(this);
 		return;
 	}
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
-		grid.insert(coord, figure->getImage());
+		grid.insert(cell, figure->getImage());
 	}
 }
 
-void GeneralController::deleteFigure(QList<qint16> coords)
+void GeneralController::deleteFigure(QList<qint16> cells)
 {
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
-		grid.remove(coord);
+		grid.remove(cell);
 	}
 }
 
-void GeneralController::checkRows(QList<qint16> coords)
+void GeneralController::checkRows(QList<qint16> cells)
 {
 	qint8 rowCount = 0;
 	qint8 topRow = ROW_COUNT;
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
-		QPair<qint8, qint8> pairCoord = getPairCoord(coord);
+		QPair<qint8, qint8> pairCoord = getCoord(cell);
 		if (isRowFull(pairCoord.second))
 		{
 			if (pairCoord.second < topRow)
@@ -351,7 +341,7 @@ void GeneralController::checkRows(QList<qint16> coords)
 	}
 	if (rowCount != 0)
 	{
-		shiftRows(topRow+1, rowCount);
+		shiftRows(topRow, rowCount);
 		addPoints(POINTS[rowCount-1]);
 	}
 }
@@ -379,11 +369,11 @@ void GeneralController::setTimerInterval()
 	timer->setInterval(interval);
 }
 
-bool GeneralController::isNegativeCoords(QList<qint16> coords)
+bool GeneralController::isNegativeCoords(QList<qint16> cells)
 {
-	foreach (qint16 coord, coords)
+	foreach (qint16 cell, cells)
 	{
-		if (coord < 0)
+		if (cell < 0)
 		{
 			return true;
 		}

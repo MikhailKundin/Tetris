@@ -164,48 +164,48 @@ bool AbstractFigure::rotate()
 	QList<QPair<qint8, qint8> > pairCoords;
 	switch (rotation)
 	{
-	case up:
+	case Rotation::up:
 		pairCoords = rotateUpRight(1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = right;
+			rotation = Rotation::right;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case right:
+	case Rotation::right:
 		pairCoords = rotateRightDown(1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = down;
+			rotation = Rotation::down;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case down:		
+	case Rotation::down:		
 		pairCoords = rotateDownLeft(1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = left;
+			rotation = Rotation::left;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case left:
+	case Rotation::left:
 		pairCoords = rotateLeftUp(1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = up;
+			rotation = Rotation::up;
 			return true;
 		}
 		else
@@ -221,48 +221,48 @@ bool AbstractFigure::backRotate()
 	QList<QPair<qint8, qint8> > pairCoords;
 	switch (rotation)
 	{
-	case up:
+	case Rotation::up:
 		pairCoords = rotateLeftUp(-1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = left;
+			rotation = Rotation::left;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case right:
+	case Rotation::right:
 		pairCoords = rotateUpRight(-1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = up;
+			rotation = Rotation::up;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case down:		
+	case Rotation::down:		
 		pairCoords = rotateRightDown(-1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = right;
+			rotation = Rotation::right;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-	case left:
+	case Rotation::left:
 		pairCoords = rotateDownLeft(-1);
 		if (!isOutOfBounds(pairCoords))
 		{
 			updateCoords(pairCoords);
-			rotation = down;
+			rotation = Rotation::down;
 			return true;
 		}
 		else
