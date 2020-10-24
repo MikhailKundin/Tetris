@@ -9,13 +9,10 @@ PointsWgt::PointsWgt(QSize s, QWidget *parent) :
 {
 	ui->setupUi(this);
 	
-	//setMinimumSize(width, height);
-	//setMaximumSize(width, height);
 	resize(s);
 	
 	QPixmap img(":Images/Backgrounds/NextFigureBackground.png");
-	img = img.scaled(s);
-	ui->backLbl->setPixmap(img);
+	ui->backLbl->setPixmap(img.scaled(s));
 	ui->backLbl->resize(size());
 	ui->backLbl->move(0, 0);
 	setLayout(ui->gridLayout);
@@ -24,4 +21,9 @@ PointsWgt::PointsWgt(QSize s, QWidget *parent) :
 PointsWgt::~PointsWgt()
 {
 	delete ui;
+}
+
+void PointsWgt::update(qint32 points)
+{
+	ui->pointsLbl->setText(QString::number(points));
 }

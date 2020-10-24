@@ -14,5 +14,7 @@
     <qresource prefix="/Images/Backgrounds">
         <file alias="InfoBackground.png">etc/Images/Backgrounds/InfoBackground.png</file>
         <file alias="NextFigureBackground.png">etc/Images/Backgrounds/NextFigureBackground.png</file>
+        <file alias="RecordTableBackground.png">etc/Images/Backgrounds/RecordTableBackground.png</file>
+        <file alias="YellowBackground.png">etc/Images/Backgrounds/YellowBackground.png</file>
     </qresource>
 </RCC>

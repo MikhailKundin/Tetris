@@ -15,6 +15,8 @@ public:
 	explicit PointsWgt(QSize s, QWidget *parent = nullptr);
 	~PointsWgt();
 	
+	void update(qint32 points);
+	
 private:
 	Ui::PointsWgt *ui;
 };

@@ -351,9 +351,10 @@ void GeneralController::addPoints(qint32 count)
 	m_points += count;
 	emit newPointsSignal(m_points);
 	
-	qint32 newLevel = static_cast<qint16>(m_points / NEW_LEVEL);
+	qint16 newLevel = static_cast<qint16>(m_points / NEW_LEVEL) + 1;
 	if (level != newLevel)
 	{
+		level = newLevel;
 		setTimerInterval();
 		emit newLevelSignal(level);
 	}
@@ -361,7 +362,7 @@ void GeneralController::addPoints(qint32 count)
 
 void GeneralController::setTimerInterval()
 {
-	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level));
+	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level-1));
 	if (interval < MIN_INTERVAL)
 	{
 		interval = MIN_INTERVAL;

@@ -26,21 +26,21 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="2" column="0">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="2" column="2">
+     <widget class="QWidget" name="playgroundPlace" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Expanding</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QWidget" name="pointsPlace" native="true"/>
+    </item>
+    <item row="2" column="3">
+     <widget class="QWidget" name="recordTablePlace" native="true"/>
     </item>
     <item row="2" column="4">
      <spacer name="horizontalSpacer_2">
@@ -58,8 +58,8 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="2">
-     <spacer name="horizontalSpacer_3">
+    <item row="2" column="0">
+     <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -68,13 +68,26 @@
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>60</width>
+        <width>40</width>
         <height>20</height>
        </size>
       </property>
      </spacer>
     </item>
-    <item row="3" column="1">
+    <item row="0" column="2">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="2">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -87,34 +100,8 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="3">
-     <widget class="QWidget" name="recordTablePlace" native="true"/>
-    </item>
     <item row="2" column="1">
-     <widget class="QWidget" name="playgroundPlace" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QWidget" name="pointsPlace" native="true"/>
-    </item>
-    <item row="0" column="1">
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
+     <widget class="QWidget" name="widget" native="true"/>
     </item>
    </layout>
   </widget>

@@ -2,21 +2,26 @@
 #define RECORDTABLE_H
 
 #include <QWidget>
-
-namespace Ui {
-class RecordTable;
-}
+#include <QGridLayout>
+#include <QLabel>
 
 class RecordTable : public QWidget
 {
-	Q_OBJECT
-	
 public:
-	explicit RecordTable(QWidget *parent = nullptr);
+	RecordTable(QSize s, QWidget *parent = nullptr);
 	~RecordTable();
 	
 private:
-	Ui::RecordTable *ui;
+	std::unique_ptr<QGridLayout> gBox;
+	QList<QLabel *> names;
+	QList<QLabel *> points;
+	std::unique_ptr<QLabel> topSpaceLbl;
+	std::unique_ptr<QLabel> bottomSpaceLbl;
+	std::unique_ptr<QLabel> backLbl;
+	
+	const qint16 TOP_SPACE = 30;
+	const qint16 BOTTOM_SPACE = 30;
+	const qint16 CELL_HEIGHT = 30;
 };
 
 #endif // RECORDTABLE_H

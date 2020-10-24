@@ -27,17 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(GeneralController::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(GeneralController::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
-	rightDownArr = std::make_unique<QShortcut>(this);
-	leftDownArr = std::make_unique<QShortcut>(this);
-	rightDownEng = std::make_unique<QShortcut>(this);
-	leftDownEng = std::make_unique<QShortcut>(this);
-	rightDownRus = std::make_unique<QShortcut>(this);
-	leftDownRus = std::make_unique<QShortcut>(this);
-	
-	rightDownArr->setKey(Qt::Key_Right + Qt::Key_Down);
-	leftDownArr->setKey(Qt::Key_Left + Qt::Key_Down);
-	rightDownEng->setKey(Qt::Key_D + Qt::Key_S);
-	
 	singleWgt = std::make_unique<SingleWgt>(ROW_COUNT, COLUMN_COUNT);
 	mainMenuWdt = std::make_unique<MainMenuWdt>();
 	
@@ -75,8 +64,10 @@ void MainWindow::openSingleLayout()
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
 	GeneralController *controller = new GeneralController(ROW_COUNT, COLUMN_COUNT, blocks);
-	connect(controller, &GeneralController::update, singleWgt.get(), &SingleWgt::update);
+	connect(controller, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
+	connect(controller, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
 	connect(controller, &GeneralController::defeatSignal, this, &MainWindow::deleteController);
+	
 	connect(this, &MainWindow::moveRightSignal, controller, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, controller, &GeneralController::moveLeft);
 	connect(this, &MainWindow::moveDownSignal, controller, &GeneralController::moveDown);

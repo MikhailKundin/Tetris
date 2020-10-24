@@ -26,6 +26,7 @@ UI_DIR = build/release/bin
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/view/recordtable.cpp \
     src/controller/generalcontroller.cpp \
     src/main.cpp \
     src/model/abstractfigure.cpp \
@@ -34,10 +35,10 @@ SOURCES += \
     src/view/mainwindow.cpp \
     src/view/playground.cpp \
     src/view/pointswgt.cpp \
-    src/view/recordtable.cpp \
     src/view/singlewgt.cpp
 
 HEADERS += \
+	src/view/recordtable.h \
 	src/controller/generalcontroller.h \
 	src/model/abstractfigure.h \
 	src/model/block.h \
@@ -45,7 +46,6 @@ HEADERS += \
 	src/view/mainwindow.h \
 	src/view/playground.h \
 	src/view/pointswgt.h \
-	src/view/recordtable.h \
 	src/view/singlewgt.h
 
 # Default rules for deployment.
@@ -57,7 +57,6 @@ FORMS += \
 	src/view/mainmenuwdt.ui \
 	src/view/mainwindow.ui \
 	src/view/pointswgt.ui \
-	src/view/recordtable.ui \
 	src/view/singlewgt.ui
 
 RESOURCES += \
