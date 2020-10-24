@@ -14,7 +14,7 @@ SingleWgt::SingleWgt(qint8 row, qint8 column, QWidget *parent) :
 	pg = std::make_unique<Playground>(row, column, ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
-	pointsWgt = std::make_unique<PointsWgt>(ui->pointsPlace);
+	pointsWgt = std::make_unique<PointsWgt>(QSize(pg->width(), POINTS_HEIGHT), ui->pointsPlace);
 	ui->pointsPlace->setMinimumSize(pointsWgt->size());
 	
 	rtWgt = std::make_unique<RecordTable>(ui->recordTablePlace);

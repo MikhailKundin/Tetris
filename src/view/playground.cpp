@@ -9,6 +9,11 @@ Playground::Playground(qint8 row, qint8 column, QWidget *parent) :
 	QWidget(parent), COLUMN_COUNT(column), ROW_COUNT(row)
 {
 	setMinimumSize(COLUMN_COUNT * BLOCK_SIZE + 1, ROW_COUNT * BLOCK_SIZE + 1);
+	
+	QPalette pal(palette());
+	pal.setColor(QPalette::Window, qRgb(20, 20, 60));
+	setAutoFillBackground(true);
+	setPalette(pal);
 }
 
 void Playground::update(const QMap<qint16, QImage *>& grid)
@@ -30,7 +35,7 @@ void Playground::paintEvent(QPaintEvent *e)
 void Playground::drawGrid()
 {
 	QPainter painter(this);
-	painter.setPen(Qt::gray);
+	painter.setPen(Qt::darkGray);
 	
 	for (qint16 i = 0; i <= ROW_COUNT; i++)
 	{

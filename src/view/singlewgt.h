@@ -29,6 +29,8 @@ private:
 	std::unique_ptr<Playground> pg;
 	std::unique_ptr<PointsWgt> pointsWgt;
 	std::unique_ptr<RecordTable> rtWgt;
+	
+	const qint32 POINTS_HEIGHT = 50;
 };
 
 #endif // SINGLEWGT_H

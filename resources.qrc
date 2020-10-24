@@ -11,4 +11,8 @@
     <qresource prefix="/Images/Pictures">
         <file alias="Logo.png">etc/Images/Pictures/Logo.png</file>
     </qresource>
+    <qresource prefix="/Images/Backgrounds">
+        <file alias="InfoBackground.png">etc/Images/Backgrounds/InfoBackground.png</file>
+        <file alias="NextFigureBackground.png">etc/Images/Backgrounds/NextFigureBackground.png</file>
+    </qresource>
 </RCC>

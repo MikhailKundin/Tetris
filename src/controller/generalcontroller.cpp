@@ -192,29 +192,29 @@ void GeneralController::getNextFigure()
 	qint8 value = thirdFigure;
 	thirdFigure = random.generate() % 7;
 	emit newFigureSignal(thirdFigure);
-	value = 0; //-------------------------------DEBUG-----------------------------------------------
+	value = 0; // -------------------------------DEBUG-----------------------------------------------
 	switch (value)
 	{
 	case Figures::I:
 		nextFigure = new IFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::I));
 		break;
 	case Figures::O:
-		//nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, OBlock);
+		//nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::O));
 		break;
 	case Figures::T:
-		//nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, TBlock);
+		//nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::T));
 		break;
 	case Figures::L:
-		//nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, LBlock);
+		//nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::L));
 		break;
 	case Figures::J:
-		//nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, JBlock);
+		//nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::J));
 		break;
 	case Figures::S:
-		//nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, SBlock);
+		//nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::S));
 		break;
 	case Figures::Z:
-		//nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, ZBlock);
+		//nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::Z));
 		break;
 	}
 }

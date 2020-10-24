@@ -12,7 +12,7 @@ class PointsWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit PointsWgt(QWidget *parent = nullptr);
+	explicit PointsWgt(QSize s, QWidget *parent = nullptr);
 	~PointsWgt();
 	
 private:
