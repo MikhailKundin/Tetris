@@ -5,6 +5,8 @@
 #include <QShortcut>
 
 #include "../controller/generalcontroller.h"
+#include "../controller/timercontroller.h"
+#include "../tetrisinfo.h"
 
 #include <QDebug>
 
@@ -19,15 +21,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
-	blocks.insert(GeneralController::Figures::I, new QImage(":Images/Blocks/IBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::O, new QImage(":Images/Blocks/OBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::T, new QImage(":Images/Blocks/TBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::L, new QImage(":Images/Blocks/LBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::J, new QImage(":Images/Blocks/JBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
-	blocks.insert(GeneralController::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::I, new QImage(":Images/Blocks/IBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::O, new QImage(":Images/Blocks/OBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::T, new QImage(":Images/Blocks/TBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::L, new QImage(":Images/Blocks/LBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::J, new QImage(":Images/Blocks/JBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
+	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
-	singleWgt = std::make_unique<SingleWgt>(ROW_COUNT, COLUMN_COUNT);
+	singleWgt = std::make_unique<SingleWgt>();
 	mainMenuWdt = std::make_unique<MainMenuWdt>();
 	
 	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
@@ -63,15 +65,20 @@ void MainWindow::openSingleLayout()
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	GeneralController *controller = new GeneralController(ROW_COUNT, COLUMN_COUNT, blocks);
-	connect(controller, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
-	connect(controller, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
-	connect(controller, &GeneralController::defeatSignal, this, &MainWindow::deleteController);
+	GeneralController *gc = new GeneralController(blocks);
+	TimerController *tc = new TimerController;
 	
-	connect(this, &MainWindow::moveRightSignal, controller, &GeneralController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, controller, &GeneralController::moveLeft);
-	connect(this, &MainWindow::moveDownSignal, controller, &GeneralController::moveDown);
-	connect(this, &MainWindow::rotateSignal, controller, &GeneralController::rotate);
+	connect(gc, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
+	connect(gc, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
+	
+	connect(this, &MainWindow::moveRightSignal, gc, &GeneralController::moveRight);
+	connect(this, &MainWindow::moveLeftSignal, gc, &GeneralController::moveLeft);
+	connect(this, &MainWindow::moveDownSignal, gc, &GeneralController::newTick);
+	connect(this, &MainWindow::rotateSignal, gc, &GeneralController::rotate);
+	
+	connect(tc, &TimerController::tickSignal, gc, &GeneralController::newTick);
+	connect (gc, &GeneralController::newLevelSignal, tc, &TimerController::newLevel);
+	connect (gc, &GeneralController::defeatSignal, tc, &TimerController::stop);
 }
 
 void MainWindow::openOnlineLayout()
@@ -82,11 +89,6 @@ void MainWindow::openOnlineLayout()
 void MainWindow::closeAll()
 {
 	close();
-}
-
-void MainWindow::deleteController(GeneralController *controller)
-{
-	delete controller;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)

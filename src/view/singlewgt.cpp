@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-SingleWgt::SingleWgt(qint8 row, qint8 column, QWidget *parent) :
+SingleWgt::SingleWgt(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::SingleWgt)
 {
@@ -11,7 +11,7 @@ SingleWgt::SingleWgt(qint8 row, qint8 column, QWidget *parent) :
 	
 	setLayout(ui->gBox);
 	
-	pg = std::make_unique<Playground>(row, column, ui->playgroundPlace);
+	pg = std::make_unique<Playground>(ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
 	rtWgt = std::make_unique<RecordTable>(QSize(RECORD_WIDTH, pg->height()), ui->recordTablePlace);
@@ -26,7 +26,6 @@ SingleWgt::SingleWgt(qint8 row, qint8 column, QWidget *parent) :
 	
 	rightTopLbl = std::make_unique<QLabel>(this);
 	ui->gBox->addWidget(rightTopLbl.get(), 1, 3);
-	//rightTopLbl->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	rightTopLbl->setMinimumSize(ui->recordTablePlace->width(), ui->pointsPlace->height());
 	QPixmap yellowImg(":Images/Backgrounds/YellowBackground.png");
 	rightTopLbl->setPixmap(yellowImg.scaled(rightTopLbl->size()));

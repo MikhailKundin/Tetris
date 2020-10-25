@@ -1,22 +1,19 @@
 #include "abstractfigure.h"
 
-#include <QDebug>
+#include "../tetrisinfo.h"
 
-AbstractFigure::AbstractFigure(qint8 row, qint8 column) : ROW_COUNT(row), COLUMN_COUNT(column)
-{
-	
-}
+#include <QDebug>
 
 bool AbstractFigure::moveRight()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QList<qint16> singleCoords;
+	QList<QPair<qint8, qint8> > coords;
+	QList<qint16> cells;
 	bool negative = false;
 	foreach (Block block, blocks)
 	{
-		qint16 singleCoord = block.getCoord();
-		singleCoords.append(singleCoord);
-		if (singleCoord < 0)
+		qint16 cell = block.getCell();
+		cells.append(cell);
+		if (cell < 0)
 		{
 			negative = true;
 		}
@@ -25,36 +22,36 @@ bool AbstractFigure::moveRight()
 	{
 		for (qint8 i = 0; i < blocks.length(); i++)
 		{
-			QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
-			pairCoord.first += 1;
-			pairCoords.append(pairCoord);
+			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
+			coord.first += 1;
+			coords.append(coord);
 		}
 	}
 	
 	if (!negative)
 	{
-		if (isOutOfBounds(pairCoords))
+		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		blocks[i].setCoord(singleCoords.at(i)+1);
+		blocks[i].setCell(cells.at(i)+1);
 	}
 	return true;
 }
 
 bool AbstractFigure::moveLeft()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QList<qint16> singleCoords;
+	QList<QPair<qint8, qint8> > coords;
+	QList<qint16> cells;
 	bool negative = false;
 	foreach (Block block, blocks)
 	{
-		qint16 singleCoord = block.getCoord();
-		singleCoords.append(singleCoord);
-		if (singleCoord < 0)
+		qint16 cell = block.getCell();
+		cells.append(cell);
+		if (cell < 0)
 		{
 			negative = true;
 		}
@@ -63,36 +60,36 @@ bool AbstractFigure::moveLeft()
 	{
 		for (qint8 i = 0; i < blocks.length(); i++)
 		{
-			QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
-			pairCoord.first -= 1;
-			pairCoords.append(pairCoord);
+			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
+			coord.first -= 1;
+			coords.append(coord);
 		}
 	}
 	
 	if (!negative)
 	{
-		if (isOutOfBounds(pairCoords))
+		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		blocks[i].setCoord(singleCoords.at(i)-1);
+		blocks[i].setCell(cells.at(i)-1);
 	}
 	return true;
 }
 
 bool AbstractFigure::moveDown()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QList<qint16> singleCoords;
+	QList<QPair<qint8, qint8> > coords;
+	QList<qint16> cells;
 	bool negative = false;
 	foreach (Block block, blocks)
 	{
-		qint16 singleCoord = block.getCoord();
-		singleCoords.append(singleCoord);
-		if (singleCoord < 0)
+		qint16 cell = block.getCell();
+		cells.append(cell);
+		if (cell < 0)
 		{
 			negative = true;
 		}
@@ -101,36 +98,36 @@ bool AbstractFigure::moveDown()
 	{
 		for (qint8 i = 0; i < blocks.length(); i++)
 		{
-			QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
-			pairCoord.second += 1;
-			pairCoords.append(pairCoord);
+			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
+			coord.second += 1;
+			coords.append(coord);
 		}
 	}
 	
 	if (!negative)
 	{
-		if (isOutOfBounds(pairCoords))
+		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		blocks[i].setCoord(singleCoords.at(i)+COLUMN_COUNT);
+		blocks[i].setCell(cells.at(i)+TetrisInfo::COLUMN_COUNT);
 	}
 	return true;
 }
 
 bool AbstractFigure::moveUp()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QList<qint16> singleCoords;
+	QList<QPair<qint8, qint8> > coords;
+	QList<qint16> cells;
 	bool negative = false;
 	foreach (Block block, blocks)
 	{
-		qint16 singleCoord = block.getCoord();
-		singleCoords.append(singleCoord);
-		if (singleCoord < 0)
+		qint16 cell = block.getCell();
+		cells.append(cell);
+		if (cell < 0)
 		{
 			negative = true;
 		}
@@ -139,36 +136,36 @@ bool AbstractFigure::moveUp()
 	{
 		for (qint8 i = 0; i < blocks.length(); i++)
 		{
-			QPair<qint8, qint8> pairCoord = getPairCoord(blocks.at(i).getCoord());
-			pairCoord.second -= 1;
-			pairCoords.append(pairCoord);
+			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
+			coord.second -= 1;
+			coords.append(coord);
 		}
 	}
 	
 	if (!negative)
 	{
-		if (isOutOfBounds(pairCoords))
+		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		blocks[i].setCoord(singleCoords.at(i)-COLUMN_COUNT);
+		blocks[i].setCell(cells.at(i)-TetrisInfo::COLUMN_COUNT);
 	}
 	return true;
 }
 
 bool AbstractFigure::rotate()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
+	QList<QPair<qint8, qint8> > coords;
 	switch (rotation)
 	{
 	case Rotation::up:
-		pairCoords = rotateUpRight(1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateUpRight(Direction::forward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::right;
 			return true;
 		}
@@ -177,10 +174,10 @@ bool AbstractFigure::rotate()
 			return false;
 		}
 	case Rotation::right:
-		pairCoords = rotateRightDown(1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateRightDown(Direction::forward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::down;
 			return true;
 		}
@@ -189,10 +186,10 @@ bool AbstractFigure::rotate()
 			return false;
 		}
 	case Rotation::down:		
-		pairCoords = rotateDownLeft(1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateDownLeft(Direction::forward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::left;
 			return true;
 		}
@@ -201,10 +198,10 @@ bool AbstractFigure::rotate()
 			return false;
 		}
 	case Rotation::left:
-		pairCoords = rotateLeftUp(1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateLeftUp(Direction::forward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::up;
 			return true;
 		}
@@ -218,14 +215,14 @@ bool AbstractFigure::rotate()
 
 bool AbstractFigure::backRotate()
 {
-	QList<QPair<qint8, qint8> > pairCoords;
+	QList<QPair<qint8, qint8> > coords;
 	switch (rotation)
 	{
 	case Rotation::up:
-		pairCoords = rotateLeftUp(-1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateLeftUp(Direction::backward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::left;
 			return true;
 		}
@@ -234,10 +231,10 @@ bool AbstractFigure::backRotate()
 			return false;
 		}
 	case Rotation::right:
-		pairCoords = rotateUpRight(-1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateUpRight(Direction::backward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::up;
 			return true;
 		}
@@ -246,10 +243,10 @@ bool AbstractFigure::backRotate()
 			return false;
 		}
 	case Rotation::down:		
-		pairCoords = rotateRightDown(-1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateRightDown(Direction::backward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::right;
 			return true;
 		}
@@ -258,10 +255,10 @@ bool AbstractFigure::backRotate()
 			return false;
 		}
 	case Rotation::left:
-		pairCoords = rotateDownLeft(-1);
-		if (!isOutOfBounds(pairCoords))
+		coords = rotateDownLeft(Direction::backward);
+		if (!isOutOfBounds(coords))
 		{
-			updateCoords(pairCoords);
+			updateCoords(coords);
 			rotation = Rotation::down;
 			return true;
 		}
@@ -278,12 +275,12 @@ QList<Block> &AbstractFigure::getBlocks()
 	return blocks;
 }
 
-QList<qint16> AbstractFigure::getCoords()
+QList<qint16> AbstractFigure::getCells()
 {
 	QList<qint16> res;
 	foreach (Block block, blocks)
 	{
-		res.append(block.getCoord());
+		res.append(block.getCell());
 	}
 	return res;
 }
@@ -293,27 +290,11 @@ QImage *AbstractFigure::getImage()
 	return blocks.at(0).getImage();
 }
 
-QPair<qint8, qint8> AbstractFigure::getPairCoord(qint16 singleCoord)
-{
-	qint8 x = singleCoord % COLUMN_COUNT;
-	qint8 y = static_cast<qint8>(singleCoord / COLUMN_COUNT);
-	
-	return {x, y};
-}
-
-qint16 AbstractFigure::getSingleCoord(QPair<qint8, qint8> pairCoord)
-{
-	qint16 x = pairCoord.first;
-	qint16 y = pairCoord.second;
-	
-	return y*COLUMN_COUNT + x;
-}
-
-void AbstractFigure::updateCoords(QList<QPair<qint8, qint8> > pairCoords)
+void AbstractFigure::updateCoords(QList<QPair<qint8, qint8> > coords)
 {
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
-		blocks[i].setCoord(getSingleCoord(pairCoords.at(i)));
+		blocks[i].setCell(TetrisInfo::getCell(coords.at(i)));
 	}
 }
 
@@ -325,11 +306,11 @@ bool AbstractFigure::isOutOfBounds(QList<QPair<qint8, qint8> > coords)
 		qint8 x = coord.first;
 		qint8 y = coord.second;
 		
-		if (x < 0 || x >= COLUMN_COUNT)
+		if (x < 0 || x >= TetrisInfo::COLUMN_COUNT)
 		{
 			return true;
 		}
-		if (y >= ROW_COUNT)
+		if (y >= TetrisInfo::ROW_COUNT)
 		{
 			return true;
 		}
@@ -337,133 +318,133 @@ bool AbstractFigure::isOutOfBounds(QList<QPair<qint8, qint8> > coords)
 	return false;
 }
 
-IFigure::IFigure(qint8 row, qint8 column, QImage *image) : AbstractFigure(row, column)
+IFigure::IFigure(QImage *image)
 {
 	qint8 x, y;
-	qint16 coord;
-	qint8 middle = COLUMN_COUNT / 2;
+	qint16 cell;
+	qint8 middle = TetrisInfo::COLUMN_COUNT / 2;
 	
 	x = middle - 2;
 	y = -1;
-	coord = getSingleCoord({x, y});
-	blocks.append(Block(coord, image));
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
 	
 	x = middle - 1;
 	y = -1;
-	coord = getSingleCoord({x, y});
-	blocks.append(Block(coord, image));
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
 	
 	x = middle;
 	y = -1;
-	coord = getSingleCoord({x, y});
-	blocks.append(Block(coord, image));
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
 	
 	x = middle + 1;
 	y = -1;
-	coord = getSingleCoord({x, y});
-	blocks.append(Block(coord, image));
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QPair<qint8, qint8> pairCoord;
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
 	
-	pairCoord = getPairCoord(blocks.at(0).getCoord());
-	pairCoord.first += 2*mult;
-	pairCoord.second -= 2*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 2*mult;
+	coord.second -= 2*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(1).getCoord());
-	pairCoord.first += 1*mult;
-	pairCoord.second -= 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first += 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(2).getCoord());
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(3).getCoord());
-	pairCoord.first -= 1*mult;
-	pairCoord.second += 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first -= 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
 	
-	return pairCoords;
+	return coords;
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult)
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QPair<qint8, qint8> pairCoord;
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
 	
-	pairCoord = getPairCoord(blocks.at(0).getCoord());
-	pairCoord.first += 2*mult;
-	pairCoord.second += 2*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 2*mult;
+	coord.second += 2*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(1).getCoord());
-	pairCoord.first += 1*mult;
-	pairCoord.second += 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first += 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(2).getCoord());
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(3).getCoord());
-	pairCoord.first -= 1*mult;
-	pairCoord.second -= 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first -= 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
 	
-	return pairCoords;
+	return coords;
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult)
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QPair<qint8, qint8> pairCoord;
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
 	
-	pairCoord = getPairCoord(blocks.at(0).getCoord());
-	pairCoord.first -= 2*mult;
-	pairCoord.second += 2*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first -= 2*mult;
+	coord.second += 2*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(1).getCoord());
-	pairCoord.first -= 1*mult;
-	pairCoord.second += 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first -= 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(2).getCoord());
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(3).getCoord());
-	pairCoord.first += 1*mult;
-	pairCoord.second -= 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first += 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
 	
-	return pairCoords;
+	return coords;
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateLeftUp(qint8 mult)
 {
-	QList<QPair<qint8, qint8> > pairCoords;
-	QPair<qint8, qint8> pairCoord;
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
 	
-	pairCoord = getPairCoord(blocks.at(0).getCoord());
-	pairCoord.first -= 2*mult;
-	pairCoord.second -= 2*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first -= 2*mult;
+	coord.second -= 2*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(1).getCoord());
-	pairCoord.first -= 1*mult;
-	pairCoord.second -= 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first -= 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(2).getCoord());
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
 	
-	pairCoord = getPairCoord(blocks.at(3).getCoord());
-	pairCoord.first += 1*mult;
-	pairCoord.second += 1*mult;
-	pairCoords.append(pairCoord);
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first += 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
 	
-	return pairCoords;
+	return coords;
 }

@@ -1,26 +1,19 @@
 #include "generalcontroller.h"
 
+#include "../tetrisinfo.h"
+
 #include <QRandomGenerator>
 #include <QTime>
-#include <QTimer>
 #include <QtMath>
 
 #include <QDebug>
 
-GeneralController::GeneralController(qint8 row, qint8 column, QMap<qint8, QImage *> &blocks)
-	: m_blocks(blocks), ROW_COUNT(row), COLUMN_COUNT(column)
+GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
+	: m_blocks(blocks)
 {
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
 	
-	timer = std::make_unique<QTimer>();
-	connect(timer.get(), &QTimer::timeout, this, &GeneralController::tick);
-	timer->setInterval(START_INTERVAL);
-	getNextFigure();
-	figure = nextFigure;
-	getNextFigure();
-	addFigure(figure->getCoords());
-	emit update(grid);
-	timer->start();
+	restart();
 }
 
 GeneralController::~GeneralController()
@@ -46,22 +39,22 @@ QMap<qint16, QImage *> &GeneralController::getGrid()
 
 void GeneralController::moveRight()
 {
-	QList<qint16> oldCoords = figure->getCoords();
-	QList<qint16> newCoords = oldCoords;
+	QList<qint16> oldCells = figure->getCells();
+	QList<qint16> newCells = oldCells;
 	if (figure->moveRight())
 	{
-		deleteFigure(oldCoords);
-		QList<qint16> coords = figure->getCoords();
-		if (!isLayerOverflow(coords))
+		deleteFigure(oldCells);
+		QList<qint16> cells = figure->getCells();
+		if (!isLayerOverflow(cells))
 		{
-			newCoords = coords;
-			addFigure(newCoords);
+			newCells = cells;
+			addFigure(newCells);
 			emit moveRightSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCoords);
+			addFigure(newCells);
 			figure->moveLeft();
 		}
 	}
@@ -69,22 +62,22 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
-	QList<qint16> oldCoords = figure->getCoords();
-	QList<qint16> newCoords = oldCoords;
+	QList<qint16> oldCells = figure->getCells();
+	QList<qint16> newCells = oldCells;
 	if (figure->moveLeft())
 	{
-		deleteFigure(oldCoords);
-		QList<qint16> coords = figure->getCoords();
-		if (!isLayerOverflow(coords))
+		deleteFigure(oldCells);
+		QList<qint16> cells = figure->getCells();
+		if (!isLayerOverflow(cells))
 		{
-			newCoords = coords;
-			addFigure(newCoords);
+			newCells = cells;
+			addFigure(newCells);
 			emit moveLeftSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCoords);
+			addFigure(newCells);
 			figure->moveRight();
 		}
 	}
@@ -92,22 +85,22 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
-	QList<qint16> oldCoords = figure->getCoords();
-	QList<qint16> newCoords = oldCoords;
+	QList<qint16> oldCells = figure->getCells();
+	QList<qint16> newCells = oldCells;
 	if (figure->rotate())
 	{
-		deleteFigure(oldCoords);
-		QList<qint16> coords = figure->getCoords();
-		if (!isLayerOverflow(coords))
+		deleteFigure(oldCells);
+		QList<qint16> cells = figure->getCells();
+		if (!isLayerOverflow(cells))
 		{
-			newCoords = coords;
-			addFigure(newCoords);
+			newCells = cells;
+			addFigure(newCells);
 			emit rotateSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCoords);
+			addFigure(newCells);
 			figure->backRotate();
 		}
 	}
@@ -115,114 +108,122 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
-	QList<qint16> oldCoords = figure->getCoords();
-	QList<qint16> newCoords = oldCoords;
+	QList<qint16> oldCells = figure->getCells();
+	QList<qint16> newCells = oldCells;
 	if (figure->moveDown())
 	{
-		deleteFigure(oldCoords);
-		QList<qint16> coords = figure->getCoords();
-		if (!isLayerOverflow(coords))
+		deleteFigure(oldCells);
+		QList<qint16> cells = figure->getCells();
+		if (!isLayerOverflow(cells))
 		{
-			newCoords = coords;
-			addFigure(newCoords);
+			newCells = cells;
+			addFigure(newCells);//---------------------?????-----------------------
 			emit moveDownSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCoords);
+			addFigure(newCells);
 			figure->moveUp();
 		}
 	}
 	else
 	{
-		checkRows(oldCoords);
-		figure = nextFigure;
-		getNextFigure();
-		emit tickSignal();
-		emit update(grid);
-		tick();
+		figureFall();
 	}
 }
 
-void GeneralController::tick()
+void GeneralController::newTick()
 {
-	QList<qint16> coords = figure->getCoords();
-	if (!isObstacle(coords))
+	QList<qint16> cells = figure->getCells();
+	if (!isObstacle(cells))
 	{
 		moveDown();
-		emit tickSignal();
-		return;
 	}
-	else if (isNegativeCoords(coords))
+	else if (isNegativeCoords(cells))
 	{
-		timer->stop();
-		emit defeatSignal(this);
-		return;
+		emit defeatSignal();
 	}
 	else
 	{
-		checkRows(coords);
-		figure = nextFigure;
-		getNextFigure();
-		emit tickSignal();
-		emit update(grid);
-		tick();
+		figureFall();
 	}
 }
 
-QPair<qint8, qint8> GeneralController::getCoord(qint16 cell)
+void GeneralController::restart()
 {
-	qint8 x = cell % COLUMN_COUNT;
-	qint8 y = static_cast<qint8>(cell / COLUMN_COUNT);
-	
-	return {x, y};
+	getNextFigure();
+	figure = nextFigure;
+	getNextFigure();
+	addFigure(figure->getCells());
+	emit update(grid);
+	m_points = 0;
+	emit newPointsSignal(m_points);
+	level = 1;
+	emit newLevelSignal(level);
 }
 
-qint16 GeneralController::getCell(QPair<qint8, qint8> coord)
+void GeneralController::deleteController()
 {
-	qint16 x = coord.first;
-	qint16 y = coord.second;
+	delete this;
+}
+
+void GeneralController::figureFall()
+{
+	QList<qint16> cells = figure->getCells();
 	
-	return y*COLUMN_COUNT + x;
+	qint8 topRow = 0;
+	qint8 rowCount = 0;
+	checkRows(cells, topRow, rowCount);
+	if (rowCount > 0)
+	{
+		{
+			shiftRows(topRow, rowCount);
+			addPoints(POINTS[rowCount-1]);
+		}
+	}
+	
+	figure = nextFigure;
+	getNextFigure();
+	emit newFigureSignal(thirdFigure);
+	newTick();
 }
 
 void GeneralController::getNextFigure()
 {
 	qint8 value = thirdFigure;
 	thirdFigure = random.generate() % 7;
-	emit newFigureSignal(thirdFigure);
 	value = 0; // -------------------------------DEBUG-----------------------------------------------
 	switch (value)
 	{
-	case Figures::I:
-		nextFigure = new IFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::I));
+	case TetrisInfo::Figures::I:
+		nextFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
-	case Figures::O:
-		//nextFigure = new OFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::O));
+	case TetrisInfo::Figures::O:
+		//nextFigure = new OFigure(m_blocks.value(Figures::O));
 		break;
-	case Figures::T:
-		//nextFigure = new TFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::T));
+	case TetrisInfo::Figures::T:
+		//nextFigure = new TFigure(m_blocks.value(Figures::T));
 		break;
-	case Figures::L:
-		//nextFigure = new LFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::L));
+	case TetrisInfo::Figures::L:
+		//nextFigure = new LFigure(m_blocks.value(Figures::L));
 		break;
-	case Figures::J:
-		//nextFigure = new JFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::J));
+	case TetrisInfo::Figures::J:
+		//nextFigure = new JFigure(m_blocks.value(Figures::J));
 		break;
-	case Figures::S:
-		//nextFigure = new SFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::S));
+	case TetrisInfo::Figures::S:
+		//nextFigure = new SFigure(m_blocks.value(Figures::S));
 		break;
-	case Figures::Z:
-		//nextFigure = new ZFigure(ROW_COUNT, COLUMN_COUNT, m_blocks.value(Figures::Z));
+	case TetrisInfo::Figures::Z:
+		//nextFigure = new ZFigure(m_blocks.value(Figures::Z));
 		break;
 	}
 }
 
 bool GeneralController::isRowFull(qint8 rowNumber)
 {
-	qint16 cell = getCell({0, rowNumber});
-	for (qint8 i = 0; i < COLUMN_COUNT; i++, cell++)
+	qint16 cell = TetrisInfo::getCell({0, rowNumber});
+	for (qint8 i = 0; i < TetrisInfo::COLUMN_COUNT; i++, cell++)
 	{
 		if (!grid.contains(cell))
 		{
@@ -234,9 +235,9 @@ bool GeneralController::isRowFull(qint8 rowNumber)
 
 void GeneralController::deleteRow(qint8 rowNumber)
 {
-	qint16 cell = getCell({0, rowNumber});
+	qint16 cell = TetrisInfo::getCell({0, rowNumber});
 	QMap<qint16, QImage *>::iterator it = grid.find(cell);
-	for (qint8 i = 0; i < COLUMN_COUNT; i++)
+	for (qint8 i = 0; i < TetrisInfo::COLUMN_COUNT; i++)
 	{
 		it = grid.erase(it);
 	}
@@ -245,7 +246,7 @@ void GeneralController::deleteRow(qint8 rowNumber)
 void GeneralController::shiftRows(qint8 bottomRow, qint8 count)
 {
 	QList<qint16> cells;
-	qint16 cell = getCell({COLUMN_COUNT-1, bottomRow});
+	qint16 cell = TetrisInfo::getCell({TetrisInfo::COLUMN_COUNT-1, bottomRow});
 	QMap<qint16, QImage *>::iterator it = grid.end();
 	while (it != grid.begin())
 	{
@@ -258,7 +259,7 @@ void GeneralController::shiftRows(qint8 bottomRow, qint8 count)
 	}
 	foreach (cell, cells)
 	{
-		grid.insert(cell + COLUMN_COUNT*count, grid.value(cell));
+		grid.insert(cell + TetrisInfo::COLUMN_COUNT*count, grid.value(cell));
 		grid.remove(cell);
 	}
 }
@@ -268,7 +269,7 @@ bool GeneralController::isObstacle(QList<qint16> cells)
 	foreach (qint16 cell, cells)
 	{
 		bool res = true;
-		qint16 downCoord = cell + COLUMN_COUNT;
+		qint16 downCoord = cell + TetrisInfo::COLUMN_COUNT;
 		if (grid.contains(downCoord))
 		{
 			foreach(qint16 secondCoord, cells)
@@ -302,10 +303,9 @@ bool GeneralController::isLayerOverflow(QList<qint16> cells)
 
 void GeneralController::addFigure(QList<qint16> cells)
 {
-	if (isLayerOverflow(cells))
+	if (isLayerOverflow(cells))//-----------------------------?????--------------------------
 	{
-		timer->stop();
-		emit defeatSignal(this);
+		emit defeatSignal();
 		return;
 	}
 	foreach (qint16 cell, cells)
@@ -322,27 +322,22 @@ void GeneralController::deleteFigure(QList<qint16> cells)
 	}
 }
 
-void GeneralController::checkRows(QList<qint16> cells)
+void GeneralController::checkRows(QList<qint16> cells, qint8 &topRow_out, qint8 &rowCount_out)
 {
-	qint8 rowCount = 0;
-	qint8 topRow = ROW_COUNT;
+	rowCount_out = 0;
+	topRow_out = TetrisInfo::ROW_COUNT;
 	foreach (qint16 cell, cells)
 	{
-		QPair<qint8, qint8> pairCoord = getCoord(cell);
+		QPair<qint8, qint8> pairCoord = TetrisInfo::getCoord(cell);
 		if (isRowFull(pairCoord.second))
 		{
-			if (pairCoord.second < topRow)
+			if (pairCoord.second < topRow_out)
 			{
-				topRow = pairCoord.second;
+				topRow_out = pairCoord.second;
 			}
 			deleteRow(pairCoord.second);
-			rowCount++;
+			rowCount_out++;
 		}
-	}
-	if (rowCount != 0)
-	{
-		shiftRows(topRow, rowCount);
-		addPoints(POINTS[rowCount-1]);
 	}
 }
 
@@ -355,19 +350,8 @@ void GeneralController::addPoints(qint32 count)
 	if (level != newLevel)
 	{
 		level = newLevel;
-		setTimerInterval();
 		emit newLevelSignal(level);
 	}
-}
-
-void GeneralController::setTimerInterval()
-{
-	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level-1));
-	if (interval < MIN_INTERVAL)
-	{
-		interval = MIN_INTERVAL;
-	}
-	timer->setInterval(interval);
 }
 
 bool GeneralController::isNegativeCoords(QList<qint16> cells)

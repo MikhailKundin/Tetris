@@ -7,7 +7,7 @@
 class Playground : public QWidget
 {
 public:
-	Playground(qint8 row, qint8 column, QWidget *parent = nullptr);
+	Playground(QWidget *parent = nullptr);
 	void update(const QMap<qint16, QImage *>& grid);
 	
 private:
@@ -18,8 +18,6 @@ private:
 	 QMap<qint16, QImage*> m_grid;
 	
 	const qint8 BLOCK_SIZE = 30;
-	const qint8 COLUMN_COUNT;
-	const qint8 ROW_COUNT;
 	const qint8 GRID_WIDTH = 1;
 };
 

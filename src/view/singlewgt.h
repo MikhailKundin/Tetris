@@ -16,7 +16,7 @@ class SingleWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SingleWgt(qint8 row, qint8 column, QWidget *parent = nullptr);
+	explicit SingleWgt(QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
 public slots:

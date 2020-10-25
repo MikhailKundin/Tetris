@@ -7,10 +7,10 @@ class Block
 {
 public:
 	Block();
-	Block(qint16 coord, QImage *image);
+	Block(qint16 cell, QImage *image);
 	
-	void setCoord(qint16 coord);
-	qint16 getCoord() const;
+	void setCell(qint16 cell);
+	qint16 getCell() const;
 	
 	void setImage(QImage *image);
 	QImage *getImage() const;
@@ -18,7 +18,7 @@ public:
 	QPair<qint16, QImage *> getBlock() const;
 	
 private:
-	qint16 m_coord;
+	qint16 m_cell;
 	QImage *m_image;
 };
 

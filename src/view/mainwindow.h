@@ -24,7 +24,6 @@ private slots:
 	void openSingleLayout();
 	void openOnlineLayout();
 	void closeAll();
-	void deleteController(GeneralController *controller);
 	
 signals:
 	void moveRightSignal();

@@ -5,19 +5,19 @@ Block::Block()
 	
 }
 
-Block::Block(qint16 coord, QImage *image) : m_coord(coord), m_image(image)
+Block::Block(qint16 cell, QImage *image) : m_cell(cell), m_image(image)
 {
 	
 }
 
-void Block::setCoord(qint16 coord)
+void Block::setCell(qint16 cell)
 {
-	m_coord = coord;
+	m_cell = cell;
 }
 
-qint16 Block::getCoord() const
+qint16 Block::getCell() const
 {
-	return m_coord;
+	return m_cell;
 }
 
 void Block::setImage(QImage *image)
@@ -32,5 +32,5 @@ QImage *Block::getImage() const
 
 QPair<qint16, QImage *> Block::getBlock() const
 {
-	return {m_coord, m_image};
+	return {m_cell, m_image};
 }
