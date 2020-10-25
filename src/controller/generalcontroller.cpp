@@ -45,22 +45,20 @@ void GeneralController::moveRight()
 	}
 	
 	QList<qint16> oldCells = figure->getCells();
-	QList<qint16> newCells = oldCells;
 	if (figure->moveRight())
 	{
 		deleteFigure(oldCells);
-		QList<qint16> cells = figure->getCells();
-		if (!isLayerOverflow(cells))
+		QList<qint16> newCells = figure->getCells();
+		if (!isLayerOverflow(newCells))
 		{
-			newCells = cells;
 			addFigure(newCells);
 			emit moveRightSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCells);
 			figure->moveLeft();
+			addFigure(oldCells);
 		}
 	}
 }
@@ -73,22 +71,20 @@ void GeneralController::moveLeft()
 	}
 	
 	QList<qint16> oldCells = figure->getCells();
-	QList<qint16> newCells = oldCells;
 	if (figure->moveLeft())
 	{
 		deleteFigure(oldCells);
-		QList<qint16> cells = figure->getCells();
-		if (!isLayerOverflow(cells))
+		QList<qint16> newCells = figure->getCells();
+		if (!isLayerOverflow(newCells))
 		{
-			newCells = cells;
 			addFigure(newCells);
 			emit moveLeftSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCells);
 			figure->moveRight();
+			addFigure(oldCells);
 		}
 	}
 }
@@ -101,22 +97,20 @@ void GeneralController::rotate()
 	}
 	
 	QList<qint16> oldCells = figure->getCells();
-	QList<qint16> newCells = oldCells;
 	if (figure->rotate())
 	{
 		deleteFigure(oldCells);
-		QList<qint16> cells = figure->getCells();
-		if (!isLayerOverflow(cells))
+		QList<qint16> newCells = figure->getCells();
+		if (!isLayerOverflow(newCells))
 		{
-			newCells = cells;
 			addFigure(newCells);
 			emit rotateSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCells);
 			figure->backRotate();
+			addFigure(oldCells);
 		}
 	}
 }
@@ -129,22 +123,20 @@ void GeneralController::moveDown()
 	}
 	
 	QList<qint16> oldCells = figure->getCells();
-	QList<qint16> newCells = oldCells;
 	if (figure->moveDown())
 	{
 		deleteFigure(oldCells);
-		QList<qint16> cells = figure->getCells();
-		if (!isLayerOverflow(cells))
+		QList<qint16> newCells = figure->getCells();
+		if (!isLayerOverflow(newCells))
 		{
-			newCells = cells;
-			addFigure(newCells);//---------------------?????-----------------------
+			addFigure(newCells);
 			emit moveDownSignal();
 			emit update(grid);
 		}
 		else
 		{
-			addFigure(newCells);
 			figure->moveUp();
+			addFigure(oldCells);
 		}
 	}
 	else
@@ -334,11 +326,6 @@ bool GeneralController::isLayerOverflow(QList<qint16> cells)
 
 void GeneralController::addFigure(QList<qint16> cells)
 {
-	if (isLayerOverflow(cells))//-----------------------------?????--------------------------
-	{
-		emit defeatSignal();
-		return;
-	}
 	foreach (qint16 cell, cells)
 	{
 		grid.insert(cell, figure->getImage());

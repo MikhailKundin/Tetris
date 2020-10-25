@@ -14,8 +14,6 @@ TimerController::TimerController()
 
 void TimerController::tick()
 {
-	static qint32 i = 0;
-	qDebug() << i++;
 	emit tickSignal();
 }
 
