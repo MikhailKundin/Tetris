@@ -70,6 +70,7 @@ void MainWindow::openSingleLayout()
 	
 	connect(gc, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
 	connect(gc, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
+	connect(gc, &GeneralController::defeatSignal, gc, &GeneralController::stop);
 	
 	connect(this, &MainWindow::moveRightSignal, gc, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, gc, &GeneralController::moveLeft);

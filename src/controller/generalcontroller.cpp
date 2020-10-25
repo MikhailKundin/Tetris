@@ -39,6 +39,11 @@ QMap<qint16, QImage *> &GeneralController::getGrid()
 
 void GeneralController::moveRight()
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	QList<qint16> oldCells = figure->getCells();
 	QList<qint16> newCells = oldCells;
 	if (figure->moveRight())
@@ -62,6 +67,11 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	QList<qint16> oldCells = figure->getCells();
 	QList<qint16> newCells = oldCells;
 	if (figure->moveLeft())
@@ -85,6 +95,11 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	QList<qint16> oldCells = figure->getCells();
 	QList<qint16> newCells = oldCells;
 	if (figure->rotate())
@@ -108,6 +123,11 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	QList<qint16> oldCells = figure->getCells();
 	QList<qint16> newCells = oldCells;
 	if (figure->moveDown())
@@ -135,6 +155,11 @@ void GeneralController::moveDown()
 
 void GeneralController::newTick()
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	QList<qint16> cells = figure->getCells();
 	if (!isObstacle(cells))
 	{
@@ -152,6 +177,7 @@ void GeneralController::newTick()
 
 void GeneralController::restart()
 {
+	m_stop = false;
 	getNextFigure();
 	figure = nextFigure;
 	getNextFigure();
@@ -161,6 +187,11 @@ void GeneralController::restart()
 	emit newPointsSignal(m_points);
 	level = 1;
 	emit newLevelSignal(level);
+}
+
+void GeneralController::stop()
+{
+	m_stop = true;
 }
 
 void GeneralController::deleteController()

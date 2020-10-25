@@ -26,6 +26,7 @@ public slots:
 	
 	void newTick();
 	void restart();
+	void stop();
 	void deleteController();
 	
 signals:
@@ -63,6 +64,8 @@ private:
 	qint32 m_points = 0;
 	qint16 level = 1;
 	QRandomGenerator random;
+	
+	bool m_stop = false;
 	
 	const quint16 POINTS[4] = {100, 300, 700, 1500};
 	const quint16 NEW_LEVEL = 3000;
