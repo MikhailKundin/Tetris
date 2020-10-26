@@ -7,13 +7,13 @@ namespace Ui {
 class PointsWgt;
 }
 
-class PointsWgt : public QWidget
+class PointsPnl : public QWidget
 {
 	Q_OBJECT
 	
 public:
-	explicit PointsWgt(QSize s, QWidget *parent = nullptr);
-	~PointsWgt();
+	explicit PointsPnl(QSize s, QWidget *parent = nullptr);
+	~PointsPnl();
 	
 	void update(qint32 points);
 	

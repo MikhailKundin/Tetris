@@ -1,12 +1,12 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 
 #include <QKeyEvent>
 #include <QShortcut>
 
-#include "../controller/generalcontroller.h"
-#include "../controller/timercontroller.h"
-#include "../tetrisinfo.h"
+#include "../controller/GeneralController.h"
+#include "../controller/TimerController.h"
+#include "../TetrisInfo.h"
 
 #include <QDebug>
 
@@ -30,10 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
 	singleWgt = std::make_unique<SingleWgt>();
-	mainMenuWdt = std::make_unique<MainMenuWdt>();
+	mainMenuWdt = std::make_unique<MainMenuWgt>();
 	
-	connect(mainMenuWdt.get(), &MainMenuWdt::exitSignal, this, &MainWindow::closeAll);
-	connect(mainMenuWdt.get(), &MainMenuWdt::singleSignal, this, &MainWindow::openSingleLayout);
+	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
+	connect(mainMenuWdt.get(), &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
 	
 	openMainMenuLayout();
 }

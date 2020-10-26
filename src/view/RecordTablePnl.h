@@ -5,11 +5,11 @@
 #include <QGridLayout>
 #include <QLabel>
 
-class RecordTable : public QWidget
+class RecordTablePnl : public QWidget
 {
 public:
-	RecordTable(QSize s, QWidget *parent = nullptr);
-	~RecordTable();
+	RecordTablePnl(QSize s, QWidget *parent = nullptr);
+	~RecordTablePnl();
 	
 private:
 	std::unique_ptr<QGridLayout> gBox;

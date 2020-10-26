@@ -8,13 +8,13 @@ namespace Ui {
 class MainMenuWdt;
 }
 
-class MainMenuWdt : public QWidget
+class MainMenuWgt : public QWidget
 {
 	Q_OBJECT
 	
 public:
-	explicit MainMenuWdt(QWidget *parent = nullptr);
-	~MainMenuWdt();
+	explicit MainMenuWgt(QWidget *parent = nullptr);
+	~MainMenuWgt();
 	
 private slots:
 	void singleBtnClicked();

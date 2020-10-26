@@ -1,4 +1,4 @@
-#include "timercontroller.h"
+#include "TimerController.h"
 
 #include <QtMath>
 

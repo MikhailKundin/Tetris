@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "mainmenuwdt.h"
-#include "singlewgt.h"
+#include "MainMenuWgt.h"
+#include "SingleWgt.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,7 +36,7 @@ private:
 	void keyReleaseEvent(QKeyEvent *e) override;
 	
 	Ui::MainWindow *ui;
-	std::unique_ptr<MainMenuWdt> mainMenuWdt;
+	std::unique_ptr<MainMenuWgt> mainMenuWdt;
 	std::unique_ptr<SingleWgt> singleWgt;
 	
 	QList<qint32> keyList;

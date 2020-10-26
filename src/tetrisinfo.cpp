@@ -1,4 +1,4 @@
-#include "tetrisinfo.h"
+#include "TetrisInfo.h"
 
 QPair<qint8, qint8> TetrisInfo::getCoord(qint16 cell)
 {

@@ -1,13 +1,13 @@
-#include "playground.h"
+#include "PlaygroundPnl.h"
 
 #include <QPainter>
 #include <QRectF>
 
-#include "../tetrisinfo.h"
+#include "../TetrisInfo.h"
 
 #include <QDebug>
 
-Playground::Playground(QWidget *parent) : QWidget(parent)
+PlaygroundPnl::PlaygroundPnl(QWidget *parent) : QWidget(parent)
 {
 	setMinimumSize(TetrisInfo::COLUMN_COUNT * BLOCK_SIZE + 1, TetrisInfo::ROW_COUNT * BLOCK_SIZE + 1);
 	
@@ -17,7 +17,7 @@ Playground::Playground(QWidget *parent) : QWidget(parent)
 	setPalette(pal);
 }
 
-void Playground::update(const QMap<qint16, QImage *>& grid)
+void PlaygroundPnl::update(const QMap<qint16, QImage *>& grid)
 {
 	m_grid.clear();
 	m_grid.insert(grid);
@@ -25,7 +25,7 @@ void Playground::update(const QMap<qint16, QImage *>& grid)
 	repaint();
 }
 
-void Playground::paintEvent(QPaintEvent *e)
+void PlaygroundPnl::paintEvent(QPaintEvent *e)
 {
 	Q_UNUSED(e)
 	
@@ -33,7 +33,7 @@ void Playground::paintEvent(QPaintEvent *e)
 	drawPalayground();
 }
 
-void Playground::drawGrid()
+void PlaygroundPnl::drawGrid()
 {
 	QPainter painter(this);
 	painter.setPen(Qt::darkGray);
@@ -49,7 +49,7 @@ void Playground::drawGrid()
 	}
 }
 
-void Playground::drawPalayground()
+void PlaygroundPnl::drawPalayground()
 {
 	QPainter painter(this);
 	QRectF rect;

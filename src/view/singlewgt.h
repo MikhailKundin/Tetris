@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-#include "playground.h"
-#include "pointswgt.h"
-#include "recordtable.h"
+#include "PlaygroundPnl.h"
+#include "PointsPnl.h"
+#include "RecordTablePnl.h"
 
 namespace Ui {
 class SingleWgt;
@@ -27,9 +27,9 @@ private:
 	
 	Ui::SingleWgt *ui;
 	
-	std::unique_ptr<Playground> pg;
-	std::unique_ptr<PointsWgt> pointsWgt;
-	std::unique_ptr<RecordTable> rtWgt;
+	std::unique_ptr<PlaygroundPnl> pg;
+	std::unique_ptr<PointsPnl> pointsWgt;
+	std::unique_ptr<RecordTablePnl> rtWgt;
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 	

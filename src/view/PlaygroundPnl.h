@@ -4,10 +4,10 @@
 #include <QWidget>
 #include <QMap>
 
-class Playground : public QWidget
+class PlaygroundPnl : public QWidget
 {
 public:
-	Playground(QWidget *parent = nullptr);
+	PlaygroundPnl(QWidget *parent = nullptr);
 	void update(const QMap<qint16, QImage *>& grid);
 	
 private:

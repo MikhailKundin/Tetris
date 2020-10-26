@@ -1,7 +1,7 @@
 #ifndef ABSTARCTFIGURE_H
 #define ABSTARCTFIGURE_H
 
-#include "block.h"
+#include "Block.h"
 
 class AbstractFigure
 {

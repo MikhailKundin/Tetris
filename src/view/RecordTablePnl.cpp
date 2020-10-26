@@ -1,8 +1,8 @@
-#include "recordtable.h"
+#include "RecordTablePnl.h"
 
 #include <QDebug>
 
-RecordTable::RecordTable(QSize s, QWidget *parent) : QWidget(parent)
+RecordTablePnl::RecordTablePnl(QSize s, QWidget *parent) : QWidget(parent)
 {	
 	gBox = std::make_unique<QGridLayout>(this);
 	setLayout(gBox.get());
@@ -55,7 +55,7 @@ RecordTable::RecordTable(QSize s, QWidget *parent) : QWidget(parent)
 	backLbl->setPixmap(border.scaled(backLbl->size()));
 }
 
-RecordTable::~RecordTable()
+RecordTablePnl::~RecordTablePnl()
 {
 	foreach(QLabel *name, names)
 	{

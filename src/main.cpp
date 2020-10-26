@@ -1,17 +1,17 @@
 #include <QApplication>
 
-#include "view/mainwindow.h"
+#include "view/MainWindow.h"
 
 #include <QMap>
 #include <QImage>
-#include "view/playground.h"
-#include "view/singlewgt.h"
-#include "view/pointswgt.h"
-#include "view/recordtable.h"
-#include "model/block.h"
+#include "view/PlaygroundPnl.h"
+#include "view/SingleWgt.h"
+#include "view/PointsPnl.h"
+#include "view/RecordTablePnl.h"
+#include "model/Block.h"
 #include <QTime>
 #include <QRandomGenerator>
-#include "controller/generalcontroller.h"
+#include "controller/GeneralController.h"
 #include <QObject>
 
 #include <QDebug>

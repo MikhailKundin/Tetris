@@ -1,6 +1,6 @@
-#include "generalcontroller.h"
+#include "GeneralController.h"
 
-#include "../tetrisinfo.h"
+#include "../TetrisInfo.h"
 
 #include <QRandomGenerator>
 #include <QTime>
@@ -19,7 +19,6 @@ GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 GeneralController::~GeneralController()
 {
 	delete figure;
-	delete nextFigure;
 }
 
 void GeneralController::setPoints(qint32 points)
@@ -169,9 +168,10 @@ void GeneralController::newTick()
 
 void GeneralController::restart()
 {
+	grid.clear();
 	m_stop = false;
 	getNextFigure();
-	figure = nextFigure;
+	getNextFigure();
 	getNextFigure();
 	addFigure(figure->getCells());
 	emit update(grid);
@@ -206,7 +206,6 @@ void GeneralController::figureFall()
 		}
 	}
 	
-	figure = nextFigure;
 	getNextFigure();
 	emit newFigureSignal(thirdFigure);
 	newTick();
@@ -214,31 +213,32 @@ void GeneralController::figureFall()
 
 void GeneralController::getNextFigure()
 {
-	qint8 value = thirdFigure;
+	qint8 firstFigure = secondFigure;
+	secondFigure = thirdFigure;
 	thirdFigure = random.generate() % 7;
-	value = 0; // -------------------------------DEBUG-----------------------------------------------
-	switch (value)
+	firstFigure = TetrisInfo::Figures::I; // -------------------------------DEBUG-----------------------------------------------
+	switch (firstFigure)
 	{
 	case TetrisInfo::Figures::I:
-		nextFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
+		figure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
 	case TetrisInfo::Figures::O:
-		//nextFigure = new OFigure(m_blocks.value(Figures::O));
+		//figure = new OFigure(m_blocks.value(Figures::O));
 		break;
 	case TetrisInfo::Figures::T:
-		//nextFigure = new TFigure(m_blocks.value(Figures::T));
+		//figure = new TFigure(m_blocks.value(Figures::T));
 		break;
 	case TetrisInfo::Figures::L:
-		//nextFigure = new LFigure(m_blocks.value(Figures::L));
+		//figure = new LFigure(m_blocks.value(Figures::L));
 		break;
 	case TetrisInfo::Figures::J:
-		//nextFigure = new JFigure(m_blocks.value(Figures::J));
+		//figure = new JFigure(m_blocks.value(Figures::J));
 		break;
 	case TetrisInfo::Figures::S:
-		//nextFigure = new SFigure(m_blocks.value(Figures::S));
+		//figure = new SFigure(m_blocks.value(Figures::S));
 		break;
 	case TetrisInfo::Figures::Z:
-		//nextFigure = new ZFigure(m_blocks.value(Figures::Z));
+		//figure = new ZFigure(m_blocks.value(Figures::Z));
 		break;
 	}
 }

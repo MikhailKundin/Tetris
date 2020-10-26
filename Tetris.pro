@@ -26,31 +26,31 @@ UI_DIR = build/release/bin
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/controller/timercontroller.cpp \
-    src/tetrisinfo.cpp \
-    src/view/recordtable.cpp \
-    src/controller/generalcontroller.cpp \
+    src/TetrisInfo.cpp \
+    src/controller/GeneralController.cpp \
+    src/controller/TimerController.cpp \
+    src/model/AbstractFigure.cpp \
+    src/model/Block.cpp \
+    src/view/MainMenuWgt.cpp \
+    src/view/MainWindow.cpp \
+    src/view/PlaygroundPnl.cpp \
+    src/view/PointsPnl.cpp \
+    src/view/RecordTablePnl.cpp \
     src/main.cpp \
-    src/model/abstractfigure.cpp \
-    src/model/block.cpp \
-    src/view/mainmenuwdt.cpp \
-    src/view/mainwindow.cpp \
-    src/view/playground.cpp \
-    src/view/pointswgt.cpp \
-    src/view/singlewgt.cpp
+    src/view/SingleWgt.cpp
 
 HEADERS += \
-	src/controller/timercontroller.h \
-	src/tetrisinfo.h \
-	src/view/recordtable.h \
-	src/controller/generalcontroller.h \
-	src/model/abstractfigure.h \
-	src/model/block.h \
-	src/view/mainmenuwdt.h \
-	src/view/mainwindow.h \
-	src/view/playground.h \
-	src/view/pointswgt.h \
-	src/view/singlewgt.h
+	src/TetrisInfo.h \
+	src/controller/GeneralController.h \
+	src/controller/TimerController.h \
+	src/model/AbstractFigure.h \
+	src/model/Block.h \
+	src/view/MainMenuWgt.h \
+	src/view/MainWindow.h \
+	src/view/PlaygroundPnl.h \
+	src/view/PointsPnl.h \
+	src/view/RecordTablePnl.h \
+	src/view/SingleWgt.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -58,10 +58,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-	src/view/mainmenuwdt.ui \
-	src/view/mainwindow.ui \
-	src/view/pointswgt.ui \
-	src/view/singlewgt.ui
+	src/view/MainMenuWgt.ui \
+	src/view/MainWindow.ui \
+	src/view/PointsPnl.ui \
+	src/view/SingleWgt.ui
 
 RESOURCES += \
 	resources.qrc

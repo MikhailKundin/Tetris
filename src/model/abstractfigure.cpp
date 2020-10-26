@@ -1,6 +1,6 @@
-#include "abstractfigure.h"
+#include "AbstractFigure.h"
 
-#include "../tetrisinfo.h"
+#include "../TetrisInfo.h"
 
 #include <QDebug>
 

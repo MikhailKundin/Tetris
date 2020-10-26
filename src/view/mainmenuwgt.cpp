@@ -1,7 +1,7 @@
-#include "mainmenuwdt.h"
-#include "ui_mainmenuwdt.h"
+#include "MainMenuWgt.h"
+#include "ui_mainmenuwgt.h"
 
-MainMenuWdt::MainMenuWdt(QWidget *parent) :
+MainMenuWgt::MainMenuWgt(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::MainMenuWdt)
 {
@@ -17,27 +17,27 @@ MainMenuWdt::MainMenuWdt(QWidget *parent) :
 	ui->verticalLayout->setAlignment(ui->onlineBtn, Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(ui->exitBtn, Qt::AlignCenter);
 	
-	connect(ui->singleBtn, &QPushButton::clicked, this, &MainMenuWdt::singleBtnClicked);
-	connect(ui->onlineBtn, &QPushButton::clicked, this, &MainMenuWdt::onlineBtnClicked);
-	connect(ui->exitBtn, &QPushButton::clicked, this, &MainMenuWdt::exitBtnClicked);
+	connect(ui->singleBtn, &QPushButton::clicked, this, &MainMenuWgt::singleBtnClicked);
+	connect(ui->onlineBtn, &QPushButton::clicked, this, &MainMenuWgt::onlineBtnClicked);
+	connect(ui->exitBtn, &QPushButton::clicked, this, &MainMenuWgt::exitBtnClicked);
 }
 
-MainMenuWdt::~MainMenuWdt()
+MainMenuWgt::~MainMenuWgt()
 {
 	delete ui;
 }
 
-void MainMenuWdt::singleBtnClicked()
+void MainMenuWgt::singleBtnClicked()
 {
 	emit singleSignal();
 }
 
-void MainMenuWdt::onlineBtnClicked()
+void MainMenuWgt::onlineBtnClicked()
 {
 	emit onlineSignal();
 }
 
-void MainMenuWdt::exitBtnClicked()
+void MainMenuWgt::exitBtnClicked()
 {
 	emit exitSignal();
 }

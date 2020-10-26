@@ -1,4 +1,4 @@
-#include "singlewgt.h"
+#include "SingleWgt.h"
 #include "ui_singlewgt.h"
 
 #include <QDebug>
@@ -11,13 +11,13 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	
 	setLayout(ui->gBox);
 	
-	pg = std::make_unique<Playground>(ui->playgroundPlace);
+	pg = std::make_unique<PlaygroundPnl>(ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
-	rtWgt = std::make_unique<RecordTable>(QSize(RECORD_WIDTH, pg->height()), ui->recordTablePlace);
+	rtWgt = std::make_unique<RecordTablePnl>(QSize(RECORD_WIDTH, pg->height()), ui->recordTablePlace);
 	ui->recordTablePlace->setMinimumSize(rtWgt->size());
 	
-	pointsWgt = std::make_unique<PointsWgt>(QSize(pg->width(), POINTS_HEIGHT), ui->pointsPlace);
+	pointsWgt = std::make_unique<PointsPnl>(QSize(pg->width(), POINTS_HEIGHT), ui->pointsPlace);
 	ui->pointsPlace->setMinimumSize(pointsWgt->size());
 	
 	ui->gBox->setAlignment(ui->pointsPlace, Qt::AlignCenter);
