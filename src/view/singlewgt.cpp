@@ -11,7 +11,7 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	
 	setLayout(ui->gBox);
 	
-	pg = std::make_unique<PlaygroundPnl>(ui->playgroundPlace);
+	pg = std::make_unique<PlaygroundPnl>(BLOCK_SIZE, ui->playgroundPlace);
 	ui->playgroundPlace->setMinimumSize(pg->size());
 	
 	rtWgt = std::make_unique<RecordTablePnl>(QSize(RECORD_WIDTH, pg->height()), ui->recordTablePlace);
