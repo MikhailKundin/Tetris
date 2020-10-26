@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-PlaygroundPnl::PlaygroundPnl(QWidget *parent) : QWidget(parent)
+PlaygroundPnl::PlaygroundPnl(qint8 blockSize, QWidget *parent) : QWidget(parent), BLOCK_SIZE(blockSize)
 {
 	setMinimumSize(TetrisInfo::COLUMN_COUNT * BLOCK_SIZE + 1, TetrisInfo::ROW_COUNT * BLOCK_SIZE + 1);
 	

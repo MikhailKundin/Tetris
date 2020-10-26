@@ -33,6 +33,7 @@ SOURCES += \
     src/model/Block.cpp \
     src/view/MainMenuWgt.cpp \
     src/view/MainWindow.cpp \
+    src/view/NextFigurePnl.cpp \
     src/view/PlaygroundPnl.cpp \
     src/view/PointsPnl.cpp \
     src/view/RecordTablePnl.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
 	src/model/Block.h \
 	src/view/MainMenuWgt.h \
 	src/view/MainWindow.h \
+	src/view/NextFigurePnl.h \
 	src/view/PlaygroundPnl.h \
 	src/view/PointsPnl.h \
 	src/view/RecordTablePnl.h \
@@ -58,10 +60,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-	src/view/MainMenuWgt.ui \
-	src/view/MainWindow.ui \
-	src/view/PointsPnl.ui \
-	src/view/SingleWgt.ui
+	src/Ui/MainMenuWgt.ui \
+	src/Ui/MainWindow.ui \
+	src/Ui/PointsPnl.ui \
+	src/Ui/SingleWgt.ui
 
 RESOURCES += \
 	resources.qrc

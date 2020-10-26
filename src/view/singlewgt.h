@@ -33,6 +33,7 @@ private:
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 	
+	const qint8 BLOCK_SIZE = 30;
 	const qint32 POINTS_HEIGHT = 50;
 	const qint32 RECORD_WIDTH = 150;
 };
