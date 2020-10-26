@@ -270,12 +270,12 @@ bool AbstractFigure::backRotate()
 	return false;
 }
 
-QList<Block> &AbstractFigure::getBlocks()
+const QList<Block> &AbstractFigure::getBlocks() const
 {
 	return blocks;
 }
 
-QList<qint16> AbstractFigure::getCells()
+QList<qint16> AbstractFigure::getCells() const
 {
 	QList<qint16> res;
 	foreach (Block block, blocks)
@@ -290,7 +290,7 @@ QImage *AbstractFigure::getImage()
 	return blocks.at(0).getImage();
 }
 
-void AbstractFigure::updateCoords(QList<QPair<qint8, qint8> > coords)
+void AbstractFigure::updateCoords(const QList<QPair<qint8, qint8> > &coords)
 {
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
@@ -298,7 +298,7 @@ void AbstractFigure::updateCoords(QList<QPair<qint8, qint8> > coords)
 	}
 }
 
-bool AbstractFigure::isOutOfBounds(QList<QPair<qint8, qint8> > coords)
+bool AbstractFigure::isOutOfBounds(const QList<QPair<qint8, qint8> > &coords) const
 {
 	for (qint8 i = 0; i < coords.length(); i++)
 	{
@@ -345,7 +345,7 @@ IFigure::IFigure(QImage *image)
 	blocks.append(Block(cell, image));
 }
 
-QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)
+QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult) const
 {
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;
@@ -371,7 +371,7 @@ QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult)
 	return coords;
 }
 
-QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult)
+QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult) const
 {
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;
@@ -397,7 +397,7 @@ QList<QPair<qint8, qint8> > IFigure::rotateRightDown(qint8 mult)
 	return coords;
 }
 
-QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult)
+QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult) const
 {
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;
@@ -423,7 +423,7 @@ QList<QPair<qint8, qint8> > IFigure::rotateDownLeft(qint8 mult)
 	return coords;
 }
 
-QList<QPair<qint8, qint8> > IFigure::rotateLeftUp(qint8 mult)
+QList<QPair<qint8, qint8> > IFigure::rotateLeftUp(qint8 mult) const
 {
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;

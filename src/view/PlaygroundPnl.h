@@ -8,7 +8,7 @@ class PlaygroundPnl : public QWidget
 {
 public:
 	PlaygroundPnl(qint8 blockSize, QWidget *parent = nullptr);
-	void update(const QMap<qint16, QImage *>& grid);
+	void update(const QMap<qint16, QImage *> &grid);
 	
 private:
 	void paintEvent(QPaintEvent *e) override;

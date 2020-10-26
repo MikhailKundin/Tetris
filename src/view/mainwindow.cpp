@@ -5,7 +5,7 @@
 #include <QShortcut>
 
 #include "../controller/GeneralController.h"
-#include "../controller/TimerController.h"
+#include "../controller/OfflineController.h"
 #include "../TetrisInfo.h"
 
 #include <QDebug>
@@ -65,21 +65,23 @@ void MainWindow::openSingleLayout()
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	GeneralController *gc = new GeneralController(blocks);
-	TimerController *tc = new TimerController;
+	GeneralController *generalCtrl = new GeneralController(blocks);
+	OfflineController *offlineCtrl = new OfflineController;
 	
-	connect(gc, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
-	connect(gc, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
-	connect(gc, &GeneralController::defeatSignal, gc, &GeneralController::stop);
+	connect(generalCtrl, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
+	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
+	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
 	
-	connect(this, &MainWindow::moveRightSignal, gc, &GeneralController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, gc, &GeneralController::moveLeft);
-	connect(this, &MainWindow::moveDownSignal, gc, &GeneralController::newTick);
-	connect(this, &MainWindow::rotateSignal, gc, &GeneralController::rotate);
+	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
+	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
+	connect(this, &MainWindow::moveDownSignal, generalCtrl, &GeneralController::newTick);
+	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
 	
-	connect(tc, &TimerController::tickSignal, gc, &GeneralController::newTick);
-	connect (gc, &GeneralController::newLevelSignal, tc, &TimerController::newLevel);
-	connect (gc, &GeneralController::defeatSignal, tc, &TimerController::stop);
+	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
+	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
+	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
 }
 
 void MainWindow::openOnlineLayout()

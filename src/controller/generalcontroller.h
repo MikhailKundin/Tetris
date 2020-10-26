@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QMap>
-#include <QRandomGenerator>
 
 #include "../model/AbstractFigure.h"
 
@@ -15,14 +14,16 @@ public:
 	GeneralController(QMap<qint8, QImage *> &blocks);
 	virtual ~GeneralController();
 	void setPoints(qint32 points);
-	qint32 getPoints();
-	QMap<qint16, QImage *> &getGrid();
+	qint32 getPoints() const;
+	const QMap<qint16, QImage *> &getGrid() const;
 	
 public slots:
 	void moveRight();
 	void moveLeft();
 	void rotate();
 	void moveDown();
+	
+	void setThirdFigure(qint8 figure);
 	
 	void newTick();
 	void restart();
@@ -39,21 +40,21 @@ signals:
 	void defeatSignal();
 	void newPointsSignal(qint32 points);
 	void newLevelSignal(qint16 level);
-	void newFigureSignal(qint8 thirdFigure);
+	void newFigureSignal();
 	
 private:
 	void figureFall();
 	void getNextFigure();
-	bool isRowFull(qint8 rowNumber);
+	bool isRowFull(qint8 rowNumber) const;
 	void deleteRow(qint8 rowNumber);
 	void shiftRows(qint8 bottomRow, qint8 count);
-	bool isObstacle(QList<qint16> cells);
-	bool isLayerOverflow(QList<qint16> cells);
-	void addFigure(QList<qint16> cells);
-	void deleteFigure(QList<qint16> cells);
-	void checkRows(QList<qint16> cells, qint8 &topRow_out, qint8 &rowCount_out);
+	bool isObstacle(const QList<qint16> &cells) const;
+	bool isLayerOverflow(const QList<qint16> &cells) const;
+	void addFigure(const QList<qint16> &cells);
+	void deleteFigure(const QList<qint16> &cells);
+	void checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out);
 	void addPoints(qint32 count);
-	bool isNegativeCoords(QList<qint16> cells);
+	bool isNegativeCoords(const QList<qint16> &cells) const;
 	
 	QMap<qint8, QImage *> m_blocks;
 	
@@ -63,7 +64,6 @@ private:
 	qint8 thirdFigure = 0;
 	qint32 m_points = 0;
 	qint16 level = 1;
-	QRandomGenerator random;
 	
 	bool m_stop = false;
 	

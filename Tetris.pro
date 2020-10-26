@@ -28,7 +28,7 @@ UI_DIR = build/release/bin
 SOURCES += \
     src/TetrisInfo.cpp \
     src/controller/GeneralController.cpp \
-    src/controller/TimerController.cpp \
+    src/controller/OfflineController.cpp \
     src/model/AbstractFigure.cpp \
     src/model/Block.cpp \
     src/view/MainMenuWgt.cpp \
@@ -43,7 +43,7 @@ SOURCES += \
 HEADERS += \
 	src/TetrisInfo.h \
 	src/controller/GeneralController.h \
-	src/controller/TimerController.h \
+	src/controller/OfflineController.h \
 	src/model/AbstractFigure.h \
 	src/model/Block.h \
 	src/view/MainMenuWgt.h \

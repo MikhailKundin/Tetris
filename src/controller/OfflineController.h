@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QRandomGenerator>
 
-class TimerController : public QObject
+class OfflineController : public QObject
 {
 	Q_OBJECT
 	
 public:
-	TimerController();
+	OfflineController();
 	
 public slots:
 	void tick();
@@ -17,9 +18,11 @@ public slots:
 	void stop();
 	void restart();
 	void deleteController();
+	void getNewFigure();
 	
 signals:
 	void tickSignal();
+	void newFigureSignal(qint8 figure);
 	
 private:
 	std::unique_ptr<QTimer> timer;
@@ -27,6 +30,8 @@ private:
 	const qint16 START_INTERVAL = 1000;
 	const qreal INTERVAL_DIV = 2;
 	const qint16 MIN_INTERVAL = 1;
+	
+	QRandomGenerator random;
 };
 
 #endif // TIMERCONTROLLER_H

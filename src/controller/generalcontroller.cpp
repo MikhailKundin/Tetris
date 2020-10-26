@@ -2,17 +2,13 @@
 
 #include "../TetrisInfo.h"
 
-#include <QRandomGenerator>
-#include <QTime>
 #include <QtMath>
 
 #include <QDebug>
 
 GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 	: m_blocks(blocks)
-{
-	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
-	
+{	
 	restart();
 }
 
@@ -26,12 +22,12 @@ void GeneralController::setPoints(qint32 points)
 	m_points = points;
 }
 
-qint32 GeneralController::getPoints()
+qint32 GeneralController::getPoints() const
 {
 	return m_points;
 }
 
-QMap<qint16, QImage *> &GeneralController::getGrid()
+const QMap<qint16, QImage *> &GeneralController::getGrid() const
 {
 	return grid;
 }
@@ -144,6 +140,11 @@ void GeneralController::moveDown()
 	}
 }
 
+void GeneralController::setThirdFigure(qint8 figure)
+{
+	thirdFigure = figure;
+}
+
 void GeneralController::newTick()
 {
 	if (m_stop)
@@ -207,7 +208,6 @@ void GeneralController::figureFall()
 	}
 	
 	getNextFigure();
-	emit newFigureSignal(thirdFigure);
 	newTick();
 }
 
@@ -215,7 +215,7 @@ void GeneralController::getNextFigure()
 {
 	qint8 firstFigure = secondFigure;
 	secondFigure = thirdFigure;
-	thirdFigure = random.generate() % 7;
+	emit newFigureSignal();
 	firstFigure = TetrisInfo::Figures::I; // -------------------------------DEBUG-----------------------------------------------
 	switch (firstFigure)
 	{
@@ -243,7 +243,7 @@ void GeneralController::getNextFigure()
 	}
 }
 
-bool GeneralController::isRowFull(qint8 rowNumber)
+bool GeneralController::isRowFull(qint8 rowNumber) const
 {
 	qint16 cell = TetrisInfo::getCell({0, rowNumber});
 	for (qint8 i = 0; i < TetrisInfo::COLUMN_COUNT; i++, cell++)
@@ -287,7 +287,7 @@ void GeneralController::shiftRows(qint8 bottomRow, qint8 count)
 	}
 }
 
-bool GeneralController::isObstacle(QList<qint16> cells)
+bool GeneralController::isObstacle(const QList<qint16> &cells) const
 {
 	foreach (qint16 cell, cells)
 	{
@@ -312,7 +312,7 @@ bool GeneralController::isObstacle(QList<qint16> cells)
 	return false;
 }
 
-bool GeneralController::isLayerOverflow(QList<qint16> cells)
+bool GeneralController::isLayerOverflow(const QList<qint16> &cells) const
 {
 	foreach (qint16 cell, cells)
 	{
@@ -324,7 +324,7 @@ bool GeneralController::isLayerOverflow(QList<qint16> cells)
 	return false;
 }
 
-void GeneralController::addFigure(QList<qint16> cells)
+void GeneralController::addFigure(const QList<qint16> &cells)
 {
 	foreach (qint16 cell, cells)
 	{
@@ -332,7 +332,7 @@ void GeneralController::addFigure(QList<qint16> cells)
 	}
 }
 
-void GeneralController::deleteFigure(QList<qint16> cells)
+void GeneralController::deleteFigure(const QList<qint16> &cells)
 {
 	foreach (qint16 cell, cells)
 	{
@@ -340,7 +340,7 @@ void GeneralController::deleteFigure(QList<qint16> cells)
 	}
 }
 
-void GeneralController::checkRows(QList<qint16> cells, qint8 &topRow_out, qint8 &rowCount_out)
+void GeneralController::checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out)
 {
 	rowCount_out = 0;
 	topRow_out = TetrisInfo::ROW_COUNT;
@@ -372,7 +372,7 @@ void GeneralController::addPoints(qint32 count)
 	}
 }
 
-bool GeneralController::isNegativeCoords(QList<qint16> cells)
+bool GeneralController::isNegativeCoords(const QList<qint16> &cells) const
 {
 	foreach (qint16 cell, cells)
 	{
