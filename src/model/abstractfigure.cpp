@@ -270,6 +270,11 @@ bool AbstractFigure::backRotate()
 	return false;
 }
 
+qint8 AbstractFigure::getType() const
+{
+	return type;
+}
+
 const QList<Block> &AbstractFigure::getBlocks() const
 {
 	return blocks;
@@ -343,6 +348,8 @@ IFigure::IFigure(QImage *image)
 	y = -1;
 	cell = TetrisInfo::getCell({x, y});
 	blocks.append(Block(cell, image));
+	
+	type = TetrisInfo::Figures::I;
 }
 
 QList<QPair<qint8, qint8> > IFigure::rotateUpRight(qint8 mult) const

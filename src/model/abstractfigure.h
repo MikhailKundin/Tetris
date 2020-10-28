@@ -16,6 +16,8 @@ public:
 	virtual bool rotate();
 	virtual bool backRotate();
 	
+	virtual qint8 getType() const;
+	
 	const QList<Block> &getBlocks() const;
 	QList<qint16> getCells() const;
 	QImage *getImage();
@@ -34,6 +36,7 @@ protected:
 	
 	QList<Block> blocks;
 	qint8 rotation = up;
+	qint8 type;
 };
 
 class IFigure : public AbstractFigure

@@ -213,34 +213,32 @@ void GeneralController::figureFall()
 
 void GeneralController::getNextFigure()
 {
-	qint8 firstFigure = secondFigure;
-	secondFigure = thirdFigure;
-	emit newFigureSignal();
-	firstFigure = TetrisInfo::Figures::I; // -------------------------------DEBUG-----------------------------------------------
-	switch (firstFigure)
+	figure = secondFigure;
+	switch (TetrisInfo::Figures::I) // (thirdFigure) -------------------------------DEBUG-----------------------------------------------
 	{
 	case TetrisInfo::Figures::I:
-		figure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
+		secondFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
 	case TetrisInfo::Figures::O:
-		//figure = new OFigure(m_blocks.value(Figures::O));
+		//secondFigure = new OFigure(m_blocks.value(Figures::O));
 		break;
 	case TetrisInfo::Figures::T:
-		//figure = new TFigure(m_blocks.value(Figures::T));
+		//secondFigure = new TFigure(m_blocks.value(Figures::T));
 		break;
 	case TetrisInfo::Figures::L:
-		//figure = new LFigure(m_blocks.value(Figures::L));
+		//secondFigure = new LFigure(m_blocks.value(Figures::L));
 		break;
 	case TetrisInfo::Figures::J:
-		//figure = new JFigure(m_blocks.value(Figures::J));
+		//secondFigure = new JFigure(m_blocks.value(Figures::J));
 		break;
 	case TetrisInfo::Figures::S:
-		//figure = new SFigure(m_blocks.value(Figures::S));
+		//secondFigure = new SFigure(m_blocks.value(Figures::S));
 		break;
 	case TetrisInfo::Figures::Z:
-		//figure = new ZFigure(m_blocks.value(Figures::Z));
+		//secondFigure = new ZFigure(m_blocks.value(Figures::Z));
 		break;
 	}
+	emit newFigureSignal();
 }
 
 bool GeneralController::isRowFull(qint8 rowNumber) const

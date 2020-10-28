@@ -1,6 +1,206 @@
 #include "NextFigurePnl.h"
 
-NextFigurePnl::NextFigurePnl(QWidget *parent) : QWidget(parent)
+#include <QPainter>
+#include <QRectF>
+
+#include "../TetrisInfo.h"
+#include "../model/AbstractFigure.h"
+
+#include <QDebug>
+
+NextFigurePnl::NextFigurePnl(qint8 blockSize, QWidget *parent) : QWidget(parent), BLOCK_SIZE(blockSize)
 {
+	resize(WIDTH, HEIGHT);
 	
+	QPixmap img(":/Images/Backgrounds/NextFigureBackground.png");
+	border = std::make_unique<QLabel>(this);
+	border->resize(size());
+	border->setPixmap(img.scaled(border->size()));
+}
+
+void NextFigurePnl::update(const AbstractFigure *&figure)
+{
+	image = figure->getBlocks().at(0).getImage();
+	type = figure->getType();
+	repaint();
+}
+
+void NextFigurePnl::paintEvent(QPaintEvent *e)
+{
+	Q_UNUSED(e)
+	
+	drawFigure();
+}
+
+void NextFigurePnl::drawFigure()
+{
+	QPainter painter(this);
+	QRect rect;
+	
+	switch (type)
+	{
+	case TetrisInfo::Figures::I:
+		drawI(painter, rect);
+		break;
+	case TetrisInfo::Figures::O:
+		drawO(painter, rect);
+		break;
+	case TetrisInfo::Figures::T:
+		drawI(painter, rect);
+		break;
+	case TetrisInfo::Figures::L:
+		drawL(painter, rect);
+		break;
+	case TetrisInfo::Figures::J:
+		drawJ(painter, rect);
+		break;
+	case TetrisInfo::Figures::S:
+		drawS(painter, rect);
+		break;
+	case TetrisInfo::Figures::Z:
+		drawZ(painter, rect);
+		break;
+	}
+}
+
+void NextFigurePnl::drawI(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER;
+	qint16 y = HEIGHT/2 - BLOCK_SIZE/2;
+	
+	for (qint8 i = 0; i < 3; i++)
+	{
+		rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+		painter.drawImage(rect, *image);
+		x += BLOCK_SIZE;
+	}
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawO(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE;
+	qint16 y = BORDER;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x -= BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawT(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE/2;
+	qint16 y = BORDER + BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y -= BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	y += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawL(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE/2;
+	qint16 y = BORDER + BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y -= BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawJ(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE/2;
+	qint16 y = BORDER + BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y -= BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawS(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE/2;
+	qint16 y = BORDER;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y -= BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+}
+
+void NextFigurePnl::drawZ(QPainter &painter, QRect &rect)
+{
+	qint16 x = BORDER + BLOCK_SIZE/2;
+	qint16 y = BORDER;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	y += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
+	x += BLOCK_SIZE;
+	
+	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
+	painter.drawImage(rect, *image);
 }

@@ -60,7 +60,7 @@ private:
 	
 	QMap<qint16, QImage *> grid;
 	AbstractFigure *figure;
-	qint8 secondFigure = 0;
+	AbstractFigure *secondFigure;
 	qint8 thirdFigure = 0;
 	qint32 m_points = 0;
 	qint16 level = 1;

@@ -2,11 +2,35 @@
 #define NEXTFIGUREPNL_H
 
 #include <QWidget>
+#include <QLabel>
 
+class AbstractFigure;
 class NextFigurePnl : public QWidget
 {
 public:
-	NextFigurePnl(QWidget *parent = nullptr);
+	NextFigurePnl(qint8 blockSize, QWidget *parent = nullptr);
+	
+	void update(const AbstractFigure *&figure);
+	
+private:
+	void paintEvent(QPaintEvent *e) override;
+	void drawFigure();
+	
+	void drawI(QPainter &painter, QRect &rect);
+	void drawO(QPainter &painter, QRect &rect);
+	void drawT(QPainter &painter, QRect &rect);
+	void drawL(QPainter &painter, QRect &rect);
+	void drawJ(QPainter &painter, QRect &rect);
+	void drawS(QPainter &painter, QRect &rect);
+	void drawZ(QPainter &painter, QRect &rect);
+	
+	qint8 type;
+	QImage *image;
+	std::unique_ptr<QLabel> border;
+	const qint8 BLOCK_SIZE;
+	const qint16 WIDTH = 134;
+	const qint16 HEIGHT = 74;
+	const qint16 BORDER = 7;
 };
 
 #endif // NEXTFIGUREPNL_H
