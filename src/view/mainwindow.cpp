@@ -106,9 +106,9 @@ void MainWindow::closeAll()
 
 void MainWindow::setBlockSize()
 {
-	BLOCK_SIZE = static_cast<qint8>(BASE_BLOCK_SIZE * 
-									BASE_SCREEN_HEIGHT / 
-									QApplication::screens().at(0)->geometry().height());
+	BLOCK_SIZE = static_cast<qint8>(QApplication::screens().at(0)->geometry().height() / 
+									BASE_SCREEN_HEIGHT * 
+									BASE_BLOCK_SIZE);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)

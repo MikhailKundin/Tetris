@@ -1,9 +1,11 @@
 #include "RecordTablePnl.h"
 
+#include <QSqlDatabase>
+
 #include <QDebug>
 
 RecordTablePnl::RecordTablePnl(QSize s, QWidget *parent) : QWidget(parent)
-{	
+{
 	gBox = std::make_unique<QGridLayout>(this);
 	setLayout(gBox.get());
 	
