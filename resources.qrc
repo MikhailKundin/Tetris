@@ -16,5 +16,6 @@
         <file alias="RecordTableBackground.png">etc/Images/Backgrounds/RecordTableBackground.png</file>
         <file alias="YellowBackground.png">etc/Images/Backgrounds/YellowBackground.png</file>
         <file alias="PointsBackground.png">etc/Images/Backgrounds/PointsBackground.png</file>
+        <file alias="LevelBackground.png">etc/Images/Backgrounds/LevelBackground.png</file>
     </qresource>
 </RCC>

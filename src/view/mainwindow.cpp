@@ -70,6 +70,8 @@ void MainWindow::openSingleLayout()
 	
 	connect(generalCtrl, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
 	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
+	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt.get(), &SingleWgt::updateLevel);
+	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
 	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
@@ -82,6 +84,9 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
 	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
+	
+	generalCtrl->restart();
+	offlineCtrl->restart();
 }
 
 void MainWindow::openOnlineLayout()

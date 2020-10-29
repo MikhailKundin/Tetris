@@ -10,7 +10,7 @@ class NextFigurePnl : public QWidget
 public:
 	NextFigurePnl(qint8 blockSize, QWidget *parent = nullptr);
 	
-	void update(const AbstractFigure *&figure);
+	void update(AbstractFigure *&figure);
 	
 private:
 	void paintEvent(QPaintEvent *e) override;
@@ -28,9 +28,9 @@ private:
 	QImage *image;
 	std::unique_ptr<QLabel> border;
 	const qint8 BLOCK_SIZE;
-	const qint16 WIDTH = 134;
-	const qint16 HEIGHT = 74;
-	const qint16 BORDER = 7;
+	qint16 WIDTH;
+	qint16 HEIGHT;
+	qint16 BORDER_WIDTH;
 };
 
 #endif // NEXTFIGUREPNL_H

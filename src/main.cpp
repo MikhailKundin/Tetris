@@ -9,6 +9,8 @@
 #include "view/PointsPnl.h"
 #include "view/RecordTablePnl.h"
 #include "view/NextFigurePnl.h"
+#include "view/LevelPnl.h"
+#include "view/LevelFigurePnl.h"
 #include "model/Block.h"
 #include <QTime>
 #include <QRandomGenerator>
@@ -21,15 +23,15 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	
-//	MainWindow window;
-//	window.move(800, 0);
-//	window.show();
+	MainWindow window;
+	window.move(750, 0);
+	window.show();
 	
-	NextFigurePnl w(30);
-	w.show();
-	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
-	const AbstractFigure *figure = new IFigure(green);
-	w.update(figure);
+//	LevelFigurePnl w(50, 30);
+//	w.show();
+//	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
+//	const AbstractFigure *figure = new IFigure(green);
+//	w.update(figure);
 	
 	return app.exec();
 }

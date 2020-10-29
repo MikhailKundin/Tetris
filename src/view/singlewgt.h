@@ -6,6 +6,7 @@
 #include "PlaygroundPnl.h"
 #include "PointsPnl.h"
 #include "RecordTablePnl.h"
+#include "LevelFigurePnl.h"
 
 namespace Ui {
 class SingleWgt;
@@ -22,14 +23,17 @@ public:
 public slots:
 	void updateGrid(const QMap<qint16, QImage *> &grid) const;
 	void updatePoints(qint32 points);
+	void updateLevel(qint16 level);
+	void updateFigure(AbstractFigure *&figure);
 	
 private:
 	
 	Ui::SingleWgt *ui;
 	
 	std::unique_ptr<PlaygroundPnl> pg;
-	std::unique_ptr<PointsPnl> pointsWgt;
-	std::unique_ptr<RecordTablePnl> rtWgt;
+	std::unique_ptr<PointsPnl> pointsPnl;
+	std::unique_ptr<RecordTablePnl> rtPnl;
+	std::unique_ptr<LevelFigurePnl> lfPnl;
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 	

@@ -28,6 +28,7 @@ public slots:
 	void newTick();
 	void restart();
 	void stop();
+	void start();
 	void deleteController();
 	
 signals:
@@ -40,7 +41,7 @@ signals:
 	void defeatSignal();
 	void newPointsSignal(qint32 points);
 	void newLevelSignal(qint16 level);
-	void newFigureSignal();
+	void newFigureSignal(AbstractFigure *&secondFigure);
 	
 private:
 	void figureFall();

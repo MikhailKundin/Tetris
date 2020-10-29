@@ -9,14 +9,12 @@ OfflineController::OfflineController()
 {
 	timer = std::make_unique<QTimer>();
 	connect(timer.get(), &QTimer::timeout, this, &OfflineController::tick);
-	timer->setInterval(START_INTERVAL);
-	timer->start();
-	
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
 }
 
 void OfflineController::tick()
 {
+	timer->start();
 	emit tickSignal();
 }
 
@@ -51,4 +49,15 @@ void OfflineController::getNewFigure()
 {
 	qint8 figure = random.generate() % 7;
 	emit newFigureSignal(figure);
+}
+
+void OfflineController::pause()
+{
+	timer->setInterval(timer->remainingTime());
+	timer->stop();
+}
+
+void OfflineController::resume()
+{
+	timer->start();
 }

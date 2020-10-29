@@ -9,7 +9,7 @@
 GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 	: m_blocks(blocks)
 {	
-	restart();
+	
 }
 
 GeneralController::~GeneralController()
@@ -187,6 +187,11 @@ void GeneralController::stop()
 	m_stop = true;
 }
 
+void GeneralController::start()
+{
+	m_stop = false;
+}
+
 void GeneralController::deleteController()
 {
 	delete this;
@@ -238,7 +243,7 @@ void GeneralController::getNextFigure()
 		//secondFigure = new ZFigure(m_blocks.value(Figures::Z));
 		break;
 	}
-	emit newFigureSignal();
+	emit newFigureSignal(secondFigure);
 }
 
 bool GeneralController::isRowFull(qint8 rowNumber) const

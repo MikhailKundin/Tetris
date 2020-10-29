@@ -19,6 +19,8 @@ public slots:
 	void restart();
 	void deleteController();
 	void getNewFigure();
+	void pause();
+	void resume();
 	
 signals:
 	void tickSignal();

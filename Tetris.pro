@@ -31,6 +31,8 @@ SOURCES += \
     src/controller/OfflineController.cpp \
     src/model/AbstractFigure.cpp \
     src/model/Block.cpp \
+    src/view/LevelFigurePnl.cpp \
+    src/view/LevelPnl.cpp \
     src/view/MainMenuWgt.cpp \
     src/view/MainWindow.cpp \
     src/view/NextFigurePnl.cpp \
@@ -46,6 +48,8 @@ HEADERS += \
 	src/controller/OfflineController.h \
 	src/model/AbstractFigure.h \
 	src/model/Block.h \
+	src/view/LevelFigurePnl.h \
+	src/view/LevelPnl.h \
 	src/view/MainMenuWgt.h \
 	src/view/MainWindow.h \
 	src/view/NextFigurePnl.h \
@@ -60,10 +64,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-	src/Ui/MainMenuWgt.ui \
-	src/Ui/MainWindow.ui \
-	src/Ui/PointsPnl.ui \
-	src/Ui/SingleWgt.ui
+	src/ui/MainMenuWgt.ui \
+	src/ui/MainWindow.ui \
+	src/ui/PointsPnl.ui \
+	src/ui/SingleWgt.ui \
+	src/ui/LevelPnl.ui \
+	src/ui/LevelFigurePnl.ui
 
 RESOURCES += \
 	resources.qrc

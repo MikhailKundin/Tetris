@@ -10,7 +10,13 @@
 
 NextFigurePnl::NextFigurePnl(qint8 blockSize, QWidget *parent) : QWidget(parent), BLOCK_SIZE(blockSize)
 {
-	resize(WIDTH, HEIGHT);
+	WIDTH = BLOCK_SIZE*4;
+	HEIGHT = BLOCK_SIZE*2;
+	BORDER_WIDTH = static_cast<qint16>(3.5 * WIDTH/HEIGHT);
+	WIDTH += BORDER_WIDTH*2;
+	HEIGHT += BORDER_WIDTH*2;
+	
+	setFixedSize(WIDTH, HEIGHT);
 	
 	QPixmap img(":/Images/Backgrounds/NextFigureBackground.png");
 	border = std::make_unique<QLabel>(this);
@@ -18,7 +24,7 @@ NextFigurePnl::NextFigurePnl(qint8 blockSize, QWidget *parent) : QWidget(parent)
 	border->setPixmap(img.scaled(border->size()));
 }
 
-void NextFigurePnl::update(const AbstractFigure *&figure)
+void NextFigurePnl::update(AbstractFigure *&figure)
 {
 	image = figure->getBlocks().at(0).getImage();
 	type = figure->getType();
@@ -65,7 +71,7 @@ void NextFigurePnl::drawFigure()
 
 void NextFigurePnl::drawI(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER;
+	qint16 x = BORDER_WIDTH;
 	qint16 y = HEIGHT/2 - BLOCK_SIZE/2;
 	
 	for (qint8 i = 0; i < 3; i++)
@@ -80,8 +86,8 @@ void NextFigurePnl::drawI(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawO(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE;
-	qint16 y = BORDER;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE;
+	qint16 y = BORDER_WIDTH;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
@@ -101,8 +107,8 @@ void NextFigurePnl::drawO(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawT(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE/2;
-	qint16 y = BORDER + BLOCK_SIZE;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE/2;
+	qint16 y = BORDER_WIDTH + BLOCK_SIZE;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
@@ -123,8 +129,8 @@ void NextFigurePnl::drawT(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawL(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE/2;
-	qint16 y = BORDER + BLOCK_SIZE;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE/2;
+	qint16 y = BORDER_WIDTH + BLOCK_SIZE;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
@@ -144,8 +150,8 @@ void NextFigurePnl::drawL(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawJ(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE/2;
-	qint16 y = BORDER + BLOCK_SIZE;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE/2;
+	qint16 y = BORDER_WIDTH + BLOCK_SIZE;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
@@ -165,8 +171,8 @@ void NextFigurePnl::drawJ(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawS(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE/2;
-	qint16 y = BORDER;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE/2;
+	qint16 y = BORDER_WIDTH;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
@@ -186,8 +192,8 @@ void NextFigurePnl::drawS(QPainter &painter, QRect &rect)
 
 void NextFigurePnl::drawZ(QPainter &painter, QRect &rect)
 {
-	qint16 x = BORDER + BLOCK_SIZE/2;
-	qint16 y = BORDER;
+	qint16 x = BORDER_WIDTH + BLOCK_SIZE/2;
+	qint16 y = BORDER_WIDTH;
 	
 	rect.setRect(x, y, BLOCK_SIZE+1, BLOCK_SIZE+1);
 	painter.drawImage(rect, *image);
