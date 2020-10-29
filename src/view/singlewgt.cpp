@@ -5,9 +5,10 @@
 
 #include <QDebug>
 
-SingleWgt::SingleWgt(QWidget *parent) :
+SingleWgt::SingleWgt(qint8 blockSize, QWidget *parent) :
 	QWidget(parent),
-	ui(new Ui::SingleWgt)
+	ui(new Ui::SingleWgt),
+	BLOCK_SIZE(blockSize)
 {
 	ui->setupUi(this);
 	
@@ -39,7 +40,9 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	rightTopLbl->setPixmap(yellowImg.scaled(rightTopLbl->size()));
 	
 	setMinimumHeight(pg->height() + pointsPnl->height() + 6);
-	setMinimumWidth(ui->levelFigurePnlPlace->width() + TetrisInfo::COLUMN_COUNT*BLOCK_SIZE + rightTopLbl->width());
+	setMinimumWidth(ui->levelFigurePnlPlace->width() + 
+					TetrisInfo::COLUMN_COUNT*BLOCK_SIZE + 
+					rightTopLbl->width());
 }
 
 SingleWgt::~SingleWgt()

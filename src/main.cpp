@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	
 	MainWindow window;
 	window.move(750, 0);
-	window.show();
+	window.showMaximized();
 	
 //	LevelFigurePnl w(50, 30);
 //	w.show();

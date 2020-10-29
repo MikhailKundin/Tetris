@@ -17,7 +17,7 @@ class SingleWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SingleWgt(QWidget *parent = nullptr);
+	explicit SingleWgt(qint8 blockSize, QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
 public slots:
@@ -37,9 +37,9 @@ private:
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 	
-	const qint8 BLOCK_SIZE = 30;
 	const qint32 POINTS_HEIGHT = 50;
 	const qint32 RECORD_WIDTH = 150;
+	const qint8 BLOCK_SIZE;
 };
 
 #endif // SINGLEWGT_H
