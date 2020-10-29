@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <QScreen>
 
+#include "MainMenuWgt.h"
+#include "SingleWgt.h"
 #include "../controller/GeneralController.h"
 #include "../controller/OfflineController.h"
 #include "../TetrisInfo.h"
@@ -17,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	
-	setBlockSize();
 	
 	QPalette pal(palette());
 	pal.setColor(QPalette::Background, Qt::black);
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
-	singleWgt = std::make_unique<SingleWgt>(BLOCK_SIZE);
+	singleWgt = std::make_unique<SingleWgt>();
 	mainMenuWdt = std::make_unique<MainMenuWgt>();
 	
 	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
@@ -102,12 +102,6 @@ void MainWindow::openOnlineLayout()
 void MainWindow::closeAll()
 {
 	close();
-}
-
-void MainWindow::setBlockSize()
-{
-	BLOCK_SIZE = static_cast<qint8>(static_cast<qreal>(QApplication::screens().at(0)->geometry().height()) / 
-									BASE_SCREEN_HEIGHT * BASE_BLOCK_SIZE);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)

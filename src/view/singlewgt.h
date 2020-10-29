@@ -3,21 +3,25 @@
 
 #include <QWidget>
 
-#include "PlaygroundPnl.h"
-#include "PointsPnl.h"
-#include "RecordTablePnl.h"
-#include "LevelFigurePnl.h"
+#include "WidgetInfo.h"
+
+class PlaygroundPnl;
+class PointsPnl;
+class RecordTablePnl;
+class LevelFigurePnl;
+class AbstractFigure;
+class QLabel;
 
 namespace Ui {
 class SingleWgt;
 }
 
-class SingleWgt : public QWidget
+class SingleWgt : public WidgetInfo
 {
 	Q_OBJECT
 	
 public:
-	explicit SingleWgt(qint8 blockSize, QWidget *parent = nullptr);
+	explicit SingleWgt(QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
 public slots:
@@ -36,10 +40,6 @@ private:
 	std::unique_ptr<LevelFigurePnl> lfPnl;
 	
 	std::unique_ptr<QLabel> rightTopLbl;
-	
-	const qint32 POINTS_HEIGHT = 50;
-	const qint32 RECORD_WIDTH = 150;
-	const qint8 BLOCK_SIZE;
 };
 
 #endif // SINGLEWGT_H

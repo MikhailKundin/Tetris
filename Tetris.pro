@@ -40,7 +40,8 @@ SOURCES += \
     src/view/PointsPnl.cpp \
     src/view/RecordTablePnl.cpp \
     src/main.cpp \
-    src/view/SingleWgt.cpp
+    src/view/SingleWgt.cpp \
+    src/view/WidgetInfo.cpp
 
 HEADERS += \
 	src/TetrisInfo.h \
@@ -56,7 +57,8 @@ HEADERS += \
 	src/view/PlaygroundPnl.h \
 	src/view/PointsPnl.h \
 	src/view/RecordTablePnl.h \
-	src/view/SingleWgt.h
+	src/view/SingleWgt.h \
+	src/view/WidgetInfo.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -7,7 +7,7 @@
 class PlaygroundPnl : public QWidget
 {
 public:
-	PlaygroundPnl(qint8 blockSize, QWidget *parent = nullptr);
+	PlaygroundPnl(quint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	void update(const QMap<qint16, QImage *> &grid);
 	
 private:
@@ -17,8 +17,8 @@ private:
 	
 	 QMap<qint16, QImage*> m_grid;
 	
-	const qint8 BLOCK_SIZE;
-	const qint8 GRID_WIDTH = 1;
+	quint8 BLOCK_SIZE;
+	const quint8 GRID_WIDTH = 1;
 };
 
 #endif // PLAYGROUND_H

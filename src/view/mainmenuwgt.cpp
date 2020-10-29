@@ -1,6 +1,8 @@
 #include "MainMenuWgt.h"
 #include "ui_mainmenuwgt.h"
 
+#include <QPushButton>
+
 MainMenuWgt::MainMenuWgt(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::MainMenuWdt)

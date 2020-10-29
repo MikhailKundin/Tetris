@@ -12,13 +12,16 @@ class PointsPnl : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit PointsPnl(QSize s, QWidget *parent = nullptr);
+	explicit PointsPnl(quint16 width, qreal mult, QWidget *parent = nullptr);
 	~PointsPnl();
 	
 	void update(qint32 points);
 	
 private:
 	Ui::PointsWgt *ui;
+	
+	const quint8 HEIGHT = 50;
+	const quint8 BASE_FONT_SIZE = 20;
 };
 
 #endif // POINTSWGT_H

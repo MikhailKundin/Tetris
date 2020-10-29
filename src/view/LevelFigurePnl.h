@@ -3,8 +3,10 @@
 
 #include <QWidget>
 
-#include "LevelPnl.h"
-#include "NextFigurePnl.h"
+class LevelPnl;
+class NextFigurePnl;
+class AbstractFigure;
+class QLabel;
 
 namespace Ui {
 class LevelFigurePnl;
@@ -15,7 +17,7 @@ class LevelFigurePnl : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit LevelFigurePnl(qint16 pointsHeight, qint8 blockSize, QWidget *parent = nullptr);
+	explicit LevelFigurePnl(qint16 pointsHeight, qint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	~LevelFigurePnl() override;
 	
 	void setLevel(qint16 level);

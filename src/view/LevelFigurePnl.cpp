@@ -1,18 +1,28 @@
 #include "LevelFigurePnl.h"
 #include "ui_LevelFigurePnl.h"
 
+#include <QLabel>
+
+#include "LevelPnl.h"
+#include "NextFigurePnl.h"
+#include "../TetrisInfo.h"
+
 #include <QDebug>
 
-LevelFigurePnl::LevelFigurePnl(qint16 pointsHeight, qint8 blockSize, QWidget *parent) :
+LevelFigurePnl::LevelFigurePnl(qint16 pointsHeight, qint8 blockSize, qreal mult, QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::LevelFigurePnl)
 {
 	ui->setupUi(this);
 	
-	nextFigurePnl = std::make_unique<NextFigurePnl>(blockSize, this);
-	levelPnl = std::make_unique<LevelPnl>(nextFigurePnl->width(), pointsHeight, this);
+	nextFigurePnl = std::make_unique<NextFigurePnl>(blockSize, mult, this);
+	nextFigurePnl->setFixedSize(nextFigurePnl->size());
 	
-	setFixedWidth(nextFigurePnl->width());
+	levelPnl = std::make_unique<LevelPnl>(nextFigurePnl->width(), pointsHeight, mult, this);
+	levelPnl->setFixedSize(levelPnl->size());
+	
+	quint16 height = static_cast<quint16>(pointsHeight + blockSize*mult*TetrisInfo::ROW_COUNT);
+	resize(nextFigurePnl->width(), height);
 	
 	yellowLbl = std::make_unique<QLabel>(this);
 	img = std::make_unique<QPixmap>(":Images/Backgrounds/YellowBackground.png");

@@ -2,13 +2,14 @@
 #define NEXTFIGUREPNL_H
 
 #include <QWidget>
-#include <QLabel>
 
+class QLabel;
 class AbstractFigure;
+
 class NextFigurePnl : public QWidget
 {
 public:
-	NextFigurePnl(qint8 blockSize, QWidget *parent = nullptr);
+	NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	
 	void update(AbstractFigure *&figure);
 	
@@ -27,10 +28,10 @@ private:
 	qint8 type;
 	QImage *image;
 	std::unique_ptr<QLabel> border;
-	const qint8 BLOCK_SIZE;
-	qint16 WIDTH;
-	qint16 HEIGHT;
-	qint16 BORDER_WIDTH;
+	quint16 BLOCK_SIZE;
+	quint16 WIDTH;
+	quint16 HEIGHT;
+	quint8 BORDER_WIDTH = 7;
 };
 
 #endif // NEXTFIGUREPNL_H

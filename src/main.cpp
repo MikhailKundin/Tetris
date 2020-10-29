@@ -28,6 +28,9 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
+//	LevelFigurePnl lf(50, 30, 1);
+//	lf.show();
+	
 //	LevelFigurePnl w(50, 30);
 //	w.show();
 //	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");

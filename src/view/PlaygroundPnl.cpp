@@ -7,9 +7,12 @@
 
 #include <QDebug>
 
-PlaygroundPnl::PlaygroundPnl(qint8 blockSize, QWidget *parent) : QWidget(parent), BLOCK_SIZE(blockSize)
+PlaygroundPnl::PlaygroundPnl(quint8 blockSize, qreal mult, QWidget *parent) : 
+	QWidget(parent), BLOCK_SIZE(blockSize)
 {
-	setMinimumSize(TetrisInfo::COLUMN_COUNT * BLOCK_SIZE + 1, TetrisInfo::ROW_COUNT * BLOCK_SIZE + 1);
+	BLOCK_SIZE = static_cast<quint8>(blockSize * mult);
+	
+	resize(TetrisInfo::COLUMN_COUNT*BLOCK_SIZE + 1, TetrisInfo::ROW_COUNT*BLOCK_SIZE + 1);
 	
 	QPalette pal(palette());
 	pal.setColor(QPalette::Window, qRgb(20, 20, 60));

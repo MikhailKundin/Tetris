@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
 
-#include "MainMenuWgt.h"
-#include "SingleWgt.h"
+class SingleWgt;
+class MainMenuWgt;
+class QImage;
 
 namespace Ui {
 class MainWindow;
@@ -25,8 +27,6 @@ private slots:
 	void openOnlineLayout();
 	void closeAll();
 	
-	void setBlockSize();
-	
 signals:
 	void moveRightSignal();
 	void moveLeftSignal();
@@ -43,10 +43,6 @@ private:
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
-	
-	qint8 BLOCK_SIZE;
-	const qint8 BASE_BLOCK_SIZE = 30;
-	const qint16 BASE_SCREEN_HEIGHT = 768;
 };
 
 #endif // MAINWINDOW_H
