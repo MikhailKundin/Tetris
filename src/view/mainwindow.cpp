@@ -73,6 +73,7 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt.get(), &SingleWgt::updateLevel);
 	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
 	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);

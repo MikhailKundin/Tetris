@@ -219,28 +219,28 @@ void GeneralController::figureFall()
 void GeneralController::getNextFigure()
 {
 	figure = secondFigure;
-	switch (TetrisInfo::Figures::I) // (thirdFigure) -------------------------------DEBUG-----------------------------------------------
+	switch (TetrisInfo::Figures::T) // (thirdFigure) -------------------------------DEBUG-----------------------------------------------
 	{
 	case TetrisInfo::Figures::I:
 		secondFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
 	case TetrisInfo::Figures::O:
-		//secondFigure = new OFigure(m_blocks.value(Figures::O));
+		secondFigure = new OFigure(m_blocks.value(TetrisInfo::Figures::O));
 		break;
 	case TetrisInfo::Figures::T:
-		//secondFigure = new TFigure(m_blocks.value(Figures::T));
+		secondFigure = new TFigure(m_blocks.value(TetrisInfo::Figures::T));
 		break;
 	case TetrisInfo::Figures::L:
-		//secondFigure = new LFigure(m_blocks.value(Figures::L));
+		//secondFigure = new LFigure(m_blocks.value(TetrisInfo::Figures::L));
 		break;
 	case TetrisInfo::Figures::J:
-		//secondFigure = new JFigure(m_blocks.value(Figures::J));
+		//secondFigure = new JFigure(m_blocks.value(TetrisInfo::Figures::J));
 		break;
 	case TetrisInfo::Figures::S:
-		//secondFigure = new SFigure(m_blocks.value(Figures::S));
+		//secondFigure = new SFigure(m_blocks.value(TetrisInfo::Figures::S));
 		break;
 	case TetrisInfo::Figures::Z:
-		//secondFigure = new ZFigure(m_blocks.value(Figures::Z));
+		//secondFigure = new ZFigure(m_blocks.value(TetrisInfo::Figures::Z));
 		break;
 	}
 	emit newFigureSignal(secondFigure);
