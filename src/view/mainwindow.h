@@ -40,10 +40,6 @@ private:
 	std::unique_ptr<SingleWgt> singleWgt;
 	
 	QList<qint32> keyList;
-	
-	qint8 ROW_COUNT = 20;
-	qint8 COLUMN_COUNT = 10;
-	
 	QMap<qint8, QImage *> blocks;
 };
 

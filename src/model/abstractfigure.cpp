@@ -110,15 +110,12 @@ bool AbstractFigure::moveDown()
 			coord.second += 1;
 			coords.append(coord);
 		}
-	}
-	
-	if (!negative)
-	{
 		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
+	
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
 		blocks[i].setCell(cells.at(i)+TetrisInfo::COLUMN_COUNT);
@@ -148,15 +145,12 @@ bool AbstractFigure::moveUp()
 			coord.second -= 1;
 			coords.append(coord);
 		}
-	}
-	
-	if (!negative)
-	{
 		if (isOutOfBounds(coords))
 		{
 			return false;
 		}
 	}
+	
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
 		blocks[i].setCell(cells.at(i)-TetrisInfo::COLUMN_COUNT);
@@ -591,20 +585,83 @@ QList<QPair<qint8, qint8> > TFigure::rotateLeftDown(qint8 mult) const
 
 QList<QPair<qint8, qint8> > TFigure::rotateDownRight(qint8 mult) const
 {
+	return rotateUpLeft(-1*mult);
+}
+
+QList<QPair<qint8, qint8> > TFigure::rotateRightUp(qint8 mult) const
+{
+	return rotateLeftDown(-1*mult);
+}
+
+LFigure::LFigure(QImage *image)
+{
+	qint8 x, y;
+	qint16 cell;
+	qint8 middle = TetrisInfo::COLUMN_COUNT / 2;
+	
+	x = middle - 1;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle - 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle + 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	type = TetrisInfo::Figures::L;
+}
+
+QList<QPair<qint8, qint8> > LFigure::rotateUpLeft(qint8 mult) const
+{
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;
 	
 	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 2*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first += 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
 	coord.first -= 1*mult;
 	coord.second -= 1*mult;
 	coords.append(coord);
 	
+	return coords;
+}
+
+QList<QPair<qint8, qint8> > LFigure::rotateLeftDown(qint8 mult) const
+{
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
+	
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.second -= 2*mult;
+	coords.append(coord);
+	
 	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first += 1*mult;
+	coord.second -= 1*mult;
 	coords.append(coord);
 	
 	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
-	coord.first += 1*mult;
-	coord.second += 1*mult;
 	coords.append(coord);
 	
 	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
@@ -615,13 +672,210 @@ QList<QPair<qint8, qint8> > TFigure::rotateDownRight(qint8 mult) const
 	return coords;
 }
 
-QList<QPair<qint8, qint8> > TFigure::rotateRightUp(qint8 mult) const
+QList<QPair<qint8, qint8> > LFigure::rotateDownRight(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
+}
+
+QList<QPair<qint8, qint8> > LFigure::rotateRightUp(qint8 mult) const
+{
+	return rotateLeftDown(-1*mult);
+}
+
+JFigure::JFigure(QImage *image)
+{
+	qint8 x, y;
+	qint16 cell;
+	qint8 middle = TetrisInfo::COLUMN_COUNT / 2;
+	
+	x = middle - 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle + 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle + 1;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	type = TetrisInfo::Figures::J;
+}
+
+QList<QPair<qint8, qint8> > JFigure::rotateUpLeft(qint8 mult) const
 {
 	QList<QPair<qint8, qint8> > coords;
 	QPair<qint8, qint8> coord;
 	
 	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
 	coord.first -= 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.second -= 2*mult;
+	coords.append(coord);
+	
+	return coords;
+}
+
+QList<QPair<qint8, qint8> > JFigure::rotateLeftDown(qint8 mult) const
+{
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
+	
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coord.first -= 1*mult;
+	coord.second += 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first -= 2*mult;
+	coords.append(coord);
+	
+	return coords;
+}
+
+QList<QPair<qint8, qint8> > JFigure::rotateDownRight(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
+}
+
+QList<QPair<qint8, qint8> > JFigure::rotateRightUp(qint8 mult) const
+{
+	return rotateLeftDown(-1*mult);
+}
+
+SFigure::SFigure(QImage *image)
+{
+	qint8 x, y;
+	qint16 cell;
+	qint8 middle = TetrisInfo::COLUMN_COUNT / 2;
+	
+	x = middle - 1;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle + 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	type = TetrisInfo::Figures::S;
+}
+
+QList<QPair<qint8, qint8> > SFigure::rotateUpLeft(qint8 mult) const
+{
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
+	
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 2*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(1).getCell());
+	coord.first += 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(2).getCell());
+	coords.append(coord);
+	
+	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
+	coord.first -= 1*mult;
+	coord.second -= 1*mult;
+	coords.append(coord);
+	
+	return coords;
+}
+
+QList<QPair<qint8, qint8> > SFigure::rotateLeftDown(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
+}
+
+QList<QPair<qint8, qint8> > SFigure::rotateDownRight(qint8 mult) const
+{
+	return rotateUpLeft(mult);
+}
+
+QList<QPair<qint8, qint8> > SFigure::rotateRightUp(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
+}
+
+ZFigure::ZFigure(QImage *image)
+{
+	qint8 x, y;
+	qint16 cell;
+	qint8 middle = TetrisInfo::COLUMN_COUNT / 2;
+	
+	x = middle - 1;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -2;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	x = middle + 1;
+	y = -1;
+	cell = TetrisInfo::getCell({x, y});
+	blocks.append(Block(cell, image));
+	
+	type = TetrisInfo::Figures::Z;
+}
+
+QList<QPair<qint8, qint8> > ZFigure::rotateUpLeft(qint8 mult) const
+{
+	QList<QPair<qint8, qint8> > coords;
+	QPair<qint8, qint8> coord;
+	
+	coord = TetrisInfo::getCoord(blocks.at(0).getCell());
+	coord.first += 1*mult;
 	coord.second += 1*mult;
 	coords.append(coord);
 	
@@ -634,9 +888,23 @@ QList<QPair<qint8, qint8> > TFigure::rotateRightUp(qint8 mult) const
 	coords.append(coord);
 	
 	coord = TetrisInfo::getCoord(blocks.at(3).getCell());
-	coord.first += 1*mult;
-	coord.second += 1*mult;
+	coord.second -= 2*mult;
 	coords.append(coord);
 	
 	return coords;
+}
+
+QList<QPair<qint8, qint8> > ZFigure::rotateLeftDown(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
+}
+
+QList<QPair<qint8, qint8> > ZFigure::rotateDownRight(qint8 mult) const
+{
+	return rotateUpLeft(mult);
+}
+
+QList<QPair<qint8, qint8> > ZFigure::rotateRightUp(qint8 mult) const
+{
+	return rotateUpLeft(-1*mult);
 }

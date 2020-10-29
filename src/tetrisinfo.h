@@ -13,6 +13,7 @@ public:
 	
 	static const qint8 ROW_COUNT = 20;
 	static const qint8 COLUMN_COUNT = 10;
+	static qint8 BLOCK_SIZE;
 };
 
 #endif // TETRISINFO_H

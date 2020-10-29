@@ -77,4 +77,52 @@ private:
 	QList<QPair<qint8, qint8> > rotateRightUp(qint8 mult) const override;
 };
 
+class LFigure : public AbstractFigure
+{
+public:
+	LFigure(QImage *image);
+	
+private:
+	QList<QPair<qint8, qint8> > rotateUpLeft(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateLeftDown(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateDownRight(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateRightUp(qint8 mult) const override;
+};
+
+class JFigure : public AbstractFigure
+{
+public:
+	JFigure(QImage *image);
+	
+private:
+	QList<QPair<qint8, qint8> > rotateUpLeft(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateLeftDown(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateDownRight(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateRightUp(qint8 mult) const override;
+};
+
+class SFigure : public AbstractFigure
+{
+public:
+	SFigure(QImage *image);
+	
+private:
+	QList<QPair<qint8, qint8> > rotateUpLeft(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateLeftDown(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateDownRight(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateRightUp(qint8 mult) const override;
+};
+
+class ZFigure : public AbstractFigure
+{
+public:
+	ZFigure(QImage *image);
+	
+private:
+	QList<QPair<qint8, qint8> > rotateUpLeft(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateLeftDown(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateDownRight(qint8 mult) const override;
+	QList<QPair<qint8, qint8> > rotateRightUp(qint8 mult) const override;
+};
+
 #endif // ABSTARCTFIGURE_H

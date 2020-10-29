@@ -15,6 +15,7 @@
 #include <QTime>
 #include <QRandomGenerator>
 #include "controller/GeneralController.h"
+#include "TetrisInfo.h"
 #include <QObject>
 
 #include <QDebug>

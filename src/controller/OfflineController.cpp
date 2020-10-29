@@ -14,8 +14,6 @@ OfflineController::OfflineController()
 
 void OfflineController::tick()
 {
-	static qint16 i = 0;
-	//qDebug() << i++;
 	timer->start();
 	emit tickSignal();
 }
