@@ -43,6 +43,7 @@ SingleWgt::SingleWgt(qint8 blockSize, QWidget *parent) :
 	setMinimumWidth(ui->levelFigurePnlPlace->width() + 
 					TetrisInfo::COLUMN_COUNT*BLOCK_SIZE + 
 					rightTopLbl->width());
+	rtPnl->test(BLOCK_SIZE);
 }
 
 SingleWgt::~SingleWgt()

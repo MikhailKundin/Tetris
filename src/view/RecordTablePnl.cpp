@@ -1,6 +1,8 @@
 #include "RecordTablePnl.h"
 
 #include <QSqlDatabase>
+#include <QApplication>
+#include <QScreen>
 
 #include <QDebug>
 
@@ -67,4 +69,10 @@ RecordTablePnl::~RecordTablePnl()
 	{
 		delete point;
 	}
+}
+
+void RecordTablePnl::test(qint8 bs)
+{
+	names.at(0)->setText(QString::number(bs));
+	points.at(0)->setText(QString::number(QApplication::screens().at(0)->geometry().height()));
 }

@@ -11,6 +11,8 @@ public:
 	RecordTablePnl(QSize s, QWidget *parent = nullptr);
 	~RecordTablePnl();
 	
+	void test(qint8 bs);
+	
 private:
 	std::unique_ptr<QGridLayout> gBox;
 	QList<QLabel *> names;
