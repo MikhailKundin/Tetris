@@ -8,6 +8,7 @@
 #include "PointsPnl.h"
 #include "RecordTablePnl.h"
 #include "LevelFigurePnl.h"
+#include "../Database.h"
 
 #include <QDebug>
 
@@ -70,4 +71,9 @@ void SingleWgt::updateLevel(quint16 level)
 void SingleWgt::updateFigure(AbstractFigure *&figure)
 {
 	lfPnl->setFigure(figure);
+}
+
+void SingleWgt::saveResult(QString name)
+{
+	rtPnl->saveResult(name);
 }

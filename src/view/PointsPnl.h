@@ -16,6 +16,7 @@ public:
 	~PointsPnl();
 	
 	void update(quint32 points);
+	quint32 getPoints() const;
 	
 private:
 	Ui::PointsWgt *ui;

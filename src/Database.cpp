@@ -16,6 +16,7 @@ QList<QPair<QString, quint32> > Database::getRecords() const
 	QSqlQuery query(m_db);
 	query.prepare("SELECT Name, Points "
 				  "FROM RecordTable "
+				  "WHERE Name != ''"
 				  "ORDER BY Points DESC "
 				  "LIMIT 10");
 	query.exec();

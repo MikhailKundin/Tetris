@@ -8,6 +8,7 @@
 
 #include "MainMenuWgt.h"
 #include "SingleWgt.h"
+#include "SaveResultsWgt.h"
 #include "../controller/GeneralController.h"
 #include "../controller/OfflineController.h"
 #include "../TetrisInfo.h"
@@ -35,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	singleWgt = std::make_unique<SingleWgt>();
 	mainMenuWdt = std::make_unique<MainMenuWgt>();
+	saveResultsWgt = std::make_unique<SaveResultsWgt>(1, this);
+	
+	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, singleWgt.get(), &SingleWgt::saveResult);
 	
 	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
 	connect(mainMenuWdt.get(), &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
@@ -78,6 +82,7 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
 	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
 	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, saveResultsWgt.get(), &SaveResultsWgt::activate);
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
@@ -180,4 +185,18 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 	{
 		keyList.removeAt(index);
 	}
+}
+
+void MainWindow::paintEvent(QPaintEvent *e)
+{
+	Q_UNUSED(e)
+	
+	moveSaveResults();
+}
+
+void MainWindow::moveSaveResults()
+{
+	quint16 x = static_cast<quint16>(width()/2 - saveResultsWgt->width()/2);
+	quint16 y = static_cast<quint16>(height()/2 - saveResultsWgt->height()/2);
+	saveResultsWgt->move(x, y);
 }

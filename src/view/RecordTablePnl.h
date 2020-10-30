@@ -2,6 +2,7 @@
 #define RECORDTABLE_H
 
 #include <QWidget>
+#include "../Database.h"
 
 class QLabel;
 class QGridLayout;
@@ -13,6 +14,7 @@ public:
 	~RecordTablePnl();
 	
 	void updateRecordTable(quint32 newPoints);
+	void saveResult(const QString &name);
 	
 private:
 	std::unique_ptr<QGridLayout> gBox;
@@ -23,6 +25,7 @@ private:
 	std::unique_ptr<QLabel> backLbl;
 	
 	quint8 place = 10;
+	Database db;
 	
 	const quint8 TOP_SPACE = 30;
 	const quint8 BOTTOM_SPACE = 15;

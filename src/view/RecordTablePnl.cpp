@@ -5,8 +5,6 @@
 #include <QGridLayout>
 #include <QLabel>
 
-#include "../Database.h"
-
 #include <QDebug>
 
 RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QWidget(parent)
@@ -19,7 +17,6 @@ RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QW
 	gBox->addWidget(topSpaceLbl.get(), 0, 0);
 	gBox->setContentsMargins(static_cast<qint32>(MARIGN*mult), 0, 0, 0);
 	
-	Database db;
 	QList<QPair<QString, quint32> > records = db.getRecords();
 	qint8 i;
 	for (i = 1; i < 12; i++)
@@ -81,6 +78,7 @@ RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QW
 
 RecordTablePnl::~RecordTablePnl()
 {
+	//delete db;
 	foreach(QLabel *name, names)
 	{
 		delete name;
@@ -122,4 +120,9 @@ void RecordTablePnl::updateRecordTable(quint32 newPoints)
 			}
 		}
 	}
+}
+
+void RecordTablePnl::saveResult(const QString &name)
+{
+	db.setRecord(name, points.at(place)->text().toUInt());
 }

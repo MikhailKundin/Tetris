@@ -29,6 +29,7 @@ public slots:
 	void updatePoints(quint32 points);
 	void updateLevel(quint16 level);
 	void updateFigure(AbstractFigure *&figure);
+	void saveResult(QString name);
 	
 private:
 	

@@ -41,6 +41,7 @@ SOURCES += \
     src/view/PointsPnl.cpp \
     src/view/RecordTablePnl.cpp \
     src/main.cpp \
+    src/view/SaveResultsWgt.cpp \
     src/view/SingleWgt.cpp \
     src/view/WidgetInfo.cpp
 
@@ -59,6 +60,7 @@ HEADERS += \
 	src/view/PlaygroundPnl.h \
 	src/view/PointsPnl.h \
 	src/view/RecordTablePnl.h \
+	src/view/SaveResultsWgt.h \
 	src/view/SingleWgt.h \
 	src/view/WidgetInfo.h
 
@@ -73,7 +75,8 @@ FORMS += \
 	src/ui/PointsPnl.ui \
 	src/ui/SingleWgt.ui \
 	src/ui/LevelPnl.ui \
-	src/ui/LevelFigurePnl.ui
+	src/ui/LevelFigurePnl.ui \
+	src/ui/SaveResultsWgt.ui
 
 RESOURCES += \
 	resources.qrc

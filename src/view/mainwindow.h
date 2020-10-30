@@ -6,13 +6,13 @@
 
 class SingleWgt;
 class MainMenuWgt;
+class SaveResultsWgt;
 class QImage;
 
 namespace Ui {
 class MainWindow;
 }
 
-class GeneralController;
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -36,10 +36,14 @@ signals:
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void keyReleaseEvent(QKeyEvent *e) override;
+	void paintEvent(QPaintEvent *e) override;
+	
+	void moveSaveResults();
 	
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWgt> mainMenuWdt;
 	std::unique_ptr<SingleWgt> singleWgt;
+	std::unique_ptr<SaveResultsWgt> saveResultsWgt;
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;

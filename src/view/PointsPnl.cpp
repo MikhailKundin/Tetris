@@ -30,3 +30,8 @@ void PointsPnl::update(quint32 points)
 {
 	ui->pointsLbl->setText(QString::number(points));
 }
+
+quint32 PointsPnl::getPoints() const
+{
+	return ui->pointsLbl->text().toUInt();
+}
