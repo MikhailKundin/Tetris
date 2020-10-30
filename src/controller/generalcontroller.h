@@ -39,8 +39,8 @@ signals:
 	void rotateSignal();
 	void moveDownSignal();
 	void defeatSignal();
-	void newPointsSignal(qint32 points);
-	void newLevelSignal(qint16 level);
+	void newPointsSignal(quint32 points);
+	void newLevelSignal(quint16 level);
 	void newFigureSignal(AbstractFigure *&secondFigure);
 	
 private:
@@ -54,7 +54,7 @@ private:
 	void addFigure(const QList<qint16> &cells);
 	void deleteFigure(const QList<qint16> &cells);
 	void checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out);
-	void addPoints(qint32 count);
+	void addPoints(quint32 count);
 	bool isNegativeCoords(const QList<qint16> &cells) const;
 	
 	QMap<qint8, QImage *> m_blocks;
@@ -63,8 +63,8 @@ private:
 	AbstractFigure *figure;
 	AbstractFigure *secondFigure;
 	qint8 thirdFigure = 0;
-	qint32 m_points = 0;
-	qint16 level = 1;
+	quint32 m_points = 0;
+	quint16 level = 1;
 	
 	bool m_stop = false;
 	

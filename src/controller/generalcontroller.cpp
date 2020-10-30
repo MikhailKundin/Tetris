@@ -362,7 +362,7 @@ void GeneralController::checkRows(const QList<qint16> &cells, qint8 &topRow_out,
 	}
 }
 
-void GeneralController::addPoints(qint32 count)
+void GeneralController::addPoints(quint32 count)
 {
 	m_points += count;
 	emit newPointsSignal(m_points);

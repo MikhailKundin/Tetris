@@ -15,7 +15,7 @@ public:
 	explicit PointsPnl(quint16 width, qreal mult, QWidget *parent = nullptr);
 	~PointsPnl();
 	
-	void update(qint32 points);
+	void update(quint32 points);
 	
 private:
 	Ui::PointsWgt *ui;

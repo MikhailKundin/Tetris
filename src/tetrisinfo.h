@@ -11,8 +11,8 @@ public:
 	
 	enum Figures {I, O, T, L, J, S, Z};
 	
-	static const qint8 ROW_COUNT = 20;
-	static const qint8 COLUMN_COUNT = 10;
+	static const quint8 ROW_COUNT = 20;
+	static const quint8 COLUMN_COUNT = 10;
 };
 
 #endif // TETRISINFO_H

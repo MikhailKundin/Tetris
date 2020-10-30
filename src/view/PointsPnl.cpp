@@ -26,7 +26,7 @@ PointsPnl::~PointsPnl()
 	delete ui;
 }
 
-void PointsPnl::update(qint32 points)
+void PointsPnl::update(quint32 points)
 {
 	ui->pointsLbl->setText(QString::number(points));
 }

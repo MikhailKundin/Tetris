@@ -56,12 +56,13 @@ void SingleWgt::updateGrid(const QMap<qint16, QImage *> &grid) const
 	pg->update(grid);
 }
 
-void SingleWgt::updatePoints(qint32 points)
+void SingleWgt::updatePoints(quint32 points)
 {
 	pointsPnl->update(points);
+	rtPnl->updateRecordTable(points);
 }
 
-void SingleWgt::updateLevel(qint16 level)
+void SingleWgt::updateLevel(quint16 level)
 {
 	lfPnl->setLevel(level);
 }

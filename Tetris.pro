@@ -26,6 +26,7 @@ UI_DIR = build/release/bin
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/Database.cpp \
     src/TetrisInfo.cpp \
     src/controller/GeneralController.cpp \
     src/controller/OfflineController.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
     src/view/WidgetInfo.cpp
 
 HEADERS += \
+	src/Database.h \
 	src/TetrisInfo.h \
 	src/controller/GeneralController.h \
 	src/controller/OfflineController.h \

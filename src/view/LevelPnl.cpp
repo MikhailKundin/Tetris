@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-LevelPnl::LevelPnl(qint16 nextFigureWidth, qint16 pointsHeight, qreal mult, QWidget *parent) :
+LevelPnl::LevelPnl(quint16 nextFigureWidth, quint16 pointsHeight, qreal mult, QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::LevelPnl)
 {
@@ -27,7 +27,7 @@ LevelPnl::~LevelPnl()
 	delete ui;
 }
 
-void LevelPnl::setLevel(qint16 level)
+void LevelPnl::setLevel(quint16 level)
 {
 	ui->levelLbl->setText(QString::number(level));
 }

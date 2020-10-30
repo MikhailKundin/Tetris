@@ -17,6 +17,7 @@
 #include "controller/GeneralController.h"
 #include "TetrisInfo.h"
 #include <QObject>
+#include <QDialog>
 
 #include <QDebug>
 
@@ -28,8 +29,8 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
-//	LevelFigurePnl lf(50, 30, 1);
-//	lf.show();
+//	QDialog d;
+//	d.show();
 	
 //	LevelFigurePnl w(50, 30);
 //	w.show();

@@ -12,6 +12,8 @@ public:
 	RecordTablePnl(quint16 height, qreal mult, QWidget *parent = nullptr);
 	~RecordTablePnl();
 	
+	void updateRecordTable(quint32 newPoints);
+	
 private:
 	std::unique_ptr<QGridLayout> gBox;
 	QList<QLabel *> names;
@@ -20,7 +22,9 @@ private:
 	std::unique_ptr<QLabel> bottomSpaceLbl;
 	std::unique_ptr<QLabel> backLbl;
 	
-	const quint8 TOP_SPACE = 15;
+	quint8 place = 10;
+	
+	const quint8 TOP_SPACE = 30;
 	const quint8 BOTTOM_SPACE = 15;
 	const quint8 BASE_FONT_SIZE = 14;
 	const quint16 WIDTH = 190;

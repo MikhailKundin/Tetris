@@ -9,7 +9,7 @@
 
 #include <QDebug>
 
-LevelFigurePnl::LevelFigurePnl(qint16 pointsHeight, qint8 blockSize, qreal mult, QWidget *parent) :
+LevelFigurePnl::LevelFigurePnl(quint16 pointsHeight, quint8 blockSize, qreal mult, QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::LevelFigurePnl)
 {
@@ -38,7 +38,7 @@ LevelFigurePnl::~LevelFigurePnl()
 	delete ui;
 }
 
-void LevelFigurePnl::setLevel(qint16 level)
+void LevelFigurePnl::setLevel(quint16 level)
 {
 	levelPnl->setLevel(level);
 }
