@@ -17,5 +17,7 @@
         <file alias="YellowBackground.png">etc/Images/Backgrounds/YellowBackground.png</file>
         <file alias="PointsBackground.png">etc/Images/Backgrounds/PointsBackground.png</file>
         <file alias="LevelBackground.png">etc/Images/Backgrounds/LevelBackground.png</file>
+        <file alias="200x200PanelBackground.png">etc/Images/Backgrounds/200x200PanelBackground.png</file>
+        <file alias="TransparentBackground.png">etc/Images/Backgrounds/TransparentBackground.png</file>
     </qresource>
 </RCC>

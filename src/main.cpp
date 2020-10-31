@@ -11,6 +11,7 @@
 #include "view/NextFigurePnl.h"
 #include "view/LevelPnl.h"
 #include "view/LevelFigurePnl.h"
+#include "view/SaveResultsWgt.h"
 #include "model/Block.h"
 #include <QTime>
 #include <QRandomGenerator>
@@ -29,11 +30,7 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
-//	LevelFigurePnl w(50, 30);
-//	w.show();
 //	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
-//	const AbstractFigure *figure = new IFigure(green);
-//	w.update(figure);
 	
 	return app.exec();
 }
