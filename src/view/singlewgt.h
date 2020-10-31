@@ -11,6 +11,7 @@ class RecordTablePnl;
 class LevelFigurePnl;
 class AbstractFigure;
 class QLabel;
+class SaveResultsWgt;
 
 namespace Ui {
 class SingleWgt;
@@ -29,9 +30,14 @@ public slots:
 	void updatePoints(quint32 points);
 	void updateLevel(quint16 level);
 	void updateFigure(AbstractFigure *&figure);
-	void saveResult(QString name);
+	void saveResult();
+	
+private slots:
+	void saveBtnPush(QString name);
 	
 private:
+	void paintEvent(QPaintEvent *e) override;
+	void moveSaveResults();
 	
 	Ui::SingleWgt *ui;
 	
@@ -39,6 +45,8 @@ private:
 	std::unique_ptr<PointsPnl> pointsPnl;
 	std::unique_ptr<RecordTablePnl> rtPnl;
 	std::unique_ptr<LevelFigurePnl> lfPnl;
+	
+	std::unique_ptr<SaveResultsWgt> saveResultsWgt;
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 };

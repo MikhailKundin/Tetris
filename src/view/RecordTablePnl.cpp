@@ -126,3 +126,8 @@ void RecordTablePnl::saveResult(const QString &name)
 {
 	db.setRecord(name, points.at(place)->text().toUInt());
 }
+
+quint8 RecordTablePnl::getPlace() const
+{
+	return place;
+}

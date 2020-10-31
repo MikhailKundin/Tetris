@@ -2,6 +2,7 @@
 #define SAVERESULTSWGT_H
 
 #include <QWidget>
+#include "WidgetInfo.h"
 
 class QLabel;
 
@@ -9,12 +10,12 @@ namespace Ui {
 class SaveResultsWgt;
 }
 
-class SaveResultsWgt : public QWidget
+class SaveResultsWgt : public WidgetInfo
 {
 	Q_OBJECT
 	
 public:
-	explicit SaveResultsWgt(qreal mult, QWidget *parent = nullptr);
+	explicit SaveResultsWgt(WidgetInfo *parent = nullptr);
 	~SaveResultsWgt();
 	
 signals:

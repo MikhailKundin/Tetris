@@ -3,13 +3,13 @@
 
 #include <QLabel>
 
-SaveResultsWgt::SaveResultsWgt(qreal MULT, QWidget *parent) :
-	QWidget(parent),
+SaveResultsWgt::SaveResultsWgt(WidgetInfo *parent) :
+	WidgetInfo(parent),
 	ui(new Ui::SaveResultsWgt)
 {
 	ui->setupUi(this);
 	
-	//setVisible(false);
+	setVisible(false);
 	setLayout(ui->verticalLayout);
 	resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
 	

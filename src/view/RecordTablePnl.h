@@ -15,6 +15,7 @@ public:
 	
 	void updateRecordTable(quint32 newPoints);
 	void saveResult(const QString &name);
+	quint8 getPlace() const;
 	
 private:
 	std::unique_ptr<QGridLayout> gBox;

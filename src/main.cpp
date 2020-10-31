@@ -30,6 +30,9 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
+//	SaveResultsWgt w;
+//	w.show();
+	
 //	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
 	
 	return app.exec();
