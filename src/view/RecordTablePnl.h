@@ -16,6 +16,7 @@ public:
 	void updateRecordTable(quint32 newPoints);
 	void saveResult(const QString &name);
 	quint8 getPlace() const;
+	void restart();
 	
 private:
 	std::unique_ptr<QGridLayout> gBox;
@@ -28,6 +29,7 @@ private:
 	quint8 place = 10;
 	Database db;
 	
+	const qreal MULT;
 	const quint8 TOP_SPACE = 30;
 	const quint8 BOTTOM_SPACE = 15;
 	const quint8 BASE_FONT_SIZE = 14;

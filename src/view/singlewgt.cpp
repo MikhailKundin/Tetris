@@ -85,11 +85,21 @@ void SingleWgt::saveResult()
 	{
 		saveResultsWgt->activate();
 	}
+	else
+	{
+		emit savedSignal();
+	}
+}
+
+void SingleWgt::restart()
+{
+	rtPnl->restart();
 }
 
 void SingleWgt::saveBtnPush(QString name)
 {
 	rtPnl->saveResult(name);
+	emit savedSignal();
 }
 
 void SingleWgt::paintEvent(QPaintEvent *e)

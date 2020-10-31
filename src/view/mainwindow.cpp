@@ -87,9 +87,12 @@ void MainWindow::openSingleLayout()
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
-	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
 	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
+	
+	connect(singleWgt.get(), &SingleWgt::savedSignal, generalCtrl, &GeneralController::restart);
+	connect(singleWgt.get(), &SingleWgt::savedSignal, offlineCtrl, &OfflineController::restart);
+	connect(singleWgt.get(), &SingleWgt::savedSignal, singleWgt.get(), &SingleWgt::restart);
 	
 	generalCtrl->restart();
 	offlineCtrl->restart();
