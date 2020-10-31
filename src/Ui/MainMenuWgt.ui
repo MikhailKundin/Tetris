@@ -53,23 +53,49 @@
     </spacer>
    </item>
    <item>
-    <widget class="QPushButton" name="singleBtn">
+    <widget class="QLabel" name="singleBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
      </property>
      <property name="text">
       <string>Одиночная игра</string>
@@ -77,23 +103,49 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="onlineBtn">
+    <widget class="QLabel" name="onlineBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
      </property>
      <property name="text">
       <string>Сетевая игра</string>
@@ -101,23 +153,49 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="exitBtn">
+    <widget class="QLabel" name="exitBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
      </property>
      <property name="text">
       <string>Выход</string>

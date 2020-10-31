@@ -3,8 +3,12 @@
 
 #include <QPushButton>
 
-MainMenuWgt::MainMenuWgt(QWidget *parent) :
-	QWidget(parent),
+#include "PushLabel.h"
+
+#include <QDebug>
+
+MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
+	WidgetInfo(parent),
 	ui(new Ui::MainMenuWdt)
 {
 	ui->setupUi(this);
@@ -14,14 +18,51 @@ MainMenuWgt::MainMenuWgt(QWidget *parent) :
 	ui->logo->setMinimumSize(logoImg->size());
 	ui->logo->setPixmap(*logoImg.get());
 	
+	QString enterImg = ":/Images/Buttons/HoverEnter.png";
+	QString leaveImg = ":/Images/Buttons/HoverLeave.png";
+	
+	singleBtn = std::make_unique<PushLabel>(ui->singleBtn->objectName(), enterImg, leaveImg);
+	onlineBtn = std::make_unique<PushLabel>(ui->onlineBtn->objectName(), enterImg, leaveImg);
+	exitBtn = std::make_unique<PushLabel>(ui->exitBtn->objectName(), enterImg, leaveImg);
+	
+	ui->singleBtn->installEventFilter(singleBtn.get());
+	ui->onlineBtn->installEventFilter(onlineBtn.get());
+	ui->exitBtn->installEventFilter(exitBtn.get());
+	
+	ui->singleBtn->setMouseTracking(true);
+	
+	QFont font = ui->singleBtn->font();
+	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
+	ui->singleBtn->setFont(font);
+	ui->onlineBtn->setFont(font);
+	ui->exitBtn->setFont(font);
+	
+	ui->singleBtn = singleBtn.get();
+	ui->onlineBtn = onlineBtn.get();
+	ui->exitBtn = exitBtn.get();
+	
+	quint16 height = static_cast<quint16>(BASE_BUTTON_HEIGHT*MULT);
+	quint16 width = static_cast<quint16>(BASE_BUTTON_WIDTH*MULT);
+	ui->singleBtn->resize(width, height);
+	ui->onlineBtn->resize(width, height);
+	ui->exitBtn->resize(width, height);
+	
 	ui->verticalLayout->setAlignment(ui->logo, Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(ui->singleBtn, Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(ui->onlineBtn, Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(ui->exitBtn, Qt::AlignCenter);
 	
-	connect(ui->singleBtn, &QPushButton::clicked, this, &MainMenuWgt::singleBtnClicked);
-	connect(ui->onlineBtn, &QPushButton::clicked, this, &MainMenuWgt::onlineBtnClicked);
-	connect(ui->exitBtn, &QPushButton::clicked, this, &MainMenuWgt::exitBtnClicked);
+//	ui->singleBtn->setStyleSheet("background: black;"
+//								 "background-image: url(:/Images/Backgrounds/200x200PanelBackground.png);"
+//								 "background-position: center;");
+//	ui->onlineBtn->setStyleSheet("background: black;"
+//								 "background-image: url(:/Images/Backgrounds/GreyBackground.png);");
+//	ui->exitBtn->setStyleSheet("background: black;"
+//							   "background-image: url(:/Images/Backgrounds/GreyBackground.png);");
+	
+	connect(singleBtn.get(), &PushLabel::clicked, this, &MainMenuWgt::singleBtnClicked);
+	connect(onlineBtn.get(), &PushLabel::clicked, this, &MainMenuWgt::onlineBtnClicked);
+	connect(exitBtn.get(), &PushLabel::clicked, this, &MainMenuWgt::exitBtnClicked);
 }
 
 MainMenuWgt::~MainMenuWgt()

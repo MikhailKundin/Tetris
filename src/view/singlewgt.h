@@ -40,7 +40,7 @@ private slots:
 	void saveBtnPush(QString name);
 	
 private:
-	void paintEvent(QPaintEvent *e) override;
+	void resizeEvent(QResizeEvent *e) override;
 	void moveSaveResults();
 	
 	QSize screenSize;

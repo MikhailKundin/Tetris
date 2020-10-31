@@ -19,6 +19,7 @@
 #include "TetrisInfo.h"
 #include <QObject>
 #include <QDialog>
+#include <QLabel>
 
 #include <QDebug>
 

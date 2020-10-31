@@ -19,5 +19,10 @@
         <file alias="LevelBackground.png">etc/Images/Backgrounds/LevelBackground.png</file>
         <file alias="200x200PanelBackground.png">etc/Images/Backgrounds/200x200PanelBackground.png</file>
         <file alias="TransparentBackground.png">etc/Images/Backgrounds/TransparentBackground.png</file>
+        <file alias="GreyBackground.png">etc/Images/Backgrounds/GreyBackground.png</file>
+    </qresource>
+    <qresource prefix="/Images/Buttons">
+        <file alias="HoverEnter.png">etc/Images/Buttons/HoverEnter.png</file>
+        <file alias="HoverLeave.png">etc/Images/Buttons/HoverLeave.png</file>
     </qresource>
 </RCC>

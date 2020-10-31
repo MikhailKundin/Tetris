@@ -102,16 +102,11 @@ void SingleWgt::saveBtnPush(QString name)
 	emit savedSignal();
 }
 
-void SingleWgt::paintEvent(QPaintEvent *e)
+void SingleWgt::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)
 	
-	if (screenSize != size())
-	{
-		moveSaveResults();
-		
-		screenSize = size();
-	}
+	moveSaveResults();
 }
 
 void SingleWgt::moveSaveResults()

@@ -39,6 +39,7 @@ SOURCES += \
     src/view/NextFigurePnl.cpp \
     src/view/PlaygroundPnl.cpp \
     src/view/PointsPnl.cpp \
+    src/view/PushLabel.cpp \
     src/view/RecordTablePnl.cpp \
     src/main.cpp \
     src/view/SaveResultsWgt.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
 	src/view/NextFigurePnl.h \
 	src/view/PlaygroundPnl.h \
 	src/view/PointsPnl.h \
+	src/view/PushLabel.h \
 	src/view/RecordTablePnl.h \
 	src/view/SaveResultsWgt.h \
 	src/view/SingleWgt.h \
