@@ -3,6 +3,8 @@
 
 #include <QLabel>
 
+#include <QDebug>
+
 SaveResultsWgt::SaveResultsWgt(WidgetInfo *parent) :
 	WidgetInfo(parent),
 	ui(new Ui::SaveResultsWgt)
@@ -10,13 +12,8 @@ SaveResultsWgt::SaveResultsWgt(WidgetInfo *parent) :
 	ui->setupUi(this);
 	
 	setVisible(false);
-	setLayout(ui->verticalLayout);
-	resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
-	
-	ui->back->move(0, 0);
-	ui->back->resize(size());
-	QPixmap img(":/Images/Backgrounds/200x200PanelBackground.png");
-	ui->back->setPixmap(img.scaled(ui->back->size()));
+	setLayout(ui->gridLayout);
+	ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*3) / 3);
 	
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);
@@ -32,6 +29,18 @@ SaveResultsWgt::SaveResultsWgt(WidgetInfo *parent) :
 	
 	BORDER = static_cast<quint16>(BASE_BORDER*MULT);
 	ui->verticalLayout->setMargin(BORDER);
+	
+	ui->gridLayout->addWidget(ui->back, 1, 1);
+	ui->back->resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
+	QPixmap img(":/Images/Backgrounds/200x200PanelBackground.png");
+	ui->back->setPixmap(img.scaled(ui->back->size()));
+	
+	QPalette pal(palette());
+	QColor col;
+	col.setRgb(0, 0, 0, 200);
+	pal.setColor(QPalette::Background, col);
+	setAutoFillBackground(true);
+	setPalette(pal);
 	
 	connect(ui->pushButton, &QPushButton::clicked, this, &SaveResultsWgt::saveBtnPush);
 	connect(ui->pushButton_2, &QPushButton::clicked, this, &SaveResultsWgt::cancelBtnPush);

@@ -49,6 +49,8 @@ SingleWgt::SingleWgt(QWidget *parent) : WidgetInfo(parent), ui(new Ui::SingleWgt
 	
 	saveResultsWgt = std::make_unique<SaveResultsWgt>(this);
 	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
+	
+	screenSize = size();
 }
 
 SingleWgt::~SingleWgt()
@@ -94,12 +96,15 @@ void SingleWgt::paintEvent(QPaintEvent *e)
 {
 	Q_UNUSED(e)
 	
-	moveSaveResults();
+	if (screenSize != size())
+	{
+		moveSaveResults();
+		
+		screenSize = size();
+	}
 }
 
 void SingleWgt::moveSaveResults()
 {
-	quint16 x = static_cast<quint16>(width()/2 - saveResultsWgt->width()/2);
-	quint16 y = static_cast<quint16>(height()/2 - saveResultsWgt->height()/2);
-	saveResultsWgt->move(x, y);
+	saveResultsWgt->resize(size());
 }

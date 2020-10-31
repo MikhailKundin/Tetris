@@ -39,6 +39,8 @@ private:
 	void paintEvent(QPaintEvent *e) override;
 	void moveSaveResults();
 	
+	QSize screenSize;
+	
 	Ui::SingleWgt *ui;
 	
 	std::unique_ptr<PlaygroundPnl> pg;
