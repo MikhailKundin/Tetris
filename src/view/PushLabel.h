@@ -8,7 +8,8 @@ class PushLabel : public QLabel
 	Q_OBJECT
 	
 public:
-	PushLabel(QString name, QString hoverEnter,QString hoverLeave);
+	PushLabel(QString name, QWidget *parent = nullptr);
+	void loadPixmaps(const QString &enter, const QString &leave);
 	
 signals:
 	void clicked();
@@ -21,9 +22,9 @@ private:
 	void hoverEnter();
 	void hoverLeave();
 	
-	const QString OBJECT_NAME;
 	std::unique_ptr<QPixmap> imgEnter;
 	std::unique_ptr<QPixmap> imgLeave;
+	std::unique_ptr<QLabel> textLbl;
 };
 
 #endif // PUSHLABEL_H

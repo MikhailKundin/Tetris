@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 	MainWindow window;
 	window.move(750, 0);
 	window.showMaximized();
+	//window.show();
 	
 //	SaveResultsWgt w;
 //	w.show();

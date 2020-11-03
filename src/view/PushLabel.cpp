@@ -1,25 +1,34 @@
 #include "PushLabel.h"
 
 #include <QEvent>
+#include <QPixmap>
 
 #include <QDebug>
 
-PushLabel::PushLabel(QString name, QString hoverEnter,QString hoverLeave) : OBJECT_NAME(name)
+PushLabel::PushLabel(QString name, QWidget *parent) : QLabel(parent)
 {
-	setObjectName(OBJECT_NAME);
-	//setAlignment(Qt::AlignVCenter);
-	//setAlignment(Qt::AlignHCenter);
+	setObjectName(name);
 	setAlignment(Qt::AlignCenter);
+	setText(objectName());
 	
-	imgEnter = std::make_unique<QPixmap>(hoverEnter);
-	imgLeave = std::make_unique<QPixmap>(hoverLeave);
+	textLbl = std::make_unique<QLabel>(this);
 	
-	setPixmap(imgLeave->scaled(size()));
+	imgEnter = std::make_unique<QPixmap>();
+	imgLeave = std::make_unique<QPixmap>();
+	
+	installEventFilter(this);
+}
+
+void PushLabel::loadPixmaps(const QString &enter, const QString &leave)
+{
+	imgEnter->load(enter);
+	imgLeave->load(leave);
+	textLbl->setPixmap(imgLeave->scaled(size()));
 }
 
 bool PushLabel::eventFilter(QObject *obj, QEvent *e)
 {
-	if (obj->objectName() == OBJECT_NAME)
+	if (obj->objectName() == objectName())
 	{
 		switch (e->type())
 		{
@@ -46,15 +55,16 @@ void PushLabel::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)
 	
-	setPixmap(pixmap(Qt::ReturnByValue).scaled(size()));
+	textLbl->resize(size());
+	textLbl->setPixmap(imgLeave->scaled(size()));
 }
 
 void PushLabel::hoverEnter()
 {
-	setPixmap(imgEnter->scaled(size()));
+	textLbl->setPixmap(imgEnter->scaled(size()));
 }
 
 void PushLabel::hoverLeave()
 {
-	setPixmap(imgLeave->scaled(size()));
+	textLbl->setPixmap(imgLeave->scaled(size()));
 }

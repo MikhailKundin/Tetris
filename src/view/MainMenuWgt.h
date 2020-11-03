@@ -4,6 +4,7 @@
 #include "WidgetInfo.h"
 
 class PushLabel;
+class QLabel;
 
 namespace Ui {
 class MainMenuWdt;
@@ -16,6 +17,7 @@ class MainMenuWgt : public WidgetInfo
 public:
 	explicit MainMenuWgt(WidgetInfo *parent = nullptr);
 	~MainMenuWgt();
+	QString test();
 	
 private slots:
 	void singleBtnClicked();
@@ -30,7 +32,6 @@ signals:
 private:
 	Ui::MainMenuWdt *ui;
 	
-	std::unique_ptr<QPixmap> logoImg;
 	std::unique_ptr<PushLabel> singleBtn;
 	std::unique_ptr<PushLabel> onlineBtn;
 	std::unique_ptr<PushLabel> exitBtn;
@@ -38,6 +39,8 @@ private:
 	const quint16 BASE_BUTTON_WIDTH = 200;
 	const quint16 BASE_BUTTON_HEIGHT = 50;
 	const quint8 BASE_FONT = 20;
+	const quint16 BASE_LOGO_WIDTH = 300;
+	const quint16 BASE_LOGO_HEIGHT = 100;
 };
 
 #endif // MAINMENUWDT_H
