@@ -13,7 +13,8 @@
 
 #include <QDebug>
 
-SingleWgt::SingleWgt(QWidget *parent) : WidgetInfo(parent), ui(new Ui::SingleWgt)
+SingleWgt::SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) : 
+	WidgetInfo(buttonImg, parent), ui(new Ui::SingleWgt)
 {
 	ui->setupUi(this);
 	
@@ -47,7 +48,7 @@ SingleWgt::SingleWgt(QWidget *parent) : WidgetInfo(parent), ui(new Ui::SingleWgt
 	setMinimumHeight(pg->height() + pointsPnl->height());
 	setMinimumWidth(ui->levelFigurePnlPlace->width() + pg->width() + rtPnl->width());
 	
-	saveResultsWgt = std::make_unique<SaveResultsWgt>(this);
+	saveResultsWgt = std::make_unique<SaveResultsWgt>(m_buttonImg, MULT, this);
 	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
 	
 	screenSize = size();

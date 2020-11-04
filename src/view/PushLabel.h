@@ -9,7 +9,7 @@ class PushLabel : public QLabel
 	
 public:
 	PushLabel(QString name, QWidget *parent = nullptr);
-	void loadPixmaps(const QString &enter, const QString &leave);
+	void loadPixmaps(QPixmap *&enter, QPixmap *&leave);
 	
 signals:
 	void clicked();

@@ -43,6 +43,7 @@ private:
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
+	QPair <QPixmap *, QPixmap *> buttonImg;
 };
 
 #endif // MAINWINDOW_H

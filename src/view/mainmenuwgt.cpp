@@ -5,9 +5,8 @@
 
 #include <QDebug>
 
-MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
-	WidgetInfo(parent),
-	ui(new Ui::MainMenuWdt)
+MainMenuWgt::MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *parent) :
+	WidgetInfo(buttonImg, parent), ui(new Ui::MainMenuWdt)
 {
 	ui->setupUi(this);
 	
@@ -18,16 +17,13 @@ MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
 	ui->logo->resize(logoImg.size());
 	ui->logo->setPixmap(logoImg.scaled(ui->logo->size(), Qt::KeepAspectRatio));
 	
-	QString enterImg = ":/Images/Buttons/HoverEnter.png";
-	QString leaveImg = ":/Images/Buttons/HoverLeave.png";
-	
 	singleBtn = std::make_unique<PushLabel>("Одиночная игра", this);
 	onlineBtn = std::make_unique<PushLabel>("Сетевая игра", this);
 	exitBtn = std::make_unique<PushLabel>("Выход", this);
 	
-	singleBtn->loadPixmaps(enterImg, leaveImg);
-	onlineBtn->loadPixmaps(enterImg, leaveImg);
-	exitBtn->loadPixmaps(enterImg, leaveImg);
+	singleBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
+	onlineBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
+	exitBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
 	
 	ui->verticalLayout->addWidget(singleBtn.get());
 	ui->verticalLayout->addWidget(onlineBtn.get());

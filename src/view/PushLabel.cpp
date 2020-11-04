@@ -19,10 +19,10 @@ PushLabel::PushLabel(QString name, QWidget *parent) : QLabel(parent)
 	installEventFilter(this);
 }
 
-void PushLabel::loadPixmaps(const QString &enter, const QString &leave)
+void PushLabel::loadPixmaps(QPixmap *&enter, QPixmap *&leave)
 {
-	imgEnter->load(enter);
-	imgLeave->load(leave);
+	imgEnter = std::make_unique<QPixmap>(*enter);
+	imgLeave = std::make_unique<QPixmap>(*leave);
 	textLbl->setPixmap(imgLeave->scaled(size()));
 }
 

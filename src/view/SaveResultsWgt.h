@@ -2,7 +2,6 @@
 #define SAVERESULTSWGT_H
 
 #include <QWidget>
-#include "WidgetInfo.h"
 
 class QLabel;
 
@@ -10,12 +9,12 @@ namespace Ui {
 class SaveResultsWgt;
 }
 
-class SaveResultsWgt : public WidgetInfo
+class SaveResultsWgt : public QWidget
 {
 	Q_OBJECT
 	
 public:
-	explicit SaveResultsWgt(WidgetInfo *parent = nullptr);
+	explicit SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent = nullptr);
 	~SaveResultsWgt();
 	
 signals:
@@ -41,6 +40,7 @@ private:
 	const quint16 BASE_ELEMENT_WIDTH = 180;
 	const quint16 BASE_BORDER = 10;
 	const quint8 BASE_FONT = 20;
+	const qreal MULT;
 };
 
 #endif // SAVERESULTSWGT_H

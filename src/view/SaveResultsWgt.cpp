@@ -5,9 +5,8 @@
 
 #include <QDebug>
 
-SaveResultsWgt::SaveResultsWgt(WidgetInfo *parent) :
-	WidgetInfo(parent),
-	ui(new Ui::SaveResultsWgt)
+SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent) :
+	QWidget(parent), ui(new Ui::SaveResultsWgt), MULT(mult)
 {
 	ui->setupUi(this);
 	

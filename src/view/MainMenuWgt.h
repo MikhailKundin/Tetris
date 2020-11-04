@@ -15,7 +15,7 @@ class MainMenuWgt : public WidgetInfo
 	Q_OBJECT
 	
 public:
-	explicit MainMenuWgt(WidgetInfo *parent = nullptr);
+	explicit MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *parent = nullptr);
 	~MainMenuWgt();
 	QString test();
 	

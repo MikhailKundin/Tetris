@@ -6,11 +6,12 @@
 class WidgetInfo : public QWidget
 {
 public:
-	WidgetInfo(QWidget *parent = nullptr);
+	WidgetInfo(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent = nullptr);
 	
 protected:
 	const quint8 BLOCK_SIZE = 30;
 	qreal MULT;
+	QPair<QPixmap *, QPixmap *> m_buttonImg;
 	
 private:
 	const quint16 BASE_SCREEN_HEIGHT = 768;
