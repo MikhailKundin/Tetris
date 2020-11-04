@@ -17,6 +17,10 @@ MainMenuWgt::MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *pare
 	ui->logo->resize(logoImg.size());
 	ui->logo->setPixmap(logoImg.scaled(ui->logo->size(), Qt::KeepAspectRatio));
 	
+	spacer = std::make_unique<QSpacerItem>(10, static_cast<qint32>(BASE_SPACER_HEIGHT*MULT), 
+										   QSizePolicy::Fixed, QSizePolicy::Fixed);
+	ui->verticalLayout->addSpacerItem(spacer.get());
+	
 	singleBtn = std::make_unique<PushLabel>("Одиночная игра", this);
 	onlineBtn = std::make_unique<PushLabel>("Сетевая игра", this);
 	exitBtn = std::make_unique<PushLabel>("Выход", this);
@@ -51,6 +55,8 @@ MainMenuWgt::MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *pare
 	ui->verticalLayout->setAlignment(singleBtn.get(), Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(onlineBtn.get(), Qt::AlignCenter);
 	ui->verticalLayout->setAlignment(exitBtn.get(), Qt::AlignCenter);
+	
+	resize(ui->verticalLayout->totalMinimumSize());
 	
 	connect(singleBtn.get(), &PushLabel::clicked, this, &MainMenuWgt::singleBtnClicked);
 	connect(onlineBtn.get(), &PushLabel::clicked, this, &MainMenuWgt::onlineBtnClicked);
