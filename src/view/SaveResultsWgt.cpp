@@ -14,7 +14,7 @@ SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult
 	
 	setVisible(false);
 	setLayout(ui->gridLayout);
-	ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*3) / 3);
+	//ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*3) / 3);
 	
 	saveBtn = std::make_unique<PushLabel>("Сохранить", this);
 	cancelBtn = std::make_unique<PushLabel>("Отмена", this);
