@@ -32,6 +32,7 @@ SOURCES += \
     src/controllers/OfflineController.cpp \
     src/AbstractFigure.cpp \
     src/Block.cpp \
+    src/controllers/OnlineController.cpp \
     src/views/LevelFigurePnl.cpp \
     src/views/LevelPnl.cpp \
     src/views/MainMenuWgt.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
 	src/controllers/OfflineController.h \
 	src/AbstractFigure.h \
 	src/Block.h \
+	src/controllers/OnlineController.h \
 	src/views/LevelFigurePnl.h \
 	src/views/LevelPnl.h \
 	src/views/MainMenuWgt.h \
