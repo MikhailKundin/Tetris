@@ -26,6 +26,9 @@ public:
 	explicit SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
+	void openPausePanel();
+	void closePausePanel();
+	
 signals:
 	void savedSignal();
 	void exitSignal();

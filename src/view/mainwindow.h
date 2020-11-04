@@ -8,6 +8,9 @@ class SingleWgt;
 class MainMenuWgt;
 class SaveResultsWgt;
 class QImage;
+class GeneralController;
+class OnlineController;
+class OfflineController;
 
 namespace Ui {
 class MainWindow;
@@ -27,11 +30,16 @@ private slots:
 	void openOnlineLayout();
 	void closeAll();
 	
+	void escapePress();
+	
 signals:
 	void moveRightSignal();
 	void moveLeftSignal();
 	void moveDownSignal();
 	void rotateSignal();
+	
+	void resumeSignal();
+	void pauseSignal();
 	
 private:
 	void keyPressEvent(QKeyEvent *e) override;
@@ -41,9 +49,14 @@ private:
 	std::unique_ptr<MainMenuWgt> mainMenuWdt;
 	std::unique_ptr<SingleWgt> singleWgt;
 	
+	GeneralController *generalCtrlOffline;
+	OfflineController *offlineCtrl;
+	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
 	QPair <QPixmap *, QPixmap *> buttonImg;
+	
+	bool escape = false;
 };
 
 #endif // MAINWINDOW_H

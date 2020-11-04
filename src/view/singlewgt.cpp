@@ -66,6 +66,16 @@ SingleWgt::~SingleWgt()
 	delete ui;
 }
 
+void SingleWgt::openPausePanel()
+{
+	singleExitWgt->activate(true);
+}
+
+void SingleWgt::closePausePanel()
+{
+	singleExitWgt->activate(false);
+}
+
 void SingleWgt::updateGrid(const QMap<qint16, QImage *> &grid) const
 {
 	pg->update(grid);

@@ -18,7 +18,7 @@ public:
 	~SingleExitWgt();
 	
 public slots:
-	void activate();
+	void activate(bool state);
 	
 private slots:
 	void restartBtnPush();

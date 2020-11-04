@@ -8,7 +8,7 @@ SingleExitWgt::SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, 
 {
 	ui->setupUi(this);
 	
-	//setVisible(false);
+	setVisible(false);
 	setLayout(ui->gridLayout);
 	ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*2) / 2);
 	
@@ -60,9 +60,9 @@ SingleExitWgt::~SingleExitWgt()
 	delete ui;
 }
 
-void SingleExitWgt::activate()
+void SingleExitWgt::activate(bool state)
 {
-	setVisible(true);
+	setVisible(state);
 }
 
 void SingleExitWgt::restartBtnPush()
