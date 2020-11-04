@@ -29,9 +29,12 @@ signals:
 private:
 	std::unique_ptr<QTimer> timer;
 	
-	const qint16 START_INTERVAL = 1000;
+	const quint16 START_INTERVAL = 1000;
 	const qreal INTERVAL_DIV = 2;
-	const qint16 MIN_INTERVAL = 1;
+	const quint16 MIN_INTERVAL = 1;
+	
+	quint16 resumeInterval = 0;
+	quint16 currentInterval = START_INTERVAL;
 	
 	QRandomGenerator random;
 };

@@ -32,6 +32,13 @@ private slots:
 	
 	void escapePress();
 	
+	void singleDefeat();
+	void singlePause();
+	void singleResume();
+	void singleSaved();
+	void singleRestart();
+	void singleExit();
+	
 signals:
 	void moveRightSignal();
 	void moveLeftSignal();
@@ -45,6 +52,9 @@ private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void keyReleaseEvent(QKeyEvent *e) override;
 	
+	void singleConnect();
+	void singleDisconnect();
+	
 	Ui::MainWindow *ui;
 	std::unique_ptr<MainMenuWgt> mainMenuWdt;
 	std::unique_ptr<SingleWgt> singleWgt;
@@ -57,6 +67,7 @@ private:
 	QPair <QPixmap *, QPixmap *> buttonImg;
 	
 	bool escape = false;
+	bool finalEscape = false;
 };
 
 #endif // MAINWINDOW_H

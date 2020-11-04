@@ -14,19 +14,19 @@ OfflineController::OfflineController()
 
 void OfflineController::tick()
 {
-	timer->start();
+	timer->setInterval(currentInterval);
 	emit tickSignal();
 }
 
 void OfflineController::newLevel(qint16 level)
 {
-	qint32 interval = static_cast<qint32>(START_INTERVAL / qPow(INTERVAL_DIV, level-1));
+	quint16 interval = static_cast<quint16>(START_INTERVAL / qPow(INTERVAL_DIV, level-1));
 	if (interval < MIN_INTERVAL)
 	{
 		interval = MIN_INTERVAL;
 	}
-	timer->setInterval(interval);
-	timer->start();
+	currentInterval = interval;
+	timer->setInterval(currentInterval);
 }
 
 void OfflineController::stop()
@@ -53,7 +53,8 @@ void OfflineController::getNewFigure()
 
 void OfflineController::pause()
 {
-	timer->setInterval(timer->remainingTime());
+	resumeInterval = static_cast<quint16>(timer->remainingTime());
+	timer->setInterval(resumeInterval);
 	timer->stop();
 }
 
