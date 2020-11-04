@@ -12,6 +12,7 @@ class LevelFigurePnl;
 class AbstractFigure;
 class QLabel;
 class SaveResultsWgt;
+class SingleExitWgt;
 
 namespace Ui {
 class SingleWgt;
@@ -27,6 +28,8 @@ public:
 	
 signals:
 	void savedSignal();
+	void exitSignal();
+	void restartSignal();
 	
 public slots:
 	void updateGrid(const QMap<qint16, QImage *> &grid) const;
@@ -38,10 +41,13 @@ public slots:
 	
 private slots:
 	void saveBtnPush(QString name);
+	void restartBtnPush();
+	void exitBtnPush();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;
 	void moveSaveResults();
+	void moveSingleExit();
 	
 	QSize screenSize;
 	
@@ -53,6 +59,7 @@ private:
 	std::unique_ptr<LevelFigurePnl> lfPnl;
 	
 	std::unique_ptr<SaveResultsWgt> saveResultsWgt;
+	std::unique_ptr<SingleExitWgt> singleExitWgt;
 	
 	std::unique_ptr<QLabel> rightTopLbl;
 };

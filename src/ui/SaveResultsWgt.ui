@@ -509,42 +509,6 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Сохранить</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Отмена</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item row="1" column="2">
@@ -588,22 +552,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="bgLbl">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>200</y>
-     <width>47</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <zorder>bgLbl</zorder>
-  <zorder>back</zorder>
-  <zorder>gridLayoutWidget</zorder>
  </widget>
  <resources/>
  <connections/>

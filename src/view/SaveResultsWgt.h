@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class QLabel;
+class PushLabel;
 
 namespace Ui {
 class SaveResultsWgt;
@@ -29,6 +29,9 @@ private slots:
 	
 private:
 	Ui::SaveResultsWgt *ui;
+	
+	std::unique_ptr<PushLabel> saveBtn;
+	std::unique_ptr<PushLabel> cancelBtn;
 	
 	quint16 ELEMENT_HEIGHT;
 	quint16 ELEMENT_WIDTH;

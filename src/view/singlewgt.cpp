@@ -2,6 +2,8 @@
 #include "ui_singlewgt.h"
 
 #include <QLabel>
+#include <QApplication>
+#include <QScreen>
 
 #include "../TetrisInfo.h"
 #include "PlaygroundPnl.h"
@@ -10,6 +12,7 @@
 #include "LevelFigurePnl.h"
 #include "../Database.h"
 #include "SaveResultsWgt.h"
+#include "SingleExitWgt.h"
 
 #include <QDebug>
 
@@ -50,6 +53,10 @@ SingleWgt::SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) :
 	
 	saveResultsWgt = std::make_unique<SaveResultsWgt>(m_buttonImg, MULT, this);
 	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
+	
+	singleExitWgt = std::make_unique<SingleExitWgt>(m_buttonImg, MULT, this);
+	connect(singleExitWgt.get(), &SingleExitWgt::restartSignal, this, &SingleWgt::restartSignal);
+	connect(singleExitWgt.get(), &SingleExitWgt::exitSignal, this, &SingleWgt::exitSignal);
 	
 	screenSize = size();
 }
@@ -103,14 +110,30 @@ void SingleWgt::saveBtnPush(QString name)
 	emit savedSignal();
 }
 
+void SingleWgt::restartBtnPush()
+{
+	emit restartSignal();
+}
+
+void SingleWgt::exitBtnPush()
+{
+	emit exitSignal();
+}
+
 void SingleWgt::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)
 	
 	moveSaveResults();
+	moveSingleExit();
 }
 
 void SingleWgt::moveSaveResults()
 {
 	saveResultsWgt->resize(size());
+}
+
+void SingleWgt::moveSingleExit()
+{
+	singleExitWgt->resize(size());
 }

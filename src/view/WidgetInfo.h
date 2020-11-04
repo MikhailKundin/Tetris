@@ -7,6 +7,7 @@ class WidgetInfo : public QWidget
 {
 public:
 	WidgetInfo(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent = nullptr);
+	qreal getMult() const;
 	
 protected:
 	const quint8 BLOCK_SIZE = 30;

@@ -3,6 +3,8 @@
 
 #include <QLabel>
 
+#include "PushLabel.h"
+
 #include <QDebug>
 
 SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent) :
@@ -14,17 +16,29 @@ SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult
 	setLayout(ui->gridLayout);
 	ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*3) / 3);
 	
+	saveBtn = std::make_unique<PushLabel>("Сохранить", this);
+	cancelBtn = std::make_unique<PushLabel>("Отмена", this);
+	saveBtn->loadPixmaps(buttonImg.first, buttonImg.second);
+	cancelBtn->loadPixmaps(buttonImg.first, buttonImg.second);
+	ui->verticalLayout->addWidget(saveBtn.get());
+	ui->verticalLayout->addWidget(cancelBtn.get());
+	
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);
 	ui->lineEdit->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-	ui->pushButton->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
-	ui->pushButton_2->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+	saveBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+	cancelBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	
 	QFont font = ui->lineEdit->font();
 	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 	ui->lineEdit->setFont(font);
-	ui->pushButton->setFont(font);
-	ui->pushButton_2->setFont(font);
+	saveBtn->setFont(font);
+	cancelBtn->setFont(font);
+	
+	QPalette btnPal;
+	btnPal.setColor(QPalette::WindowText, Qt::yellow);
+	saveBtn->setPalette(btnPal);
+	cancelBtn->setPalette(btnPal);
 	
 	BORDER = static_cast<quint16>(BASE_BORDER*MULT);
 	ui->verticalLayout->setMargin(BORDER);
@@ -41,8 +55,8 @@ SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
-	connect(ui->pushButton, &QPushButton::clicked, this, &SaveResultsWgt::saveBtnPush);
-	connect(ui->pushButton_2, &QPushButton::clicked, this, &SaveResultsWgt::cancelBtnPush);
+	connect(saveBtn.get(), &PushLabel::clicked, this, &SaveResultsWgt::saveBtnPush);
+	connect(cancelBtn.get(), &PushLabel::clicked, this, &SaveResultsWgt::cancelBtnPush);
 }
 
 SaveResultsWgt::~SaveResultsWgt()

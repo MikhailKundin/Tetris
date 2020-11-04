@@ -100,6 +100,9 @@ void MainWindow::openSingleLayout()
 	connect(singleWgt.get(), &SingleWgt::savedSignal, generalCtrl, &GeneralController::restart);
 	connect(singleWgt.get(), &SingleWgt::savedSignal, offlineCtrl, &OfflineController::restart);
 	connect(singleWgt.get(), &SingleWgt::savedSignal, singleWgt.get(), &SingleWgt::restart);
+	connect(singleWgt.get(), &SingleWgt::restartSignal, generalCtrl, &GeneralController::restart);
+	connect(singleWgt.get(), &SingleWgt::restartSignal, offlineCtrl, &OfflineController::restart);
+	connect(singleWgt.get(), &SingleWgt::restartSignal, singleWgt.get(), &SingleWgt::restart);
 	
 	generalCtrl->restart();
 	offlineCtrl->restart();

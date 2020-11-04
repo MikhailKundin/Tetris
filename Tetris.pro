@@ -43,6 +43,7 @@ SOURCES += \
     src/view/RecordTablePnl.cpp \
     src/main.cpp \
     src/view/SaveResultsWgt.cpp \
+    src/view/SingleExitWgt.cpp \
     src/view/SingleWgt.cpp \
     src/view/WidgetInfo.cpp
 
@@ -63,6 +64,7 @@ HEADERS += \
 	src/view/PushLabel.h \
 	src/view/RecordTablePnl.h \
 	src/view/SaveResultsWgt.h \
+	src/view/SingleExitWgt.h \
 	src/view/SingleWgt.h \
 	src/view/WidgetInfo.h
 
@@ -78,7 +80,8 @@ FORMS += \
 	src/ui/SingleWgt.ui \
 	src/ui/LevelPnl.ui \
 	src/ui/LevelFigurePnl.ui \
-	src/ui/SaveResultsWgt.ui
+	src/ui/SaveResultsWgt.ui \
+	src/ui/SingleExitWgt.ui
 
 RESOURCES += \
 	resources.qrc

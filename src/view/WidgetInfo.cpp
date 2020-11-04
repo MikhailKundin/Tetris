@@ -8,3 +8,8 @@ WidgetInfo::WidgetInfo(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) :
 {
 	MULT = static_cast<qreal>(QApplication::screens().at(0)->geometry().height()) / BASE_SCREEN_HEIGHT;
 }
+
+qreal WidgetInfo::getMult() const
+{
+	return MULT;
+}

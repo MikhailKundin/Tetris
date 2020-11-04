@@ -25,7 +25,7 @@ QList<QPair<QString, quint32> > Database::getRecords() const
 	while (query.next())
 	{
 		QString name = query.value(0).toString();
-		quint32 points = query.value(1).toUInt();
+		quint32 points = query.value(1).toUInt() / 10;
 		records.append({name, points});
 	}
 	
