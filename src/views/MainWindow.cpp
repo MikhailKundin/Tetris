@@ -8,8 +8,8 @@
 
 #include "MainMenuWgt.h"
 #include "SingleWgt.h"
-#include "../controller/GeneralController.h"
-#include "../controller/OfflineController.h"
+#include "../controllers/GeneralController.h"
+#include "../controllers/OfflineController.h"
 #include "../TetrisInfo.h"
 
 #include <QDebug>

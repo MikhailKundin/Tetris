@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "view/MainWindow.h"
+#include "views/MainWindow.h"
 
 #include <QMap>
 #include <QImage>

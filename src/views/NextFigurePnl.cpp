@@ -5,7 +5,7 @@
 #include <QLabel>
 
 #include "../TetrisInfo.h"
-#include "../model/AbstractFigure.h"
+#include "../AbstractFigure.h"
 
 #include <QDebug>
 
