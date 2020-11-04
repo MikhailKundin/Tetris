@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMap>
 
-#include "../model/AbstractFigure.h"
+#include "../AbstractFigure.h"
 
 class GeneralController : public QObject
 {
@@ -13,8 +13,8 @@ class GeneralController : public QObject
 public:
 	GeneralController(QMap<qint8, QImage *> &blocks);
 	virtual ~GeneralController();
-	void setPoints(qint32 points);
-	qint32 getPoints() const;
+	void setPoints(quint32 points);
+	quint32 getPoints() const;
 	const QMap<qint16, QImage *> &getGrid() const;
 	
 public slots:

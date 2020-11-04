@@ -17,12 +17,12 @@ GeneralController::~GeneralController()
 	delete figure;
 }
 
-void GeneralController::setPoints(qint32 points)
+void GeneralController::setPoints(quint32 points)
 {
 	m_points = points;
 }
 
-qint32 GeneralController::getPoints() const
+quint32 GeneralController::getPoints() const
 {
 	return m_points;
 }
