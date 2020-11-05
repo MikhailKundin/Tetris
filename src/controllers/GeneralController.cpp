@@ -140,7 +140,7 @@ void GeneralController::moveDown()
 	}
 }
 
-void GeneralController::setThirdFigure(qint8 figure)
+void GeneralController::setThirdFigure(quint8 figure)
 {
 	thirdFigure = figure;
 }
@@ -367,7 +367,7 @@ void GeneralController::addPoints(quint32 count)
 	m_points += count;
 	emit newPointsSignal(m_points);
 	
-	qint16 newLevel = static_cast<qint16>(m_points / NEW_LEVEL) + 1;
+	quint16 newLevel = static_cast<quint16>(m_points / NEW_LEVEL) + 1;
 	if (level != newLevel)
 	{
 		level = newLevel;

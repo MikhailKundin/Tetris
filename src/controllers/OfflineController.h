@@ -24,7 +24,7 @@ public slots:
 	
 signals:
 	void tickSignal();
-	void newFigureSignal(qint8 figure);
+	void newFigureSignal(quint8 figure);
 	
 private:
 	std::unique_ptr<QTimer> timer;

@@ -23,7 +23,7 @@ public slots:
 	void rotate();
 	void moveDown();
 	
-	void setThirdFigure(qint8 figure);
+	void setThirdFigure(quint8 figure);
 	
 	void newTick();
 	void restart();
@@ -62,7 +62,7 @@ private:
 	QMap<qint16, QImage *> grid;
 	AbstractFigure *figure;
 	AbstractFigure *secondFigure;
-	qint8 thirdFigure = 0;
+	quint8 thirdFigure = 0;
 	quint32 m_points = 0;
 	quint16 level = 1;
 	
