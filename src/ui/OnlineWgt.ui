@@ -32,9 +32,6 @@
     <item row="2" column="4">
      <widget class="QWidget" name="onPgPnl" native="true"/>
     </item>
-    <item row="2" column="3">
-     <widget class="QWidget" name="yellowPnl" native="true"/>
-    </item>
     <item row="1" column="2">
      <widget class="QWidget" name="ofPointsPnl" native="true"/>
     </item>
@@ -86,9 +83,6 @@
     <item row="1" column="4">
      <widget class="QWidget" name="onPointsPnl" native="true"/>
     </item>
-    <item row="1" column="3">
-     <widget class="QWidget" name="topYellowPnl" native="true"/>
-    </item>
     <item row="0" column="3">
      <spacer name="verticalSpacer_2">
       <property name="orientation">
@@ -101,6 +95,20 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="topYellowLbl">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QLabel" name="yellowLbl">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
