@@ -10,7 +10,6 @@ SingleExitWgt::SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, 
 	
 	setVisible(false);
 	setLayout(ui->gridLayout);
-	//ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*2) / 2);
 	
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);

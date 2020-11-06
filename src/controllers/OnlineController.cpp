@@ -11,6 +11,11 @@ OnlineController::OnlineController()
 	
 }
 
+OnlineController::~OnlineController()
+{
+	delete socket;
+}
+
 void OnlineController::makeServer()
 {
 	QTcpServer *server = new QTcpServer(this);
@@ -21,7 +26,7 @@ void OnlineController::makeServer()
 
 void OnlineController::makeClient(const QString &ip)
 {
-	socket = std::make_unique<QTcpSocket>(new QTcpSocket(this));
+	socket = new QTcpSocket(this);
 	socket->connectToHost(ip, PORT);
 	if (!socket->waitForConnected(3000))
 	{
@@ -30,8 +35,8 @@ void OnlineController::makeClient(const QString &ip)
 	}
 	else
 	{
-		connect(socket.get(), &QTcpSocket::readyRead, this, &OnlineController::readSocket);
-		connect(socket.get(), &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
+		connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
+		connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
 	}
 }
 
@@ -132,10 +137,9 @@ void OnlineController::onConnected()
 	QTcpServer *server = qobject_cast<QTcpServer *>(sender());
 	disconnect(server, &QTcpServer::newConnection, this, &OnlineController::onConnected);
 	connected = true;
-	socket = std::make_unique<QTcpSocket>(server->nextPendingConnection());
-	connect(socket.get(), &QTcpSocket::readyRead, this, &OnlineController::readSocket);
-	connect(socket.get(), &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
-	qDebug() << 1;
+	socket = server->nextPendingConnection();
+	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
+	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
 }
 
 void OnlineController::onDisconnected()
@@ -147,5 +151,6 @@ void OnlineController::onDisconnected()
 void OnlineController::writeSocket(const OnlineController::Code code)
 {
 	socket->write(QByteArray::number(code));
+	socket->waitForBytesWritten();
 	socket->flush();
 }

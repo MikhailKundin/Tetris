@@ -22,6 +22,7 @@
 #include <QDialog>
 #include <QLabel>
 #include "controllers/OnlineController.h"
+#include "views/ConnectOnlineWgt.h"
 
 #include <QDebug>
 
@@ -29,20 +30,20 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	
-//	MainWindow window;
-//	window.move(750, 0);
-//	window.showMaximized();
+	MainWindow window;
+	window.move(750, 0);
+	window.showMaximized();
 	
-	OnlineController s;
-	s.makeServer();
-	OnlineController c;
-	c.makeClient("127.0.0.1");
+//	OnlineController s;
+//	s.makeServer();
+//	OnlineController c;
+//	c.makeClient("127.0.0.1");
 	
 //	QPixmap *imgEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
 //	QPixmap *imgLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
 //	QPair <QPixmap *, QPixmap *> p = {imgEnter, imgLeave};
-//	SingleExitWgt s(p, 2.66);
-//	s.show();
+//	ConnectOnlineWgt w(p, 2.66);
+//	w.show();
 	
 //	SaveResultsWgt w;
 //	w.show();

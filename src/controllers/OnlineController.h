@@ -10,6 +10,7 @@ class OnlineController : public QObject
 	
 public:
 	OnlineController();
+	~OnlineController();
 	void makeServer();
 	void makeClient(const QString &ip);
 	
@@ -47,7 +48,7 @@ private:
 	void writeSocket(const Code code);
 	
 	bool connected = false;
-	std::unique_ptr<QTcpSocket> socket;
+	QTcpSocket *socket;
 	
 	const quint16 PORT = 28128;
 };

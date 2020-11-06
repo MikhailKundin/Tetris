@@ -33,11 +33,13 @@ SOURCES += \
     src/AbstractFigure.cpp \
     src/Block.cpp \
     src/controllers/OnlineController.cpp \
+    src/views/ConnectOnlineWgt.cpp \
     src/views/LevelFigurePnl.cpp \
     src/views/LevelPnl.cpp \
     src/views/MainMenuWgt.cpp \
     src/views/MainWindow.cpp \
     src/views/NextFigurePnl.cpp \
+    src/views/OnlineWgt.cpp \
     src/views/PlaygroundPnl.cpp \
     src/views/PointsPnl.cpp \
     src/views/PushLabel.cpp \
@@ -56,11 +58,13 @@ HEADERS += \
 	src/AbstractFigure.h \
 	src/Block.h \
 	src/controllers/OnlineController.h \
+	src/views/ConnectOnlineWgt.h \
 	src/views/LevelFigurePnl.h \
 	src/views/LevelPnl.h \
 	src/views/MainMenuWgt.h \
 	src/views/MainWindow.h \
 	src/views/NextFigurePnl.h \
+	src/views/OnlineWgt.h \
 	src/views/PlaygroundPnl.h \
 	src/views/PointsPnl.h \
 	src/views/PushLabel.h \
@@ -83,7 +87,9 @@ FORMS += \
 	src/ui/LevelPnl.ui \
 	src/ui/LevelFigurePnl.ui \
 	src/ui/SaveResultsWgt.ui \
-	src/ui/SingleExitWgt.ui
+	src/ui/SingleExitWgt.ui \
+	src/ui/ConnectOnlineWgt.ui \
+	src/ui/OnlineWgt.ui
 
 RESOURCES += \
 	resources.qrc
