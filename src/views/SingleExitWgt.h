@@ -14,7 +14,7 @@ class SingleExitWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent = nullptr);
+	explicit SingleExitWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent = nullptr);
 	~SingleExitWgt();
 	
 public slots:

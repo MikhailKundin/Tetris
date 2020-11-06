@@ -14,7 +14,7 @@ class SaveResultsWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent = nullptr);
+	explicit SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent = nullptr);
 	~SaveResultsWgt();
 	
 signals:

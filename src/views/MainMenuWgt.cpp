@@ -1,12 +1,12 @@
 #include "MainMenuWgt.h"
-#include "ui_mainmenuwgt.h"
+#include "ui_MainMenuWgt.h"
 
 #include "PushLabel.h"
 
 #include <QDebug>
 
-MainMenuWgt::MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *parent) :
-	WidgetInfo(buttonImg, parent), ui(new Ui::MainMenuWdt)
+MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
+	WidgetInfo(parent), ui(new Ui::MainMenuWdt)
 {
 	ui->setupUi(this);
 	
@@ -25,9 +25,9 @@ MainMenuWgt::MainMenuWgt(QPair<QPixmap *, QPixmap *> buttonImg, WidgetInfo *pare
 	onlineBtn = std::make_unique<PushLabel>("Сетевая игра", this);
 	exitBtn = std::make_unique<PushLabel>("Выход", this);
 	
-	singleBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
-	onlineBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
-	exitBtn->loadPixmaps(m_buttonImg.first, m_buttonImg.second);
+	singleBtn->loadPixmaps(buttonEnter, buttonLeave);
+	onlineBtn->loadPixmaps(buttonEnter, buttonLeave);
+	exitBtn->loadPixmaps(buttonEnter, buttonLeave);
 	
 	ui->verticalLayout->addWidget(singleBtn.get());
 	ui->verticalLayout->addWidget(onlineBtn.get());

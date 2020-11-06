@@ -3,7 +3,7 @@
 
 #include "PushLabel.h"
 
-SingleExitWgt::SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent) :
+SingleExitWgt::SingleExitWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::SingleExitWgt), MULT(mult)
 {
 	ui->setupUi(this);
@@ -18,8 +18,8 @@ SingleExitWgt::SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, 
 	restartBtn = std::make_unique<PushLabel>("Перезапустить", this);
 	exitBtn = std::make_unique<PushLabel>("В главное меню", this);
 	
-	restartBtn->loadPixmaps(buttonImg.first, buttonImg.second);
-	exitBtn->loadPixmaps(buttonImg.first, buttonImg.second);
+	restartBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	exitBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	
 	restartBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	exitBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
@@ -40,8 +40,7 @@ SingleExitWgt::SingleExitWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, 
 	
 	ui->gridLayout->addWidget(ui->back, 1, 1);
 	ui->back->resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
-	QPixmap img(":/Images/Backgrounds/200x200PanelBackground.png");
-	ui->back->setPixmap(img.scaled(ui->back->size()));
+	ui->back->setPixmap(pixmaps["back"]->scaled(ui->back->size()));
 	
 	QPalette pal(palette());
 	QColor col;

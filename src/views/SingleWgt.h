@@ -23,7 +23,7 @@ class SingleWgt : public WidgetInfo
 	Q_OBJECT
 	
 public:
-	explicit SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent = nullptr);
+	explicit SingleWgt(QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
 	void openPausePanel();

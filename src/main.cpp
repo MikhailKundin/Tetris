@@ -24,6 +24,7 @@
 #include "controllers/OnlineController.h"
 #include "views/ConnectOnlineWgt.h"
 #include "views/OnlineWgt.h"
+#include "views/ButtonPanel.h"
 
 #include <QDebug>
 
@@ -31,22 +32,23 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	
-//	MainWindow window;
-//	window.move(750, 0);
-//	window.showMaximized();
+	MainWindow window;
+	window.move(750, 0);
+	window.showMaximized();
 	
 //	OnlineController s;
 //	s.makeServer();
 //	OnlineController c;
 //	c.makeClient("127.0.0.1");
 	
-	QPixmap *imgEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
-	QPixmap *imgLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
-	QPair <QPixmap *, QPixmap *> p = {imgEnter, imgLeave};
-	OnlineWgt w(p);
-	w.show();
+//	QPixmap *imgEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
+//	QPixmap *imgLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
+//	QPair <QPixmap *, QPixmap *> p = {imgEnter, imgLeave};
+//	OnlineWgt w(p);
+//	w.show();
 	
-//	SaveResultsWgt w;
+//	ButtonPanel w("Тест1234567890 Тестирование", {"Кнопка1", "Кнопка2", "Кнопка3", "Кнопка4", "Кнопка5"}, 2);
+//	w.setActive(true);
 //	w.show();
 	
 //	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");

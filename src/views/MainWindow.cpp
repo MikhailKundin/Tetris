@@ -33,12 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
-	QPixmap *imgEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
-	QPixmap *imgLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
-	buttonImg = {imgEnter, imgLeave};
-	
-	singleWgt = std::make_unique<SingleWgt>(buttonImg);
-	mainMenuWdt = std::make_unique<MainMenuWgt>(buttonImg);
+	singleWgt = std::make_unique<SingleWgt>();
+	mainMenuWdt = std::make_unique<MainMenuWgt>();
 	
 	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
 	connect(mainMenuWdt.get(), &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);

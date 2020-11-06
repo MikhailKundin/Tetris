@@ -7,19 +7,18 @@
 
 #include <QDebug>
 
-SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent) :
+SaveResultsWgt::SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::SaveResultsWgt), MULT(mult)
 {
 	ui->setupUi(this);
 	
 	setVisible(false);
 	setLayout(ui->gridLayout);
-	//ui->verticalLayout->setSpacing((static_cast<qint32>(BASE_HEIGHT*MULT) - ELEMENT_HEIGHT*3) / 3);
 	
 	saveBtn = std::make_unique<PushLabel>("Сохранить", this);
 	cancelBtn = std::make_unique<PushLabel>("Отмена", this);
-	saveBtn->loadPixmaps(buttonImg.first, buttonImg.second);
-	cancelBtn->loadPixmaps(buttonImg.first, buttonImg.second);
+	saveBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	cancelBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	ui->verticalLayout->addWidget(saveBtn.get());
 	ui->verticalLayout->addWidget(cancelBtn.get());
 	
@@ -45,8 +44,7 @@ SaveResultsWgt::SaveResultsWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult
 	
 	ui->gridLayout->addWidget(ui->back, 1, 1);
 	ui->back->resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
-	QPixmap img(":/Images/Backgrounds/200x200PanelBackground.png");
-	ui->back->setPixmap(img.scaled(ui->back->size()));
+	ui->back->setPixmap(pixmaps["back"]->scaled(ui->back->size()));
 	
 	QPalette pal(palette());
 	QColor col;

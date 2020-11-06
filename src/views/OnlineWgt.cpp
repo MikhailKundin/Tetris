@@ -14,8 +14,8 @@
 
 #include <QDebug>
 
-OnlineWgt::OnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) :
-	WidgetInfo(buttonImg, parent), ui(new Ui::OnlineWgt)
+OnlineWgt::OnlineWgt(QWidget *parent) :
+	WidgetInfo(parent), ui(new Ui::OnlineWgt)
 {
 	ui->setupUi(this);
 	setLayout(ui->gBox);

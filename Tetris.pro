@@ -33,6 +33,7 @@ SOURCES += \
     src/AbstractFigure.cpp \
     src/Block.cpp \
     src/controllers/OnlineController.cpp \
+    src/views/ButtonPanel.cpp \
     src/views/ConnectOnlineWgt.cpp \
     src/views/LevelFigurePnl.cpp \
     src/views/LevelPnl.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
 	src/AbstractFigure.h \
 	src/Block.h \
 	src/controllers/OnlineController.h \
+	src/views/ButtonPanel.h \
 	src/views/ConnectOnlineWgt.h \
 	src/views/LevelFigurePnl.h \
 	src/views/LevelPnl.h \
@@ -89,7 +91,8 @@ FORMS += \
 	src/ui/SaveResultsWgt.ui \
 	src/ui/SingleExitWgt.ui \
 	src/ui/ConnectOnlineWgt.ui \
-	src/ui/OnlineWgt.ui
+	src/ui/OnlineWgt.ui \
+	src/ui/ButtonPanel.ui
 
 RESOURCES += \
 	resources.qrc

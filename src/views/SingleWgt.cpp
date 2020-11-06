@@ -1,5 +1,5 @@
 #include "SingleWgt.h"
-#include "ui_singlewgt.h"
+#include "ui_SingleWgt.h"
 
 #include <QLabel>
 #include <QApplication>
@@ -16,8 +16,8 @@
 
 #include <QDebug>
 
-SingleWgt::SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) : 
-	WidgetInfo(buttonImg, parent), ui(new Ui::SingleWgt)
+SingleWgt::SingleWgt(QWidget *parent) : 
+	WidgetInfo(parent), ui(new Ui::SingleWgt)
 {
 	ui->setupUi(this);
 	
@@ -51,10 +51,10 @@ SingleWgt::SingleWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent) :
 	setMinimumHeight(pg->height() + pointsPnl->height());
 	setMinimumWidth(ui->levelFigurePnlPlace->width() + pg->width() + rtPnl->width());
 	
-	saveResultsWgt = std::make_unique<SaveResultsWgt>(m_buttonImg, MULT, this);
+	saveResultsWgt = std::make_unique<SaveResultsWgt>(getPanelPixmaps(), MULT, this);
 	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
 	
-	singleExitWgt = std::make_unique<SingleExitWgt>(m_buttonImg, MULT, this);
+	singleExitWgt = std::make_unique<SingleExitWgt>(getPanelPixmaps(), MULT, this);
 	connect(singleExitWgt.get(), &SingleExitWgt::restartSignal, this, &SingleWgt::restartSignal);
 	connect(singleExitWgt.get(), &SingleExitWgt::exitSignal, this, &SingleWgt::exitSignal);
 	

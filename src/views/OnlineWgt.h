@@ -21,7 +21,7 @@ class OnlineWgt : public WidgetInfo
 	Q_OBJECT
 	
 public:
-	explicit OnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, QWidget *parent = nullptr);
+	explicit OnlineWgt(QWidget *parent = nullptr);
 	~OnlineWgt();
 	
 public slots:
