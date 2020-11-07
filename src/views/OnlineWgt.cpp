@@ -2,15 +2,12 @@
 #include "ui_OnlineWgt.h"
 
 #include <QLabel>
-#include <QApplication>
-#include <QScreen>
 
 #include "../TetrisInfo.h"
 #include "PlaygroundPnl.h"
 #include "PointsPnl.h"
 #include "LevelFigurePnl.h"
 #include "SaveResultsWgt.h"
-#include "SingleExitWgt.h"
 
 #include <QDebug>
 

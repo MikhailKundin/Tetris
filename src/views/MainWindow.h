@@ -44,15 +44,7 @@ private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void keyReleaseEvent(QKeyEvent *e) override;
 	
-	//void makeOfflineConnections(SingleWgt *singleWgt, GeneralController *generalCtrl, OfflineController *offlineCtrl);
-	//void singleDisconnect();
-	
 	Ui::MainWindow *ui;
-//	std::unique_ptr<MainMenuWgt> mainMenuWdt;
-//	std::unique_ptr<SingleWgt> singleWgt;
-	
-//	GeneralController *generalCtrlOffline;
-//	OfflineController *offlineCtrl;
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;

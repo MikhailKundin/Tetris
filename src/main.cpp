@@ -17,7 +17,6 @@
 #include <QRandomGenerator>
 #include "controllers/GeneralController.h"
 #include "TetrisInfo.h"
-#include "views/SingleExitWgt.h"
 #include <QObject>
 #include <QDialog>
 #include <QLabel>

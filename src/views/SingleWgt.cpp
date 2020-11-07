@@ -2,8 +2,6 @@
 #include "ui_SingleWgt.h"
 
 #include <QLabel>
-#include <QApplication>
-#include <QScreen>
 
 #include "../TetrisInfo.h"
 #include "PlaygroundPnl.h"

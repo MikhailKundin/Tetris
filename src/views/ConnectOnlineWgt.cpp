@@ -84,6 +84,8 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal 
 
 ConnectOnlineWgt::~ConnectOnlineWgt()
 {
+	ui->verticalLayout->removeItem(spacer1.get());
+	ui->verticalLayout->removeItem(spacer2.get());
 	delete ui;
 }
 
