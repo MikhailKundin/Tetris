@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_MainWindow.h"
 
 #include <QKeyEvent>
 #include <QShortcut>
@@ -51,9 +51,6 @@ MainWindow::~MainWindow()
 		delete block;
 	}
 	
-	delete buttonImg.first;
-	delete buttonImg.second;
-	
 	delete generalCtrlOffline;
 	delete offlineCtrl;
 }
@@ -94,13 +91,47 @@ void MainWindow::closeAll()
 	close();
 }
 
+void MainWindow::singleDefeat()
+{
+	generalCtrlOffline->stop();
+	offlineCtrl->stop();
+	singleWgt->defeat();
+}
+
+void MainWindow::singleResume()
+{
+	generalCtrlOffline->start();
+	offlineCtrl->resume();
+}
+
+void MainWindow::singlePause()
+{
+	generalCtrlOffline->stop();
+	offlineCtrl->pause();
+}
+
+void MainWindow::singleRestart()
+{
+	generalCtrlOffline->restart();
+	offlineCtrl->restart();
+	singleWgt->restart();
+}
+
+void MainWindow::singleExit()
+{
+	singleDisconnect();
+	generalCtrlOffline->deleteLater();
+	offlineCtrl->deleteLater();
+	openMainMenuLayout();
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
 	int key = e->key();
 	
 	if (key == Qt::Key_Escape)
 	{
-		escapePress();
+		emit pauseBtnPress();
 		return;
 	}
 	
@@ -192,8 +223,11 @@ void MainWindow::singleConnect()
 	connect(this, &MainWindow::moveDownSignal, generalCtrlOffline, &GeneralController::newTick);
 	connect(this, &MainWindow::rotateSignal, generalCtrlOffline, &GeneralController::rotate);
 	
-	connect(this, &MainWindow::pauseSignal, this, &MainWindow::singlePause);
-	connect(this, &MainWindow::resumeSignal, this, &MainWindow::singleResume);
+	connect(this, &MainWindow::pauseBtnPress, singleWgt.get(), &SingleWgt::pauseBtnPress);
+	connect(singleWgt.get(), &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
+	connect(singleWgt.get(), &SingleWgt::pauseSignal, this, &MainWindow::singlePause);
+	connect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
+	connect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrlOffline, &GeneralController::newTick);
 	connect(generalCtrlOffline, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
@@ -201,10 +235,6 @@ void MainWindow::singleConnect()
 			offlineCtrl, &OfflineController::getNewFigure);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, 
 			generalCtrlOffline, &GeneralController::setThirdFigure);
-	
-	connect(singleWgt.get(), &SingleWgt::savedSignal, this, &MainWindow::singleSaved);
-	connect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
-	connect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
 }
 
 void MainWindow::singleDisconnect()
@@ -219,9 +249,12 @@ void MainWindow::singleDisconnect()
 	disconnect(this, &MainWindow::moveLeftSignal, generalCtrlOffline, &GeneralController::moveLeft);
 	disconnect(this, &MainWindow::moveDownSignal, generalCtrlOffline, &GeneralController::newTick);
 	disconnect(this, &MainWindow::rotateSignal, generalCtrlOffline, &GeneralController::rotate);
-
-	disconnect(this, &MainWindow::pauseSignal, this, &MainWindow::singlePause);
-	disconnect(this, &MainWindow::resumeSignal, this, &MainWindow::singleResume);
+	
+	disconnect(this, &MainWindow::pauseBtnPress, singleWgt.get(), &SingleWgt::pauseBtnPress);
+	disconnect(singleWgt.get(), &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
+	disconnect(singleWgt.get(), &SingleWgt::pauseSignal, this, &MainWindow::singlePause);
+	disconnect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
+	disconnect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
 
 	disconnect(offlineCtrl, &OfflineController::tickSignal, generalCtrlOffline, &GeneralController::newTick);
 	disconnect(generalCtrlOffline, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
@@ -229,73 +262,4 @@ void MainWindow::singleDisconnect()
 			   offlineCtrl, &OfflineController::getNewFigure);
 	disconnect(offlineCtrl, &OfflineController::newFigureSignal, 
 			   generalCtrlOffline, &GeneralController::setThirdFigure);
-
-	disconnect(singleWgt.get(), &SingleWgt::savedSignal, this, &MainWindow::singleSaved);
-	disconnect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
-	disconnect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
-}
-
-void MainWindow::escapePress()
-{
-	if (finalEscape)
-	{
-		return;
-	}
-	
-	escape = !escape;
-	if (escape)
-	{
-		emit pauseSignal();
-	}
-	else
-	{
-		emit resumeSignal();
-	}
-}
-
-void MainWindow::singleDefeat()
-{
-	generalCtrlOffline->stop();
-	offlineCtrl->stop();
-	singleWgt->saveResult();
-}
-
-void MainWindow::singlePause()
-{
-	generalCtrlOffline->stop();
-	offlineCtrl->pause();
-	singleWgt->openPausePanel();
-}
-
-void MainWindow::singleResume()
-{
-	generalCtrlOffline->start();
-	offlineCtrl->resume();
-	singleWgt->closePausePanel();
-}
-
-void MainWindow::singleSaved()
-{
-	escapePress();
-	finalEscape = true;
-	singleWgt->openPausePanel();
-}
-
-void MainWindow::singleRestart()
-{
-	generalCtrlOffline->restart();
-	offlineCtrl->restart();
-	singleWgt->restart();
-	escape = false;
-	finalEscape = false;
-}
-
-void MainWindow::singleExit()
-{
-	singleDisconnect();
-	generalCtrlOffline->deleteController();
-	offlineCtrl->deleteController();
-	openMainMenuLayout();
-	escape = false;
-	finalEscape = false;
 }

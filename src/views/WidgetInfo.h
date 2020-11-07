@@ -9,7 +9,7 @@ public:
 	WidgetInfo(QWidget *parent = nullptr);
 	~WidgetInfo();
 	qreal getMult() const;
-	const QHash <QString, QPixmap *> getPanelPixmaps() const;
+	const QHash<QString, QPixmap *> getPanelPixmaps() const;
 	
 protected:
 	const quint8 BLOCK_SIZE = 30;

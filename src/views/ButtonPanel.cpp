@@ -29,7 +29,8 @@ ButtonPanel::ButtonPanel(QString info, QList<QString> buttons, QHash<QString, QP
 	infoLbl->setFixedWidth(static_cast<qint32>(BASE_ELEMENT_WIDTH*MULT));
 	ui->verticalLayout->addWidget(infoLbl.get());
 	
-	spacer = std::make_unique<QSpacerItem>(1, BASE_SPACE*MULT);
+	//spacer = new QSpacerItem(1, static_cast<qint32>(BASE_SPACE*MULT));
+	spacer = std::make_unique<QSpacerItem>(1, static_cast<qint32>(BASE_SPACE*MULT));
 	ui->verticalLayout->addSpacerItem(spacer.get());
 	
 	buildPanel(buttons, pixmaps);
@@ -46,17 +47,12 @@ ButtonPanel::ButtonPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixma
 
 ButtonPanel::~ButtonPanel()
 {
-	delete ui;
-	
+	ui->verticalLayout->removeItem(spacer.get());
 	foreach (PushLabel *button, m_buttons)
 	{
-		delete button;
+		button->deleteLater();
 	}
-}
-
-void ButtonPanel::setActive(bool isActive)
-{
-	setVisible(isActive);
+	delete ui;
 }
 
 void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps)
@@ -65,9 +61,8 @@ void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> p
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);
 	BORDER = static_cast<quint16>(BASE_BORDER*MULT);
 	
-	setVisible(false);
 	setLayout(ui->gridLayout);
-	ui->verticalLayout->setContentsMargins(BORDER, BORDER*2, BORDER, BORDER*2);
+	ui->verticalLayout->setContentsMargins(BORDER, BORDER, BORDER, BORDER*2);
 	
 	QPalette pal(palette());
 	QColor col;
@@ -93,10 +88,11 @@ void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> p
 		ui->verticalLayout->addWidget(pushLabel, 0, Qt::AlignCenter);
 		
 		connect(pushLabel, &PushLabel::clicked, this, &ButtonPanel::buttonClicked);
+		m_buttons.append(pushLabel);
 	}
 	
 	ui->back->setFixedSize(ui->verticalLayout->totalMinimumSize());
-	ui->back->setPixmap(*pixmaps["back"]);
+	ui->back->setPixmap((*pixmaps["back"]).scaled(ui->back->size()));
 	ui->gridLayout->addWidget(ui->back, 1, 1);
 }
 

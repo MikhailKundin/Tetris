@@ -22,8 +22,6 @@ public:
 						 qreal mult, QWidget *parent = nullptr);
 	~ButtonPanel();
 	
-	void setActive(bool isActive);
-	
 signals:
 	void clicked(QString objectName);
 	

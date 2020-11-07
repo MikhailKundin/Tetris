@@ -12,7 +12,7 @@
 #include "LevelFigurePnl.h"
 #include "../Database.h"
 #include "SaveResultsWgt.h"
-#include "SingleExitWgt.h"
+#include "ButtonPanel.h"
 
 #include <QDebug>
 
@@ -51,12 +51,11 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	setMinimumHeight(pg->height() + pointsPnl->height());
 	setMinimumWidth(ui->levelFigurePnlPlace->width() + pg->width() + rtPnl->width());
 	
-	saveResultsWgt = std::make_unique<SaveResultsWgt>(getPanelPixmaps(), MULT, this);
-	connect(saveResultsWgt.get(), &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
-	
-	singleExitWgt = std::make_unique<SingleExitWgt>(getPanelPixmaps(), MULT, this);
-	connect(singleExitWgt.get(), &SingleExitWgt::restartSignal, this, &SingleWgt::restartSignal);
-	connect(singleExitWgt.get(), &SingleExitWgt::exitSignal, this, &SingleWgt::exitSignal);
+	pauseWgt = std::make_unique<ButtonPanel>("Пауза", pauseButtons, getPanelPixmaps(), MULT, this);
+	pauseWgt->setObjectName(PAUSE_NAME);
+	pauseWgt->setVisible(false);
+	connect(pauseWgt.get(), &ButtonPanel::clicked, this, &SingleWgt::buttonsFilter);
+	connect(this, &SingleWgt::wgtResize, [=](){pauseWgt->resize(size());});
 	
 	screenSize = size();
 }
@@ -64,16 +63,6 @@ SingleWgt::SingleWgt(QWidget *parent) :
 SingleWgt::~SingleWgt()
 {
 	delete ui;
-}
-
-void SingleWgt::openPausePanel()
-{
-	singleExitWgt->activate(true);
-}
-
-void SingleWgt::closePausePanel()
-{
-	singleExitWgt->activate(false);
 }
 
 void SingleWgt::updateGrid(const QMap<qint16, QImage *> &grid) const
@@ -97,53 +86,106 @@ void SingleWgt::updateFigure(AbstractFigure *&figure)
 	lfPnl->setFigure(figure);
 }
 
-void SingleWgt::saveResult()
+void SingleWgt::defeat()
 {
+	blockPause = true;
 	if (rtPnl->getPlace() < 10)
 	{
-		saveResultsWgt->activate();
+		SaveResultsWgt *srWgt = new SaveResultsWgt(getPanelPixmaps(), MULT, this);
+		srWgt->setVisible(true);
+		srWgt->resize(size());
+		connect(srWgt, &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
+		connect(this, &SingleWgt::wgtResize, [=](){srWgt->resize(size());});
 	}
 	else
 	{
-		emit savedSignal();
+		createDefeatPanel();
+	}
+}
+
+void SingleWgt::pauseBtnPress()
+{
+	if (!blockPause)
+	{
+		if (pauseWgt->isVisible())
+		{
+			pauseWgt->setVisible(false);
+			emit resumeSignal();
+		}
+		else
+		{
+			pauseWgt->setVisible(true);
+			emit pauseSignal();
+		}
 	}
 }
 
 void SingleWgt::restart()
 {
+	blockPause = false;
 	rtPnl->restart();
 }
 
 void SingleWgt::saveBtnPush(QString name)
 {
 	rtPnl->saveResult(name);
-	emit savedSignal();
+	createDefeatPanel();
+	SaveResultsWgt *srWgt = qobject_cast<SaveResultsWgt *>(sender());
+	srWgt->setVisible(false);
+	srWgt->deleteLater();
 }
 
-void SingleWgt::restartBtnPush()
+void SingleWgt::buttonsFilter(QString objName)
 {
-	emit restartSignal();
-}
-
-void SingleWgt::exitBtnPush()
-{
-	emit exitSignal();
+	if (sender()->objectName() == PAUSE_NAME)
+	{
+		if (objName == pauseButtons.at(0))
+		{
+			pauseWgt->setVisible(false);
+			emit resumeSignal();
+		}
+		else if (objName == pauseButtons.at(1))
+		{
+			pauseWgt->setVisible(false);
+			emit restartSignal();
+		}
+		else if (objName == pauseButtons.at(2))
+		{
+			pauseWgt->setVisible(false);
+			emit exitSignal();
+		}
+	}
+	else if (sender()->objectName() == DEFEAT_NAME)
+	{
+		ButtonPanel *defPnl = qobject_cast<ButtonPanel *>(sender());
+		if (objName == defeatButtons.at(0))
+		{
+			defPnl->setVisible(false);
+			defPnl->deleteLater();
+			emit restartSignal();
+		}
+		else if (objName == defeatButtons.at(1))
+		{
+			defPnl->setVisible(false);
+			defPnl->deleteLater();
+			emit exitSignal();
+		}
+	}
 }
 
 void SingleWgt::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)
 	
-	moveSaveResults();
-	moveSingleExit();
+	emit wgtResize();
 }
 
-void SingleWgt::moveSaveResults()
+void SingleWgt::createDefeatPanel()
 {
-	saveResultsWgt->resize(size());
-}
-
-void SingleWgt::moveSingleExit()
-{
-	singleExitWgt->resize(size());
+	ButtonPanel *defeatPnl = new ButtonPanel("Поражение", defeatButtons, getPanelPixmaps(), MULT, this);
+	defeatPnl->setObjectName(DEFEAT_NAME);
+	defeatPnl->setVisible(true);
+	defeatPnl->resize(size());
+	connect(defeatPnl, &ButtonPanel::clicked, this, &SingleWgt::buttonsFilter);
+	connect(this, &SingleWgt::wgtResize, [=](){defeatPnl->resize(size());});
 }

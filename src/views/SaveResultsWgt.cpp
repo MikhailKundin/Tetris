@@ -12,7 +12,6 @@ SaveResultsWgt::SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QW
 {
 	ui->setupUi(this);
 	
-	setVisible(false);
 	setLayout(ui->gridLayout);
 	
 	saveBtn = std::make_unique<PushLabel>("Сохранить", this);
@@ -60,11 +59,6 @@ SaveResultsWgt::SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QW
 SaveResultsWgt::~SaveResultsWgt()
 {
 	delete ui;
-}
-
-void SaveResultsWgt::activate()
-{
-	setVisible(true);
 }
 
 void SaveResultsWgt::cancelBtnPush()

@@ -20,9 +20,6 @@ public:
 signals:
 	void saveResult(QString name);
 	
-public slots:
-	void activate();
-	
 private slots:
 	void cancelBtnPush();
 	void saveBtnPush();

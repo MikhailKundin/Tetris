@@ -65,6 +65,7 @@ MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
 
 MainMenuWgt::~MainMenuWgt()
 {
+	ui->verticalLayout->removeItem(spacer.get());
 	delete ui;
 }
 

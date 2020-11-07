@@ -26,7 +26,7 @@ public:
 private:
 	Ui::LevelFigurePnl *ui;
 	
-	void paintEvent(QPaintEvent *e) override;
+	void resizeEvent(QResizeEvent *e) override;
 	
 	std::unique_ptr<NextFigurePnl> nextFigurePnl;
 	std::unique_ptr<LevelPnl> levelPnl;

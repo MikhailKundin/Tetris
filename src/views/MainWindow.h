@@ -30,12 +30,9 @@ private slots:
 	void openOnlineLayout();
 	void closeAll();
 	
-	void escapePress();
-	
 	void singleDefeat();
-	void singlePause();
 	void singleResume();
-	void singleSaved();
+	void singlePause();
 	void singleRestart();
 	void singleExit();
 	
@@ -45,8 +42,7 @@ signals:
 	void moveDownSignal();
 	void rotateSignal();
 	
-	void resumeSignal();
-	void pauseSignal();
+	void pauseBtnPress();
 	
 private:
 	void keyPressEvent(QKeyEvent *e) override;
@@ -64,10 +60,6 @@ private:
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
-	QPair <QPixmap *, QPixmap *> buttonImg;
-	
-	bool escape = false;
-	bool finalEscape = false;
 };
 
 #endif // MAINWINDOW_H

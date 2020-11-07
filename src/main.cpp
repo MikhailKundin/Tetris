@@ -25,6 +25,8 @@
 #include "views/ConnectOnlineWgt.h"
 #include "views/OnlineWgt.h"
 #include "views/ButtonPanel.h"
+#include "views/PushLabel.h"
+#include "views/MainMenuWgt.h"
 
 #include <QDebug>
 
@@ -36,6 +38,15 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
+//	WidgetInfo w;
+//	w.show();
+//	auto p = w.getPanelPixmaps();
+//	delete p["begin"];
+//	qDebug() << *p["begin"];
+//	MainMenuWgt *wi = new MainMenuWgt;
+//	wi->show();
+//	wi->deleteLater();
+	
 //	OnlineController s;
 //	s.makeServer();
 //	OnlineController c;
@@ -44,12 +55,22 @@ int main(int argc, char *argv[])
 //	QPixmap *imgEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
 //	QPixmap *imgLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
 //	QPair <QPixmap *, QPixmap *> p = {imgEnter, imgLeave};
-//	OnlineWgt w(p);
+//	OnlineWgt w;
 //	w.show();
 	
-//	ButtonPanel w("Тест1234567890 Тестирование", {"Кнопка1", "Кнопка2", "Кнопка3", "Кнопка4", "Кнопка5"}, 2);
-//	w.setActive(true);
+//	LevelFigurePnl w(50, 30, 1);
 //	w.show();
+	
+//	WidgetInfo wi;
+//	wi.show();
+//	ButtonPanel *w = new ButtonPanel("Пауза", {"Перезапуск", "Выход"}, wi.getPanelPixmaps(), 1);
+//	NextFigurePnl *w = new NextFigurePnl(30, 1);
+//	w->setVisible(true);
+//	w->show();
+//	w->deleteLater();
+//	PushLabel *w = new PushLabel("Test");
+//	w->show();
+//	delete w;
 	
 //	QImage *green = new QImage(":Images/Blocks/OBlockOriginal.png");
 	
