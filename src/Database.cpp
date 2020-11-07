@@ -4,9 +4,9 @@
 
 #include <QDebug>
 
-Database::Database()
+Database::Database(const QString &connectionName)
 {
-	m_db = QSqlDatabase::addDatabase("QSQLITE");
+	m_db = QSqlDatabase::addDatabase("QSQLITE", connectionName);
 	m_db.setDatabaseName("Tetris.sqlite");
 	m_db.open();
 }

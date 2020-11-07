@@ -11,7 +11,7 @@ PushLabel::PushLabel(QString name, QWidget *parent) : QLabel(parent)
 	setAlignment(Qt::AlignCenter);
 	setText(objectName());
 	
-	textLbl = std::make_unique<QLabel>(this);
+	imageLbl = std::make_unique<QLabel>(this);
 	
 	imgEnter = std::make_unique<QPixmap>();
 	imgLeave = std::make_unique<QPixmap>();
@@ -23,7 +23,7 @@ void PushLabel::loadPixmaps(QPixmap *enter, QPixmap *leave)
 {
 	imgEnter = std::make_unique<QPixmap>(*enter);
 	imgLeave = std::make_unique<QPixmap>(*leave);
-	textLbl->setPixmap(imgLeave->scaled(size()));
+	imageLbl->setPixmap(imgLeave->scaled(size()));
 }
 
 bool PushLabel::eventFilter(QObject *obj, QEvent *e)
@@ -32,7 +32,7 @@ bool PushLabel::eventFilter(QObject *obj, QEvent *e)
 	{
 		switch (e->type())
 		{
-		case QEvent::MouseButtonPress:
+		case QEvent::MouseButtonRelease:
 			emit clicked();
 			return true;
 		case QEvent::Enter:
@@ -55,16 +55,16 @@ void PushLabel::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)
 	
-	textLbl->resize(size());
-	textLbl->setPixmap(imgLeave->scaled(size()));
+	imageLbl->resize(size());
+	imageLbl->setPixmap(imgLeave->scaled(size()));
 }
 
 void PushLabel::hoverEnter()
 {
-	textLbl->setPixmap(imgEnter->scaled(size()));
+	imageLbl->setPixmap(imgEnter->scaled(size()));
 }
 
 void PushLabel::hoverLeave()
 {
-	textLbl->setPixmap(imgLeave->scaled(size()));
+	imageLbl->setPixmap(imgLeave->scaled(size()));
 }

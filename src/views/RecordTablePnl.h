@@ -27,7 +27,8 @@ private:
 	std::unique_ptr<QLabel> backLbl;
 	
 	quint8 place = 10;
-	Database db;
+	const QString DB_NAME = "RecordTable";
+	Database *db;
 	
 	const qreal MULT;
 	const quint8 TOP_SPACE = 30;

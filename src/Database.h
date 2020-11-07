@@ -7,7 +7,7 @@
 class Database
 {
 public:
-	Database();
+	Database(const QString &connectionName);
 	QList<QPair<QString, quint32> > getRecords() const;
 	void setRecord(const QString &name, const quint32 points) const;
 	

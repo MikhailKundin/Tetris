@@ -25,8 +25,6 @@ public:
 	explicit SingleWgt(QWidget *parent = nullptr);
 	~SingleWgt() override;
 	
-	void defeat();
-	
 signals:
 	void exitSignal();
 	void restartSignal();
@@ -43,6 +41,7 @@ public slots:
 	
 	void pauseBtnPress();
 	void restart();
+	void defeat();
 	
 private slots:
 	void saveBtnPush(QString name);

@@ -30,12 +30,6 @@ private slots:
 	void openOnlineLayout();
 	void closeAll();
 	
-	void singleDefeat();
-	void singleResume();
-	void singlePause();
-	void singleRestart();
-	void singleExit();
-	
 signals:
 	void moveRightSignal();
 	void moveLeftSignal();
@@ -44,19 +38,21 @@ signals:
 	
 	void pauseBtnPress();
 	
+	void newLayout();
+	
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void keyReleaseEvent(QKeyEvent *e) override;
 	
-	void singleConnect();
-	void singleDisconnect();
+	//void makeOfflineConnections(SingleWgt *singleWgt, GeneralController *generalCtrl, OfflineController *offlineCtrl);
+	//void singleDisconnect();
 	
 	Ui::MainWindow *ui;
-	std::unique_ptr<MainMenuWgt> mainMenuWdt;
-	std::unique_ptr<SingleWgt> singleWgt;
+//	std::unique_ptr<MainMenuWgt> mainMenuWdt;
+//	std::unique_ptr<SingleWgt> singleWgt;
 	
-	GeneralController *generalCtrlOffline;
-	OfflineController *offlineCtrl;
+//	GeneralController *generalCtrlOffline;
+//	OfflineController *offlineCtrl;
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;

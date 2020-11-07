@@ -1,7 +1,5 @@
 #include "RecordTablePnl.h"
 
-#include <QApplication>
-#include <QScreen>
 #include <QGridLayout>
 #include <QLabel>
 
@@ -17,7 +15,9 @@ RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QW
 	gBox->addWidget(topSpaceLbl.get(), 0, 0);
 	gBox->setContentsMargins(static_cast<qint32>(MARIGN*mult), 0, 0, 0);
 	
-	QList<QPair<QString, quint32> > records = db.getRecords();
+	db = new Database(DB_NAME);
+	
+	QList<QPair<QString, quint32> > records = db->getRecords();
 	for (quint8 i = 1; i < 12; i++)
 	{
 		QLabel *name = new QLabel;
@@ -85,6 +85,9 @@ RecordTablePnl::~RecordTablePnl()
 	{
 		delete point;
 	}
+	
+	delete db;
+	QSqlDatabase::removeDatabase(DB_NAME);
 }
 
 void RecordTablePnl::updateRecordTable(quint32 newPoints)
@@ -122,7 +125,7 @@ void RecordTablePnl::updateRecordTable(quint32 newPoints)
 
 void RecordTablePnl::saveResult(const QString &name)
 {
-	db.setRecord(name, points.at(place)->text().toUInt());
+	db->setRecord(name, points.at(place)->text().toUInt());
 }
 
 quint8 RecordTablePnl::getPlace() const
@@ -133,7 +136,7 @@ quint8 RecordTablePnl::getPlace() const
 void RecordTablePnl::restart()
 {
 	place = 10;
-	QList<QPair<QString, quint32> > records = db.getRecords();
+	QList<QPair<QString, quint32> > records = db->getRecords();
 	for (quint8 i = 0; i < 10; i++)
 	{
 		QLabel *name = names.at(i);

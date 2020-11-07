@@ -33,11 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
-	singleWgt = std::make_unique<SingleWgt>();
-	mainMenuWdt = std::make_unique<MainMenuWgt>();
+//	singleWgt = std::make_unique<SingleWgt>();
+//	mainMenuWdt = std::make_unique<MainMenuWgt>();
 	
-	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
-	connect(mainMenuWdt.get(), &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
+//	connect(mainMenuWdt.get(), &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
+//	connect(mainMenuWdt.get(), &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
 	
 	openMainMenuLayout();
 }
@@ -51,33 +51,69 @@ MainWindow::~MainWindow()
 		delete block;
 	}
 	
-	delete generalCtrlOffline;
-	delete offlineCtrl;
+	//delete generalCtrlOffline;
+	//delete offlineCtrl;
 }
 
 void MainWindow::openMainMenuLayout()
 {
-	singleWgt->setParent(nullptr);
+	emit newLayout();
 	
-	ui->scenePlace = mainMenuWdt.get();
-	ui->scenePlace->setMinimumSize(mainMenuWdt->size());
+	MainMenuWgt *mainMenuWgt = new MainMenuWgt;
+	ui->scenePlace = mainMenuWgt;
+	ui->scenePlace->setMinimumSize(mainMenuWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
+	
+	connect(mainMenuWgt, &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
+	connect(mainMenuWgt, &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
+	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, &MainWindow::openOnlineLayout);
+	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
 }
 
 void MainWindow::openSingleLayout()
 {
-	mainMenuWdt->setParent(nullptr);
+	emit newLayout();
 	
-	ui->scenePlace = singleWgt.get();
+	SingleWgt *singleWgt = new SingleWgt;
+	GeneralController *generalCtrl = new GeneralController(blocks);
+	OfflineController *offlineCtrl = new OfflineController;
+	
+	ui->scenePlace = singleWgt;
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	generalCtrlOffline = new GeneralController(blocks);
-	offlineCtrl = new OfflineController;
+	connect(singleWgt, &SingleWgt::resumeSignal, generalCtrl, &GeneralController::start);
+	connect(singleWgt, &SingleWgt::resumeSignal, offlineCtrl, &OfflineController::resume);
+	connect(singleWgt, &SingleWgt::pauseSignal, generalCtrl, &GeneralController::stop);
+	connect(singleWgt, &SingleWgt::pauseSignal, offlineCtrl, &OfflineController::pause);
+	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::restart);
+	connect(singleWgt, &SingleWgt::restartSignal, offlineCtrl, &OfflineController::restart);
+	connect(singleWgt, &SingleWgt::restartSignal, singleWgt, &SingleWgt::restart);
+	connect(singleWgt, &SingleWgt::exitSignal, generalCtrl, &GeneralController::deleteLater);
+	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
+	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
 	
-	singleConnect();
+	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
+	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
+	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt, &SingleWgt::updateLevel);
+	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt, &SingleWgt::updateFigure);
+	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, singleWgt, &SingleWgt::defeat);
+	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	
-	generalCtrlOffline->restart();
+	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
+	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
+	
+	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
+	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
+	connect(this, &MainWindow::moveDownSignal, generalCtrl, &GeneralController::newTick);
+	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
+	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
+	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
+	
+	generalCtrl->restart();
 	offlineCtrl->restart();
 }
 
@@ -88,41 +124,8 @@ void MainWindow::openOnlineLayout()
 
 void MainWindow::closeAll()
 {
+	emit newLayout();
 	close();
-}
-
-void MainWindow::singleDefeat()
-{
-	generalCtrlOffline->stop();
-	offlineCtrl->stop();
-	singleWgt->defeat();
-}
-
-void MainWindow::singleResume()
-{
-	generalCtrlOffline->start();
-	offlineCtrl->resume();
-}
-
-void MainWindow::singlePause()
-{
-	generalCtrlOffline->stop();
-	offlineCtrl->pause();
-}
-
-void MainWindow::singleRestart()
-{
-	generalCtrlOffline->restart();
-	offlineCtrl->restart();
-	singleWgt->restart();
-}
-
-void MainWindow::singleExit()
-{
-	singleDisconnect();
-	generalCtrlOffline->deleteLater();
-	offlineCtrl->deleteLater();
-	openMainMenuLayout();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
@@ -210,56 +213,64 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 	}
 }
 
-void MainWindow::singleConnect()
-{
-	connect(generalCtrlOffline, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
-	connect(generalCtrlOffline, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
-	connect(generalCtrlOffline, &GeneralController::newLevelSignal, singleWgt.get(), &SingleWgt::updateLevel);
-	connect(generalCtrlOffline, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
-	connect(generalCtrlOffline, &GeneralController::defeatSignal, this, &MainWindow::singleDefeat);
+//void MainWindow::makeOfflineConnections(SingleWgt *singleWgt, GeneralController *generalCtrl, 
+//										OfflineController *offlineCtrl)
+//{
+//	connect(singleWgt, &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
+//	connect(singleWgt, &SingleWgt::resumeSignal, generalCtrl, &GeneralController::start);
+//	connect(singleWgt, &SingleWgt::resumeSignal, offlineCtrl, &OfflineController::resume);
+//	connect(singleWgt, &SingleWgt::pauseSignal, generalCtrl, &GeneralController::stop);
+//	connect(singleWgt, &SingleWgt::pauseSignal, offlineCtrl, &OfflineController::pause);
+//	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::restart);
+//	connect(singleWgt, &SingleWgt::restartSignal, offlineCtrl, &OfflineController::restart);
+//	connect(singleWgt, &SingleWgt::restartSignal, singleWgt, &SingleWgt::restart);
+//	connect(singleWgt, &SingleWgt::exitSignal, generalCtrl, &GeneralController::deleteLater);
+//	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
+//	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
 	
-	connect(this, &MainWindow::moveRightSignal, generalCtrlOffline, &GeneralController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, generalCtrlOffline, &GeneralController::moveLeft);
-	connect(this, &MainWindow::moveDownSignal, generalCtrlOffline, &GeneralController::newTick);
-	connect(this, &MainWindow::rotateSignal, generalCtrlOffline, &GeneralController::rotate);
+//	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
+//	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
+//	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt, &SingleWgt::updateLevel);
+//	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt, &SingleWgt::updateFigure);
+//	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
+//	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+//	connect(generalCtrl, &GeneralController::defeatSignal, singleWgt, &SingleWgt::defeat);
+//	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+//	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	
-	connect(this, &MainWindow::pauseBtnPress, singleWgt.get(), &SingleWgt::pauseBtnPress);
-	connect(singleWgt.get(), &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
-	connect(singleWgt.get(), &SingleWgt::pauseSignal, this, &MainWindow::singlePause);
-	connect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
-	connect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
+//	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
+//	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
 	
-	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrlOffline, &GeneralController::newTick);
-	connect(generalCtrlOffline, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
-	connect(generalCtrlOffline, &GeneralController::newFigureSignal, 
-			offlineCtrl, &OfflineController::getNewFigure);
-	connect(offlineCtrl, &OfflineController::newFigureSignal, 
-			generalCtrlOffline, &GeneralController::setThirdFigure);
-}
+//	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
+//	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
+//	connect(this, &MainWindow::moveDownSignal, generalCtrl, &GeneralController::newTick);
+//	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
+//	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
+//}
 
-void MainWindow::singleDisconnect()
-{
-	disconnect(generalCtrlOffline, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
-	disconnect(generalCtrlOffline, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
-	disconnect(generalCtrlOffline, &GeneralController::newLevelSignal, singleWgt.get(), &SingleWgt::updateLevel);
-	disconnect(generalCtrlOffline, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
-	disconnect(generalCtrlOffline, &GeneralController::defeatSignal, this, &MainWindow::singleDefeat);
+//void MainWindow::singleDisconnect()
+//{
+//	disconnect(generalCtrlOffline, &GeneralController::update, singleWgt.get(), &SingleWgt::updateGrid);
+//	disconnect(generalCtrlOffline, &GeneralController::newPointsSignal, singleWgt.get(), &SingleWgt::updatePoints);
+//	disconnect(generalCtrlOffline, &GeneralController::newLevelSignal, singleWgt.get(), &SingleWgt::updateLevel);
+//	disconnect(generalCtrlOffline, &GeneralController::newFigureSignal, singleWgt.get(), &SingleWgt::updateFigure);
+//	disconnect(generalCtrlOffline, &GeneralController::defeatSignal, this, &MainWindow::singleDefeat);
 
-	disconnect(this, &MainWindow::moveRightSignal, generalCtrlOffline, &GeneralController::moveRight);
-	disconnect(this, &MainWindow::moveLeftSignal, generalCtrlOffline, &GeneralController::moveLeft);
-	disconnect(this, &MainWindow::moveDownSignal, generalCtrlOffline, &GeneralController::newTick);
-	disconnect(this, &MainWindow::rotateSignal, generalCtrlOffline, &GeneralController::rotate);
+//	disconnect(this, &MainWindow::moveRightSignal, generalCtrlOffline, &GeneralController::moveRight);
+//	disconnect(this, &MainWindow::moveLeftSignal, generalCtrlOffline, &GeneralController::moveLeft);
+//	disconnect(this, &MainWindow::moveDownSignal, generalCtrlOffline, &GeneralController::newTick);
+//	disconnect(this, &MainWindow::rotateSignal, generalCtrlOffline, &GeneralController::rotate);
 	
-	disconnect(this, &MainWindow::pauseBtnPress, singleWgt.get(), &SingleWgt::pauseBtnPress);
-	disconnect(singleWgt.get(), &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
-	disconnect(singleWgt.get(), &SingleWgt::pauseSignal, this, &MainWindow::singlePause);
-	disconnect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
-	disconnect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
+//	disconnect(this, &MainWindow::pauseBtnPress, singleWgt.get(), &SingleWgt::pauseBtnPress);
+//	disconnect(singleWgt.get(), &SingleWgt::resumeSignal, this, &MainWindow::singleResume);
+//	disconnect(singleWgt.get(), &SingleWgt::pauseSignal, this, &MainWindow::singlePause);
+//	disconnect(singleWgt.get(), &SingleWgt::restartSignal, this, &MainWindow::singleRestart);
+//	disconnect(singleWgt.get(), &SingleWgt::exitSignal, this, &MainWindow::singleExit);
 
-	disconnect(offlineCtrl, &OfflineController::tickSignal, generalCtrlOffline, &GeneralController::newTick);
-	disconnect(generalCtrlOffline, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
-	disconnect(generalCtrlOffline, &GeneralController::newFigureSignal, 
-			   offlineCtrl, &OfflineController::getNewFigure);
-	disconnect(offlineCtrl, &OfflineController::newFigureSignal, 
-			   generalCtrlOffline, &GeneralController::setThirdFigure);
-}
+//	disconnect(offlineCtrl, &OfflineController::tickSignal, generalCtrlOffline, &GeneralController::newTick);
+//	disconnect(generalCtrlOffline, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+//	disconnect(generalCtrlOffline, &GeneralController::newFigureSignal, 
+//			   offlineCtrl, &OfflineController::getNewFigure);
+//	disconnect(offlineCtrl, &OfflineController::newFigureSignal, 
+//			   generalCtrlOffline, &GeneralController::setThirdFigure);
+//}

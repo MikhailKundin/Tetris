@@ -24,7 +24,7 @@ private:
 	
 	std::unique_ptr<QPixmap> imgEnter;
 	std::unique_ptr<QPixmap> imgLeave;
-	std::unique_ptr<QLabel> textLbl;
+	std::unique_ptr<QLabel> imageLbl;
 };
 
 #endif // PUSHLABEL_H
