@@ -17,7 +17,6 @@ public slots:
 	void newLevel(qint16 level);
 	void stop();
 	void restart();
-	void deleteController();
 	void getNewFigure();
 	void pause();
 	void resume();

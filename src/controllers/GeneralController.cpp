@@ -15,6 +15,7 @@ GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 GeneralController::~GeneralController()
 {
 	delete figure;
+	delete secondFigure;
 }
 
 void GeneralController::setPoints(quint32 points)
@@ -190,11 +191,6 @@ void GeneralController::stop()
 void GeneralController::start()
 {
 	m_stop = false;
-}
-
-void GeneralController::deleteController()
-{
-	delete this;
 }
 
 void GeneralController::figureFall()

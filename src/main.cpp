@@ -21,6 +21,7 @@
 #include <QDialog>
 #include <QLabel>
 #include "controllers/OnlineController.h"
+#include "controllers/OfflineController.h"
 #include "views/ConnectOnlineWgt.h"
 #include "views/OnlineWgt.h"
 #include "views/ButtonPanel.h"
@@ -40,11 +41,15 @@ int main(int argc, char *argv[])
 //	WidgetInfo w;
 //	w.show();
 //	auto p = w.getPanelPixmaps();
-//	delete p["begin"];
-//	qDebug() << *p["begin"];
-//	MainMenuWgt *wi = new MainMenuWgt;
+//	ConnectOnlineWgt *wi = new ConnectOnlineWgt(p, 1);
 //	wi->show();
 //	wi->deleteLater();
+	
+//	QMap<qint8, QImage *> map;
+//	map.insert(0, nullptr);
+//	GeneralController *c = new GeneralController(map);
+//	OnlineController *c = new OnlineController;
+//	c->deleteLater();
 	
 //	OnlineController s;
 //	s.makeServer();

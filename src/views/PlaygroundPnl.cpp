@@ -28,6 +28,29 @@ void PlaygroundPnl::update(const QMap<qint16, QImage *>& grid)
 	repaint();
 }
 
+void PlaygroundPnl::setState(PlaygroundPnl::PgState state)
+{
+	QPalette pal(palette());
+	QColor color;
+	switch (state)
+	{
+	case Default:
+		color = qRgb(20, 20, 60);
+		break;
+	case Defeat:
+		color = Qt::darkRed;
+		break;
+	case Ready:
+		color = Qt::darkGreen;
+		break;
+	case NotReady:
+		color = Qt::darkYellow;
+		break;
+	}
+	pal.setColor(QPalette::Window, color);
+	setPalette(pal);
+}
+
 void PlaygroundPnl::paintEvent(QPaintEvent *e)
 {
 	Q_UNUSED(e)

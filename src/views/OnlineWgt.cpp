@@ -8,6 +8,8 @@
 #include "PointsPnl.h"
 #include "LevelFigurePnl.h"
 #include "SaveResultsWgt.h"
+#include "ConnectOnlineWgt.h"
+#include "ButtonPanel.h"
 
 #include <QDebug>
 
@@ -45,6 +47,10 @@ OnlineWgt::OnlineWgt(QWidget *parent) :
 	setMinimumHeight(ofPg->height() + ofPoints->height());
 	setMinimumWidth(ui->ofLevelFigurePnl->width() + ofPg->width() + ui->yellowLbl->width() + 
 					ui->onLevelFigurePnl->width() + onPg->width());
+	
+	onPg->setState(PlaygroundPnl::NotReady);
+	ofPg->setState(PlaygroundPnl::NotReady);
+	openConnectWgt();
 }
 
 OnlineWgt::~OnlineWgt()
@@ -72,6 +78,11 @@ void OnlineWgt::ofUpdateFigure(AbstractFigure *&figure)
 	ofLevelFigure->setFigure(figure);
 }
 
+void OnlineWgt::ofDefeat()
+{
+	ofPg->setState(PlaygroundPnl::Defeat);
+}
+
 void OnlineWgt::onUpdateGrid(const QMap<qint16, QImage *> &grid) const
 {
 	onPg->update(grid);
@@ -90,4 +101,69 @@ void OnlineWgt::onUpdateLevel(quint16 level)
 void OnlineWgt::onUpdateFigure(AbstractFigure *&figure)
 {
 	onLevelFigure->setFigure(figure);
+}
+
+void OnlineWgt::onDefeat()
+{
+	onPg->setState(PlaygroundPnl::Defeat);
+}
+
+void OnlineWgt::connectToServer()
+{
+	
+}
+
+void OnlineWgt::waitingClient()
+{
+	connectOnlineWgt->setVisible(false);
+	
+	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника", {"Отмена"}, getPanelPixmaps(), MULT, this);
+	waitingPnl->setObjectName(WAITING_PANEL_NAME);
+	waitingPnl->resize(size());
+	waitingPnl->setVisible(true);
+	
+	connect(waitingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, [=](){waitingPnl->resize(size());});
+	connect(this, &OnlineWgt::cancelWaiting, waitingPnl, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::cancelWaiting, this, &OnlineWgt::openConnectWgt);
+}
+
+void OnlineWgt::cancelConnecting()
+{
+	connectOnlineWgt->setVisible(false);
+	connectOnlineWgt->deleteLater();
+	emit exitSignal();
+}
+
+void OnlineWgt::buttonFilter(const QString &buttonName)
+{
+	if (sender()->objectName() == WAITING_PANEL_NAME)
+	{
+		if (buttonName == "Отмена")
+		{
+			emit cancelWaiting();
+		}
+	}
+}
+
+void OnlineWgt::openConnectWgt()
+{
+	if (connectOnlineWgt == nullptr)
+	{
+		connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
+		connectOnlineWgt->resize(size());
+		
+		connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, this, &OnlineWgt::waitingClient);
+		connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, this, &OnlineWgt::connectToServer);
+		connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, this, &OnlineWgt::cancelConnecting);
+		connect(this, &OnlineWgt::wgtResize, [=](){connectOnlineWgt->resize(size());});
+	}
+	connectOnlineWgt->setVisible(true);
+}
+
+void OnlineWgt::resizeEvent(QResizeEvent *e)
+{
+	Q_UNUSED(e)
+	
+	emit wgtResize();
 }

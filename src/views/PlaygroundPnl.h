@@ -7,8 +7,11 @@
 class PlaygroundPnl : public QWidget
 {
 public:
+	enum PgState : quint8 {Defeat, Ready, NotReady, Default};
+	
 	PlaygroundPnl(quint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	void update(const QMap<qint16, QImage *> &grid);
+	void setState(PgState state);
 	
 private:
 	void paintEvent(QPaintEvent *e) override;

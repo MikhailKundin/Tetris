@@ -8,12 +8,11 @@
 
 #include <QDebug>
 
-ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent) :
+ConnectOnlineWgt::ConnectOnlineWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::ConnectOnlineWgt), MULT(mult)
 {
 	ui->setupUi(this);
 	
-	setVisible(false);
 	setLayout(ui->gridLayout);
 	
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
@@ -22,7 +21,7 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal 
 	
 	createBtn = std::make_unique<PushLabel>("Создать", this);
 	connectBtn = std::make_unique<PushLabel>("Присоединиться", this);
-	cancelBtn = std::make_unique<PushLabel>("Отмена", this);
+	cancelBtn = std::make_unique<PushLabel>("Выход", this);
 	
 	ipLine = std::make_unique<QLineEdit>(this);
 	ipLine->setPlaceholderText("Введите IP-адрес");
@@ -35,9 +34,9 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal 
 	spacer1 = std::make_unique<QSpacerItem>(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	spacer2 = std::make_unique<QSpacerItem>(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	
-	createBtn->loadPixmaps(buttonImg.first, buttonImg.second);
-	connectBtn->loadPixmaps(buttonImg.first, buttonImg.second);
-	cancelBtn->loadPixmaps(buttonImg.first, buttonImg.second);
+	createBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	connectBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	cancelBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	
 	createBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	connectBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
@@ -67,8 +66,7 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal 
 	
 	ui->gridLayout->addWidget(ui->back, 1, 1);
 	ui->back->resize(static_cast<qint32>(BASE_WEIGHT*MULT), static_cast<qint32>(BASE_HEIGHT*MULT));
-	QPixmap img(":/Images/Backgrounds/200x200PanelBackground.png");
-	ui->back->setPixmap(img.scaled(ui->back->size()));
+	ui->back->setPixmap(pixmaps["back"]->scaled(ui->back->size()));
 	
 	QPalette pal(palette());
 	QColor col;
@@ -79,7 +77,7 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal 
 	
 	connect(createBtn.get(), &PushLabel::clicked, this, &ConnectOnlineWgt::createBtnPush);
 	connect(connectBtn.get(), &PushLabel::clicked, this, &ConnectOnlineWgt::connectBtnPush);
-	connect(cancelBtn.get(), &PushLabel::clicked, this, &ConnectOnlineWgt::cancelSignal);
+	connect(cancelBtn.get(), &PushLabel::clicked, this, &ConnectOnlineWgt::exitSignal);
 }
 
 ConnectOnlineWgt::~ConnectOnlineWgt()
@@ -101,5 +99,5 @@ void ConnectOnlineWgt::connectBtnPush()
 
 void ConnectOnlineWgt::cancelBtnPush()
 {
-	emit cancelSignal();
+	emit exitSignal();
 }

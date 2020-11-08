@@ -11,6 +11,7 @@ class AbstractFigure;
 class QLabel;
 class SaveResultsWgt;
 class SingleExitWgt;
+class ConnectOnlineWgt;
 
 namespace Ui {
 class OnlineWgt;
@@ -22,20 +23,41 @@ class OnlineWgt : public WidgetInfo
 	
 public:
 	explicit OnlineWgt(QWidget *parent = nullptr);
-	~OnlineWgt();
+	~OnlineWgt() override;
 	
 public slots:
 	void ofUpdateGrid(const QMap<qint16, QImage *> &grid) const;
 	void ofUpdatePoints(quint32 points);
 	void ofUpdateLevel(quint16 level);
 	void ofUpdateFigure(AbstractFigure *&figure);
+	void ofDefeat();
 	
 	void onUpdateGrid(const QMap<qint16, QImage *> &grid) const;
 	void onUpdatePoints(quint32 points);
 	void onUpdateLevel(quint16 level);
 	void onUpdateFigure(AbstractFigure *&figure);
+	void onDefeat();
+	
+private slots:
+	void connectToServer();
+	void waitingClient();
+	void cancelConnecting();
+	
+	void buttonFilter(const QString &buttonName);
+	void openConnectWgt();
+	
+signals:
+	void exitSignal();
+	void makeServerSignal();
+	void makeClientSignal(const QString &ip);
+	
+	void wgtResize();
+	
+	void cancelWaiting();
 	
 private:
+	void resizeEvent(QResizeEvent *e) override;
+	
 	Ui::OnlineWgt *ui;
 	
 	std::unique_ptr<PlaygroundPnl> ofPg;
@@ -49,7 +71,10 @@ private:
 	std::unique_ptr<QLabel> yellow;
 	std::unique_ptr<QLabel> topYellow;
 	
+	ConnectOnlineWgt *connectOnlineWgt = nullptr;
+	
 	const quint16 BASE_YELLOW_WIDTH = 100;
+	const QString WAITING_PANEL_NAME = "waitingPanel";
 };
 
 #endif // ONLINEWGT_H

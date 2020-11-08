@@ -16,7 +16,7 @@ class ConnectOnlineWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit ConnectOnlineWgt(QPair<QPixmap *, QPixmap *> buttonImg, qreal mult, QWidget *parent = nullptr);
+	explicit ConnectOnlineWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent = nullptr);
 	~ConnectOnlineWgt();
 	
 private slots:
@@ -27,7 +27,7 @@ private slots:
 signals:
 	void createSignal();
 	void connectSignal(QString ip);
-	void cancelSignal();
+	void exitSignal();
 	
 private:
 	Ui::ConnectOnlineWgt *ui;

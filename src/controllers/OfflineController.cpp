@@ -40,14 +40,9 @@ void OfflineController::restart()
 	timer->start();
 }
 
-void OfflineController::deleteController()
-{
-	delete this;
-}
-
 void OfflineController::getNewFigure()
 {
-	qint8 figure = random.generate() % 7;
+	quint8 figure = random.generate() % 7;
 	emit newFigureSignal(figure);
 }
 

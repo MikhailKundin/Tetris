@@ -11,8 +11,6 @@ class OnlineController : public QObject
 public:
 	OnlineController();
 	~OnlineController();
-	void makeServer();
-	void makeClient(const QString &ip);
 	
 signals:
 	void moveRightSignal();
@@ -20,11 +18,13 @@ signals:
 	void moveDownSignal();
 	void rotateSignal();
 	void newFigureSignal(quint8 figure);
+	void readySignal();
 	
 	void connectedSignal();
 	void startSignal();
 	void disconnectSignal();
-	void readySignal();
+	
+	void deleteServerSignal();
 	
 public slots:
 	void moveRight();
@@ -32,6 +32,11 @@ public slots:
 	void moveDown();
 	void rotate();
 	void newFigure(quint8 figure);
+	
+	void makeServer();
+	void makeClient(const QString &ip);
+	void deleteServer();
+	void deleteSocket();
 	
 private slots:
 	void readSocket();
@@ -48,7 +53,7 @@ private:
 	void writeSocket(const Code code);
 	
 	bool connected = false;
-	QTcpSocket *socket;
+	QTcpSocket *socket = nullptr;
 	
 	const quint16 PORT = 28128;
 };

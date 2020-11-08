@@ -29,7 +29,6 @@ public slots:
 	void restart();
 	void stop();
 	void start();
-	void deleteController();
 	
 signals:
 	void update(QMap<qint16, QImage *> &);
@@ -60,8 +59,8 @@ private:
 	QMap<qint8, QImage *> m_blocks;
 	
 	QMap<qint16, QImage *> grid;
-	AbstractFigure *figure;
-	AbstractFigure *secondFigure;
+	AbstractFigure *figure = nullptr;
+	AbstractFigure *secondFigure = nullptr;
 	quint8 thirdFigure = 0;
 	quint32 m_points = 0;
 	quint16 level = 1;
