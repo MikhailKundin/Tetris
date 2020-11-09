@@ -110,6 +110,7 @@ void OnlineController::readSocket()
 	for (quint8 i = 0; i < bytes.size(); i++)
 	{
 		Code code = static_cast<Code>(bytes.at(i));
+		qDebug() << "Get:" << code;
 		switch (code)
 		{
 		case Code::IFigure:

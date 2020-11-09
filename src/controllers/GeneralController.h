@@ -56,6 +56,7 @@ private:
 	void checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out);
 	void addPoints(quint32 count);
 	bool isNegativeCoords(const QList<qint16> &cells) const;
+	void startGame();
 	
 	QMap<qint8, QImage *> m_blocks;
 	
@@ -67,6 +68,7 @@ private:
 	quint16 level = 1;
 	
 	bool m_stop = false;
+	quint8 startFigureUpdate = 0;
 	
 	const quint16 POINTS[4] = {100, 300, 700, 1500};
 	const quint16 NEW_LEVEL = 3000;

@@ -116,6 +116,7 @@ void MainWindow::openOnlineLayout()
 	GeneralController *onGeneralCtrl = new GeneralController(blocks);
 	OfflineController *offlineCtrl = new OfflineController;
 	OnlineController *onlineCtrl = new OnlineController;
+	onGeneralCtrl->setObjectName("Online");
 	
 	ui->scenePlace = onlineWgt;
 	ui->scenePlace->setMinimumSize(onlineWgt->size());
