@@ -108,24 +108,51 @@ void OnlineWgt::onDefeat()
 	onPg->setState(PlaygroundPnl::Defeat);
 }
 
+void OnlineWgt::unableToConnect()
+{
+//	emit unableToConnectSignal();
+	
+//	ButtonPanel *connectingErr = new ButtonPanel("Не удалсь подключится к серверу!", 
+//												 {"Ок"}, getPanelPixmaps(), MULT, this);
+//	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
+//	connectingErr->resize(size());
+//	connectingErr->setVisible(true);
+	
+//	connect(connectingErr, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+//	connect(this, &OnlineWgt::wgtResize, [=](){connectingErr->resize(size());});
+//	connect(this, &OnlineWgt::cancelConnectingSignal, connectingErr, &ButtonPanel::deleteLater);
+//	connect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
+}
+
 void OnlineWgt::connectToServer()
 {
+	connectOnlineWgt->setVisible(false);
 	
+	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);
+	connectingPnl->setObjectName(CONNECTING_PANEL_NAME);
+	connectingPnl->resize(size());
+	connectingPnl->setVisible(true);
+	
+	connect(connectingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, [=](){connectingPnl->resize(size());});
+	connect(this, &OnlineWgt::cancelConnectingSignal, connectingPnl, &ButtonPanel::deleteLater);
+	//connect(this, &OnlineWgt::unableToConnectSignal, connectingPnl, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
 }
 
 void OnlineWgt::waitingClient()
 {
 	connectOnlineWgt->setVisible(false);
 	
-	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника", {"Отмена"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	waitingPnl->setObjectName(WAITING_PANEL_NAME);
 	waitingPnl->resize(size());
 	waitingPnl->setVisible(true);
 	
 	connect(waitingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, [=](){waitingPnl->resize(size());});
-	connect(this, &OnlineWgt::cancelWaiting, waitingPnl, &ButtonPanel::deleteLater);
-	connect(this, &OnlineWgt::cancelWaiting, this, &OnlineWgt::openConnectWgt);
+	connect(this, &OnlineWgt::cancelWaitingSignal, waitingPnl, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::cancelWaitingSignal, this, &OnlineWgt::openConnectWgt);
 }
 
 void OnlineWgt::cancelConnecting()
@@ -141,9 +168,23 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 	{
 		if (buttonName == "Отмена")
 		{
-			emit cancelWaiting();
+			emit cancelWaitingSignal();
 		}
 	}
+	else if (sender()->objectName() == CONNECTING_PANEL_NAME)
+	{
+		if (buttonName == "Отмена")
+		{
+			emit cancelConnectingSignal();
+		}
+	}
+//	else if (sender()->objectName() == CONNECTING_ERROR_PANEL_NAME)
+//	{
+//		if (buttonName == "Ок")
+//		{
+//			emit cancelConnectingSignal();
+//		}
+//	}
 }
 
 void OnlineWgt::openConnectWgt()

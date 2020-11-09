@@ -38,6 +38,8 @@ public slots:
 	void onUpdateFigure(AbstractFigure *&figure);
 	void onDefeat();
 	
+	void unableToConnect();
+	
 private slots:
 	void connectToServer();
 	void waitingClient();
@@ -53,7 +55,9 @@ signals:
 	
 	void wgtResize();
 	
-	void cancelWaiting();
+	void cancelWaitingSignal();
+	void cancelConnectingSignal();
+	void unableToConnectSignal();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;
@@ -74,7 +78,10 @@ private:
 	ConnectOnlineWgt *connectOnlineWgt = nullptr;
 	
 	const quint16 BASE_YELLOW_WIDTH = 100;
+	
 	const QString WAITING_PANEL_NAME = "waitingPanel";
+	const QString CONNECTING_PANEL_NAME = "connectingPanel";
+	const QString CONNECTING_ERROR_PANEL_NAME = "connectingErrorPanel";
 };
 
 #endif // ONLINEWGT_H
