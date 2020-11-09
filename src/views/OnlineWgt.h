@@ -39,6 +39,7 @@ public slots:
 	void onDefeat();
 	
 	void unableToConnect();
+	void connected();
 	
 private slots:
 	void connectToServer(QString ip);
@@ -59,6 +60,7 @@ signals:
 	void cancelConnectingSignal();
 	void unableToConnectSignal();
 	void closeConnectingErrPanel();
+	void connectedSignal();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;

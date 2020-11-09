@@ -22,7 +22,7 @@ void OnlineController::makeServer()
 	QTcpServer *server = new QTcpServer(this);
 	server->listen(QHostAddress::Any, PORT);
 	connect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
-	connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
+	//connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
 }
 
 void OnlineController::makeClient(const QString &ip)
@@ -39,6 +39,7 @@ void OnlineController::makeClient(const QString &ip)
 	connect(socket, &QTcpSocket::connected, timer, &QTimer::deleteLater);
 	connect(socket, &QTcpSocket::errorOccurred, this, &OnlineController::connectionTimeout);
 	connect(socket, &QTcpSocket::errorOccurred, timer, &QTimer::deleteLater);
+	connect(socket, &QTcpSocket::errorOccurred, [](QAbstractSocket::SocketError s){qDebug() << s;});
 	connect(timer, &QTimer::timeout, this, &OnlineController::connectionTimeout);
 	connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
 	connect(this, &OnlineController::deleteTimer, timer, &QTimer::deleteLater);
@@ -153,7 +154,7 @@ void OnlineController::connectedToServer()
 	disconnect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	connected = true;
 	socket = server->nextPendingConnection();
-	server->deleteLater();
+	//server->deleteLater();
 	emit connectedSignal();
 	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
 	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
