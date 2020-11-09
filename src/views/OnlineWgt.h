@@ -61,6 +61,7 @@ signals:
 	void unableToConnectSignal();
 	void closeConnectingErrPanel();
 	void connectedSignal();
+	void startGame();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;
