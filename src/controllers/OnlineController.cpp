@@ -106,45 +106,49 @@ void OnlineController::newFigure(quint8 figure)
 
 void OnlineController::readSocket()
 {
-	Code code = static_cast<Code>(socket->readAll().toUInt());
-	switch (code)
+	QByteArray bytes = socket->readAll();
+	for (quint8 i = 0; i < bytes.size(); i++)
 	{
-	case Code::IFigure:
-		emit newFigureSignal(TetrisInfo::Figures::I);
-		break;
-	case Code::OFigure:
-		emit newFigureSignal(TetrisInfo::Figures::O);
-		break;
-	case Code::TFigure:
-		emit newFigureSignal(TetrisInfo::Figures::T);
-		break;
-	case Code::LFigure:
-		emit newFigureSignal(TetrisInfo::Figures::L);
-		break;
-	case Code::JFigure:
-		emit newFigureSignal(TetrisInfo::Figures::J);
-		break;
-	case Code::SFigure:
-		emit newFigureSignal(TetrisInfo::Figures::S);
-		break;
-	case Code::ZFigure:
-		emit newFigureSignal(TetrisInfo::Figures::Z);
-		break;
-	case Code::MoveRight:
-		emit moveRightSignal();
-		break;
-	case Code::MoveLeft:
-		emit moveLeftSignal();
-		break;
-	case Code::MoveDown:
-		emit moveDownSignal();
-		break;
-	case Code::Rotate:
-		emit rotateSignal();
-		break;
-	case Code::Ready:
-		emit readySignal();
-		break;
+		Code code = static_cast<Code>(bytes.at(i));
+		switch (code)
+		{
+		case Code::IFigure:
+			emit newFigureSignal(TetrisInfo::Figures::I);
+			break;
+		case Code::OFigure:
+			emit newFigureSignal(TetrisInfo::Figures::O);
+			break;
+		case Code::TFigure:
+			emit newFigureSignal(TetrisInfo::Figures::T);
+			break;
+		case Code::LFigure:
+			emit newFigureSignal(TetrisInfo::Figures::L);
+			break;
+		case Code::JFigure:
+			emit newFigureSignal(TetrisInfo::Figures::J);
+			break;
+		case Code::SFigure:
+			emit newFigureSignal(TetrisInfo::Figures::S);
+			break;
+		case Code::ZFigure:
+			emit newFigureSignal(TetrisInfo::Figures::Z);
+			break;
+		case Code::MoveRight:
+			emit moveRightSignal();
+			break;
+		case Code::MoveLeft:
+			emit moveLeftSignal();
+			break;
+		case Code::MoveDown:
+			emit moveDownSignal();
+			break;
+		case Code::Rotate:
+			emit rotateSignal();
+			break;
+		case Code::Ready:
+			emit readySignal();
+			break;
+		}
 	}
 }
 
@@ -154,7 +158,6 @@ void OnlineController::connectedToServer()
 	disconnect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	connected = true;
 	socket = server->nextPendingConnection();
-	//server->deleteLater();
 	emit connectedSignal();
 	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
 	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
@@ -181,7 +184,9 @@ void OnlineController::connectionTimeout()
 
 void OnlineController::writeSocket(const OnlineController::Code code)
 {
-	socket->write(QByteArray::number(code));
+	QByteArray data;
+	data.append(code);
+	socket->write(data);
 	socket->waitForBytesWritten();
 	socket->flush();
 }

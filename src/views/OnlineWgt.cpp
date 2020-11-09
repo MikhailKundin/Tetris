@@ -119,7 +119,7 @@ void OnlineWgt::unableToConnect()
 	
 	connect(this, &OnlineWgt::closeConnectingErrPanel, connectingErr, &ButtonPanel::deleteLater);
 	connect(connectingErr, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
-	connect(this, &OnlineWgt::wgtResize, [=](){connectingErr->resize(size());});
+	connect(this, &OnlineWgt::wgtResize, connectingErr, [=](){connectingErr->resize(size());});
 	connect(this, &OnlineWgt::closeConnectingErrPanel, this, &OnlineWgt::openConnectWgt);
 }
 
@@ -137,7 +137,7 @@ void OnlineWgt::connectToServer(QString ip)
 	connect(this, &OnlineWgt::connectedSignal, connectingPnl, &ButtonPanel::deleteLater);
 	connect(this, &OnlineWgt::cancelConnectingSignal, connectingPnl, &ButtonPanel::deleteLater);
 	connect(connectingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
-	connect(this, &OnlineWgt::wgtResize, [=](){connectingPnl->resize(size());});
+	connect(this, &OnlineWgt::wgtResize, connectingPnl, [=](){connectingPnl->resize(size());});
 	connect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
 }
 
@@ -153,7 +153,7 @@ void OnlineWgt::waitingClient()
 	
 	connect(this, &OnlineWgt::connectedSignal, waitingPnl, &ButtonPanel::deleteLater);
 	connect(waitingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
-	connect(this, &OnlineWgt::wgtResize, [=](){waitingPnl->resize(size());});
+	connect(this, &OnlineWgt::wgtResize, waitingPnl, [=](){waitingPnl->resize(size());});
 	connect(this, &OnlineWgt::cancelWaitingSignal, waitingPnl, &ButtonPanel::deleteLater);
 	connect(this, &OnlineWgt::cancelWaitingSignal, this, &OnlineWgt::openConnectWgt);
 }
@@ -197,19 +197,17 @@ void OnlineWgt::openConnectWgt()
 		connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
 		connectOnlineWgt->resize(size());
 		
-		//connect(this, &OnlineWgt::connectedSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
+		connect(this, &OnlineWgt::connectedSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, this, &OnlineWgt::waitingClient);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, this, &OnlineWgt::connectToServer);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, this, &OnlineWgt::cancelConnecting);
-		connect(this, &OnlineWgt::wgtResize, [=](){connectOnlineWgt->resize(size());});
+		connect(this, &OnlineWgt::wgtResize, connectOnlineWgt, [=](){connectOnlineWgt->resize(size());});
 	}
 	connectOnlineWgt->setVisible(true);
 }
 
 void OnlineWgt::connected()
 {
-	connectOnlineWgt->deleteLater();
-	
 	emit connectedSignal();
 	ofPg->setState(PlaygroundPnl::Default);
 	onPg->setState(PlaygroundPnl::Default);

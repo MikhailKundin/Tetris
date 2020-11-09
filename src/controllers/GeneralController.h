@@ -41,6 +41,7 @@ signals:
 	void newPointsSignal(quint32 points);
 	void newLevelSignal(quint16 level);
 	void newFigureSignal(AbstractFigure *&secondFigure);
+	void readyToStart();
 	
 private:
 	void figureFall();

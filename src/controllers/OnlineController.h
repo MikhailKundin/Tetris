@@ -48,7 +48,7 @@ private slots:
 	void connectionTimeout();
 	
 private:
-	enum Code : quint8
+	enum Code : qint8
 	{
 		IFigure, TFigure, OFigure, LFigure, JFigure, SFigure, ZFigure, 
 		MoveRight, MoveLeft, MoveDown, Rotate, Ready
