@@ -41,7 +41,7 @@ public slots:
 	void unableToConnect();
 	
 private slots:
-	void connectToServer();
+	void connectToServer(QString ip);
 	void waitingClient();
 	void cancelConnecting();
 	
@@ -58,6 +58,7 @@ signals:
 	void cancelWaitingSignal();
 	void cancelConnectingSignal();
 	void unableToConnectSignal();
+	void closeConnectingErrPanel();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;

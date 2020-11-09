@@ -157,6 +157,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::moveDownSignal, onGeneralCtrl, &GeneralController::moveDown);
 	connect(onlineCtrl, &OnlineController::rotate, onGeneralCtrl, &GeneralController::rotate);
 	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::setThirdFigure);
+	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	
 	connect(this, &MainWindow::newLayout, onlineWgt, &OnlineWgt::deleteLater);
 	connect(this, &MainWindow::moveRightSignal, ofGeneralCtrl, &GeneralController::moveRight);

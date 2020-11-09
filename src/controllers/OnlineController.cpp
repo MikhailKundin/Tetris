@@ -1,6 +1,7 @@
 #include "OnlineController.h"
 
 #include <QTcpServer>
+#include <QTimer>
 
 #include "../TetrisInfo.h"
 
@@ -13,32 +14,34 @@ OnlineController::OnlineController()
 
 OnlineController::~OnlineController()
 {
-	socket->deleteLater();
+	//socket->deleteLater();
 }
 
 void OnlineController::makeServer()
 {
 	QTcpServer *server = new QTcpServer(this);
 	server->listen(QHostAddress::Any, PORT);
-	connect(server, &QTcpServer::newConnection, this, &OnlineController::onConnected);
+	connect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
 }
 
 void OnlineController::makeClient(const QString &ip)
 {
 	socket = new QTcpSocket(this);
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	timer->setInterval(3000);
+	
 	socket->connectToHost(ip, PORT);
-	if (!socket->waitForConnected(3000))
-	{
-		socket->deleteLater();
-		emit disconnectSignal();
-	}
-	else
-	{
-		emit connectedSignal();
-		connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
-		connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
-	}
+	timer->start();
+	
+	connect(socket, &QTcpSocket::connected, this, &OnlineController::clientConnected);
+	connect(socket, &QTcpSocket::connected, timer, &QTimer::deleteLater);
+	connect(socket, &QTcpSocket::errorOccurred, this, &OnlineController::connectionTimeout);
+	connect(socket, &QTcpSocket::errorOccurred, timer, &QTimer::deleteLater);
+	connect(timer, &QTimer::timeout, this, &OnlineController::connectionTimeout);
+	connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
+	connect(this, &OnlineController::deleteTimer, timer, &QTimer::deleteLater);
 }
 
 void OnlineController::deleteServer()
@@ -48,6 +51,7 @@ void OnlineController::deleteServer()
 
 void OnlineController::deleteSocket()
 {
+	emit deleteTimer();
 	socket->deleteLater();
 }
 
@@ -143,10 +147,10 @@ void OnlineController::readSocket()
 	}
 }
 
-void OnlineController::onConnected()
+void OnlineController::connectedToServer()
 {
 	QTcpServer *server = qobject_cast<QTcpServer *>(sender());
-	disconnect(server, &QTcpServer::newConnection, this, &OnlineController::onConnected);
+	disconnect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	connected = true;
 	socket = server->nextPendingConnection();
 	server->deleteLater();
@@ -158,7 +162,20 @@ void OnlineController::onConnected()
 void OnlineController::onDisconnected()
 {
 	emit disconnectSignal();
-	qobject_cast<QTcpSocket *>(sender())->deleteLater();
+	socket->deleteLater();
+}
+
+void OnlineController::clientConnected()
+{
+	emit connectedSignal();
+	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
+	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
+}
+
+void OnlineController::connectionTimeout()
+{
+	socket->deleteLater();
+	emit cannotConnectSignal();
 }
 
 void OnlineController::writeSocket(const OnlineController::Code code)

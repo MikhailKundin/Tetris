@@ -23,8 +23,10 @@ signals:
 	void connectedSignal();
 	void startSignal();
 	void disconnectSignal();
+	void cannotConnectSignal();
 	
 	void deleteServerSignal();
+	void deleteTimer();
 	
 public slots:
 	void moveRight();
@@ -40,8 +42,10 @@ public slots:
 	
 private slots:
 	void readSocket();
-	void onConnected();
+	void connectedToServer();
 	void onDisconnected();
+	void clientConnected();
+	void connectionTimeout();
 	
 private:
 	enum Code : quint8
