@@ -161,7 +161,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::moveRightSignal, onGeneralCtrl, &GeneralController::moveRight);
 	connect(onlineCtrl, &OnlineController::moveLeftSignal, onGeneralCtrl, &GeneralController::moveLeft);
 	connect(onlineCtrl, &OnlineController::moveDownSignal, onGeneralCtrl, &GeneralController::moveDown);
-	connect(onlineCtrl, &OnlineController::rotate, onGeneralCtrl, &GeneralController::rotate);
+	connect(onlineCtrl, &OnlineController::rotateSignal, onGeneralCtrl, &GeneralController::rotate);
 	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::getNextFigure);
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
@@ -261,7 +261,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e)
 		key = Qt::Key_A;
 	}
 	
-	qint32 index = index = keyList.indexOf(key);
+	qint32 index = keyList.indexOf(key);
 	if (index != -1)
 	{
 		keyList.removeAt(index);

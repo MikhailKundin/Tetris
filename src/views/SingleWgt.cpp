@@ -93,7 +93,7 @@ void SingleWgt::defeat()
 		srWgt->setVisible(true);
 		srWgt->resize(size());
 		connect(srWgt, &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
-		connect(this, &SingleWgt::wgtResize, [=](){srWgt->resize(size());});
+		connect(this, &SingleWgt::wgtResize, srWgt, [=](){srWgt->resize(size());});
 	}
 	else
 	{
@@ -185,5 +185,5 @@ void SingleWgt::createDefeatPanel()
 	defeatPnl->setVisible(true);
 	defeatPnl->resize(size());
 	connect(defeatPnl, &ButtonPanel::clicked, this, &SingleWgt::buttonsFilter);
-	connect(this, &SingleWgt::wgtResize, [=](){defeatPnl->resize(size());});
+	connect(this, &SingleWgt::wgtResize, defeatPnl, [=](){defeatPnl->resize(size());});
 }
