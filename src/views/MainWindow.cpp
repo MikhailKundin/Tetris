@@ -87,14 +87,15 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
 	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
 	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt, &SingleWgt::updateLevel);
-	connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
+	//connect(generalCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
+	connect(generalCtrl, &GeneralController::getNewFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt, &SingleWgt::updateFigure);
 	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
 	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
 	connect(generalCtrl, &GeneralController::defeatSignal, singleWgt, &SingleWgt::defeat);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
-	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::setThirdFigure);
+	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
@@ -140,7 +141,7 @@ void MainWindow::openOnlineLayout()
 	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::ofUpdateLevel);
 	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
 	connect(ofGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::ofUpdateFigure);
-	connect(ofGeneralCtrl, &GeneralController::newFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
+	connect(ofGeneralCtrl, &GeneralController::getNewFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::ofDefeat);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
@@ -155,13 +156,13 @@ void MainWindow::openOnlineLayout()
 	connect(offlineCtrl, &OfflineController::tickSignal, onlineCtrl, &OnlineController::moveDown);
 	connect(offlineCtrl, &OfflineController::tickSignal, ofGeneralCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, onlineCtrl, &OnlineController::newFigure);
-	connect(offlineCtrl, &OfflineController::newFigureSignal, ofGeneralCtrl, &GeneralController::setThirdFigure);
+	connect(offlineCtrl, &OfflineController::newFigureSignal, ofGeneralCtrl, &GeneralController::getNextFigure);
 	
 	connect(onlineCtrl, &OnlineController::moveRightSignal, onGeneralCtrl, &GeneralController::moveRight);
 	connect(onlineCtrl, &OnlineController::moveLeftSignal, onGeneralCtrl, &GeneralController::moveLeft);
 	connect(onlineCtrl, &OnlineController::moveDownSignal, onGeneralCtrl, &GeneralController::moveDown);
 	connect(onlineCtrl, &OnlineController::rotate, onGeneralCtrl, &GeneralController::rotate);
-	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::setThirdFigure);
+	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::getNextFigure);
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	

@@ -141,26 +141,6 @@ void GeneralController::moveDown()
 	}
 }
 
-void GeneralController::setThirdFigure(quint8 figure)
-{
-	//qDebug() << 1;
-	//if (objectName() == "Online") qDebug() << figure;
-	if (objectName() != "Online") qDebug() << "newFigure:" << figure;
-	thirdFigure = figure;
-	if (startFigureUpdate <= 2)
-	{
-		startFigureUpdate++;
-		if (startFigureUpdate < 3)
-		{
-			getNextFigure();
-		}
-		else if (startFigureUpdate == 3)
-		{
-			startGame();
-		}
-	}
-}
-
 void GeneralController::newTick()
 {
 	if (m_stop)
@@ -185,12 +165,11 @@ void GeneralController::newTick()
 
 void GeneralController::restart()
 {
-	startFigureUpdate = 0;
+	isReadyToStart = false;
 	grid.clear();
 	m_stop = false;
-	getNextFigure();
-	//getNextFigure();
-	//getNextFigure();
+	emit getNewFigureSignal();
+	emit getNewFigureSignal();
 }
 
 void GeneralController::stop()
@@ -218,15 +197,13 @@ void GeneralController::figureFall()
 		}
 	}
 	
-	getNextFigure();
-	newTick();
+	emit getNewFigureSignal();
 }
 
-void GeneralController::getNextFigure()
+void GeneralController::getNextFigure(quint8 newFigure)
 {
-	if (objectName() != "Online") qDebug() << "thirdFigure:" << thirdFigure;
 	figure = secondFigure;
-	switch (thirdFigure)
+	switch (newFigure)
 	{
 	case TetrisInfo::Figures::I:
 		secondFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
@@ -251,6 +228,16 @@ void GeneralController::getNextFigure()
 		break;
 	}
 	emit newFigureSignal(secondFigure);
+	
+	if (isReadyToStart)
+	{
+		newTick();
+	}
+	else if (!isReadyToStart && figure != nullptr)
+	{
+		isReadyToStart = true;
+		startGame();
+	}
 }
 
 bool GeneralController::isRowFull(qint8 rowNumber) const
@@ -396,17 +383,10 @@ bool GeneralController::isNegativeCoords(const QList<qint16> &cells) const
 
 void GeneralController::startGame()
 {
-//	if (objectName() == "Online")
-//	{
-//		qDebug() << thirdFigure;
-//		qDebug() << secondFigure << secondFigure->getType();
-//		qDebug() << figure << figure->getType();
-//	}
 	addFigure(figure->getCells());
 	emit update(grid);
 	m_points = 0;
 	emit newPointsSignal(m_points);
 	level = 1;
 	emit newLevelSignal(level);
-	
 }

@@ -23,7 +23,7 @@ public slots:
 	void rotate();
 	void moveDown();
 	
-	void setThirdFigure(quint8 figure);
+	void getNextFigure(quint8 figure);
 	
 	void newTick();
 	void restart();
@@ -41,11 +41,11 @@ signals:
 	void newPointsSignal(quint32 points);
 	void newLevelSignal(quint16 level);
 	void newFigureSignal(AbstractFigure *&secondFigure);
+	void getNewFigureSignal();
 	void readyToStart();
 	
 private:
 	void figureFall();
-	void getNextFigure();
 	bool isRowFull(qint8 rowNumber) const;
 	void deleteRow(qint8 rowNumber);
 	void shiftRows(qint8 bottomRow, qint8 count);
@@ -63,12 +63,11 @@ private:
 	QMap<qint16, QImage *> grid;
 	AbstractFigure *figure = nullptr;
 	AbstractFigure *secondFigure = nullptr;
-	quint8 thirdFigure = 0;
 	quint32 m_points = 0;
 	quint16 level = 1;
 	
 	bool m_stop = false;
-	quint8 startFigureUpdate = 0;
+	bool isReadyToStart = false;
 	
 	const quint16 POINTS[4] = {100, 300, 700, 1500};
 	const quint16 NEW_LEVEL = 3000;
