@@ -110,7 +110,7 @@ void OnlineController::readSocket()
 	for (quint8 i = 0; i < bytes.size(); i++)
 	{
 		Code code = static_cast<Code>(bytes.at(i));
-		qDebug() << "Get:" << code;
+		//qDebug() << "Get:" << code;
 		switch (code)
 		{
 		case Code::IFigure:
@@ -185,6 +185,7 @@ void OnlineController::connectionTimeout()
 
 void OnlineController::writeSocket(const OnlineController::Code code)
 {
+	//qDebug() << "Send:" << code;
 	QByteArray data;
 	data.append(code);
 	socket->write(data);

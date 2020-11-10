@@ -144,7 +144,8 @@ void GeneralController::moveDown()
 void GeneralController::setThirdFigure(quint8 figure)
 {
 	//qDebug() << 1;
-	if (objectName() == "Online") qDebug() << figure;
+	//if (objectName() == "Online") qDebug() << figure;
+	if (objectName() != "Online") qDebug() << "newFigure:" << figure;
 	thirdFigure = figure;
 	if (startFigureUpdate <= 2)
 	{
@@ -223,6 +224,7 @@ void GeneralController::figureFall()
 
 void GeneralController::getNextFigure()
 {
+	if (objectName() != "Online") qDebug() << "thirdFigure:" << thirdFigure;
 	figure = secondFigure;
 	switch (thirdFigure)
 	{
@@ -394,12 +396,12 @@ bool GeneralController::isNegativeCoords(const QList<qint16> &cells) const
 
 void GeneralController::startGame()
 {
-	if (objectName() == "Online")
-	{
-		qDebug() << thirdFigure;
-		qDebug() << secondFigure << secondFigure->getType();
-		qDebug() << figure << figure->getType();
-	}
+//	if (objectName() == "Online")
+//	{
+//		qDebug() << thirdFigure;
+//		qDebug() << secondFigure << secondFigure->getType();
+//		qDebug() << figure << figure->getType();
+//	}
 	addFigure(figure->getCells());
 	emit update(grid);
 	m_points = 0;
