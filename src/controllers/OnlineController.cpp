@@ -104,6 +104,20 @@ void OnlineController::newFigure(quint8 figure)
 	}
 }
 
+void OnlineController::ready()
+{
+	writeSocket(Code::Ready);
+}
+
+void OnlineController::disconnectSocket()
+{
+	if (socket != nullptr)
+	{
+		socket->close();
+		socket->deleteLater();
+	}
+}
+
 void OnlineController::readSocket()
 {
 	QByteArray bytes = socket->readAll();

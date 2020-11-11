@@ -40,6 +40,7 @@ public slots:
 	
 	void unableToConnect();
 	void connected();
+	void ready();
 	
 private slots:
 	void connectToServer(QString ip);
@@ -62,6 +63,9 @@ signals:
 	void closeConnectingErrPanel();
 	void connectedSignal();
 	void startGame();
+	void readySignal();
+	void disconnectSignal();
+	void closeReadyPanel();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;
@@ -86,6 +90,10 @@ private:
 	const QString WAITING_PANEL_NAME = "waitingPanel";
 	const QString CONNECTING_PANEL_NAME = "connectingPanel";
 	const QString CONNECTING_ERROR_PANEL_NAME = "connectingErrorPanel";
+	const QString READY_PANEL_NAME = "readyPanel";
+	
+	bool meReady = false;
+	bool opponentReady = false;
 };
 
 #endif // ONLINEWGT_H

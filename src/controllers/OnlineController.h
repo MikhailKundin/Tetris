@@ -34,6 +34,8 @@ public slots:
 	void moveDown();
 	void rotate();
 	void newFigure(quint8 figure);
+	void ready();
+	void disconnectSocket();
 	
 	void makeServer();
 	void makeClient(const QString &ip);

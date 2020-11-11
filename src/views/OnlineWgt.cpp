@@ -112,7 +112,7 @@ void OnlineWgt::unableToConnect()
 {
 	emit unableToConnectSignal();
 	
-	ButtonPanel *connectingErr = new ButtonPanel("Подключение не удалось!", {"Ок"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *connectingErr = new ButtonPanel("Подключение разорвано", {"Ок"}, getPanelPixmaps(), MULT, this);
 	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
 	connectingErr->resize(size());
 	connectingErr->setVisible(true);
@@ -188,6 +188,28 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 			emit closeConnectingErrPanel();
 		}
 	}
+	else if (sender()->objectName() == READY_PANEL_NAME)
+	{
+		if (buttonName == "Готов!")
+		{
+			meReady = true;
+			ofPg->setState(PlaygroundPnl::Ready);
+			emit readySignal();
+			emit closeReadyPanel();
+			if (meReady && opponentReady)
+			{
+				ofPg->setState(PlaygroundPnl::Default);
+				onPg->setState(PlaygroundPnl::Default);
+				emit startGame();
+			}
+		}
+		else if (buttonName == "Отмена")
+		{
+			emit disconnectSignal();
+			emit closeReadyPanel();
+			openConnectWgt();
+		}
+	}
 }
 
 void OnlineWgt::openConnectWgt()
@@ -197,7 +219,7 @@ void OnlineWgt::openConnectWgt()
 		connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
 		connectOnlineWgt->resize(size());
 		
-		connect(this, &OnlineWgt::connectedSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
+		connect(this, &OnlineWgt::startGame, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, this, &OnlineWgt::waitingClient);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, this, &OnlineWgt::connectToServer);
 		connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, this, &OnlineWgt::cancelConnecting);
@@ -209,9 +231,30 @@ void OnlineWgt::openConnectWgt()
 void OnlineWgt::connected()
 {
 	emit connectedSignal();
-	ofPg->setState(PlaygroundPnl::Default);
-	onPg->setState(PlaygroundPnl::Default);
-	emit startGame();
+	ofPg->setState(PlaygroundPnl::NotReady);
+	onPg->setState(PlaygroundPnl::NotReady);
+	
+	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
+	readyPanel->setObjectName(READY_PANEL_NAME);
+	readyPanel->resize(size());
+	readyPanel->setVisible(true);
+	
+	connect(this, &OnlineWgt::closeReadyPanel, readyPanel, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::unableToConnectSignal, readyPanel, &ButtonPanel::deleteLater);
+	connect(readyPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, readyPanel, [=](){readyPanel->resize(size());});
+}
+
+void OnlineWgt::ready()
+{
+	opponentReady = true;
+	onPg->setState(PlaygroundPnl::Ready);
+	if (meReady && opponentReady)
+	{
+		ofPg->setState(PlaygroundPnl::Default);
+		onPg->setState(PlaygroundPnl::Default);
+		emit startGame();
+	}
 }
 
 void OnlineWgt::resizeEvent(QResizeEvent *e)
