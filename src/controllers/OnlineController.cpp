@@ -22,7 +22,7 @@ void OnlineController::makeServer()
 	QTcpServer *server = new QTcpServer(this);
 	server->listen(QHostAddress::Any, PORT);
 	connect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
-	//connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
+	connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
 }
 
 void OnlineController::makeClient(const QString &ip)
@@ -181,7 +181,7 @@ void OnlineController::connectedToServer()
 void OnlineController::onDisconnected()
 {
 	emit disconnectSignal();
-	socket->deleteLater();
+	disconnectSocket();
 }
 
 void OnlineController::clientConnected()
