@@ -111,11 +111,13 @@ void OnlineController::ready()
 
 void OnlineController::disconnectSocket()
 {
+	disconnect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
 	if (socket != nullptr)
 	{
 		socket->close();
 		socket->deleteLater();
 	}
+	emit deleteServerSignal();
 }
 
 void OnlineController::readSocket()
@@ -182,6 +184,7 @@ void OnlineController::onDisconnected()
 {
 	emit disconnectSignal();
 	disconnectSocket();
+	emit deleteServerSignal();
 }
 
 void OnlineController::clientConnected()

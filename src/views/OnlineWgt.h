@@ -48,9 +48,13 @@ private slots:
 	void cancelConnecting();
 	
 	void buttonFilter(const QString &buttonName);
+	
 	void openConnectWgt();
 	
 signals:
+	void startGame();
+	void readySignal();
+	
 	void exitSignal();
 	void makeServerSignal();
 	void makeClientSignal(const QString &ip);
@@ -60,10 +64,8 @@ signals:
 	void cancelWaitingSignal();
 	void cancelConnectingSignal();
 	void unableToConnectSignal();
-	void closeConnectingErrPanel();
 	void connectedSignal();
-	void startGame();
-	void readySignal();
+	void closeConnectingErrPanel();
 	void disconnectSignal();
 	void closeReadyPanel();
 	
@@ -82,8 +84,6 @@ private:
 	
 	std::unique_ptr<QLabel> yellow;
 	std::unique_ptr<QLabel> topYellow;
-	
-	ConnectOnlineWgt *connectOnlineWgt = nullptr;
 	
 	const quint16 BASE_YELLOW_WIDTH = 100;
 	
