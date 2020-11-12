@@ -141,7 +141,7 @@ void OnlineController::readSocket()
 	for (quint8 i = 0; i < bytes.size(); i++)
 	{
 		Code code = static_cast<Code>(bytes.at(i));
-		//qDebug() << "Get:" << code;
+		qDebug() << "Get:" << code;
 		if (static_cast<qint8>(bytes.at(i)) > 12)
 		{
 			qDebug() << "Socket: unknown code" << static_cast<qint8>(bytes.at(i));

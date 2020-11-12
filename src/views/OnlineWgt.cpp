@@ -126,6 +126,7 @@ void OnlineWgt::onUpdateFigure(AbstractFigure *&figure)
 
 void OnlineWgt::onDefeat()
 {
+	qDebug() << "0c";
 	onPg->setState(PlaygroundPnl::Defeat);
 	opponentDefeat = true;
 	if (meDefeat && ofPoints->getPoints() == onPoints->getPoints())
@@ -302,6 +303,7 @@ void OnlineWgt::connected()
 
 void OnlineWgt::ready()
 {
+	qDebug() << "0b";
 	opponentReady = true;
 	onPg->setState(PlaygroundPnl::Ready);
 	if (meReady && opponentReady)
