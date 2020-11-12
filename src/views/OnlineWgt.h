@@ -63,6 +63,8 @@ signals:
 	void makeServerSignal();
 	void makeClientSignal(const QString &ip);
 	void stopSignal();
+	void stopCtrlSignal();
+	void startCtrlSignal();
 	
 	void wgtResize();
 	
@@ -76,10 +78,12 @@ signals:
 	void closeEndPanel();
 	
 private:
+	enum EndState : qint8 {Defeat, Victory, Draw};
+	
 	void resizeEvent(QResizeEvent *e) override;
 	
 	void openReadyPanel();
-	void openEndPanel(bool isWinner);
+	void openEndPanel(EndState state);
 	
 	Ui::OnlineWgt *ui;
 	

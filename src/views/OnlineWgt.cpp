@@ -75,7 +75,7 @@ void OnlineWgt::ofUpdatePoints(quint32 points)
 	ofPoints->update(points);
 	if (opponentDefeat && ofPoints->getPoints() > onPoints->getPoints())
 	{
-		openEndPanel(true);
+		openEndPanel(EndState::Victory);
 	}
 }
 
@@ -91,8 +91,13 @@ void OnlineWgt::ofUpdateFigure(AbstractFigure *&figure)
 
 void OnlineWgt::ofDefeat()
 {
+	//emit stopCtrlSignal();
 	ofPg->setState(PlaygroundPnl::Defeat);
 	meDefeat = true;
+	if (opponentDefeat && ofPoints->getPoints() == onPoints->getPoints())
+	{
+		openEndPanel(EndState::Draw);
+	}
 }
 
 void OnlineWgt::onUpdateGrid(const QMap<qint16, QImage *> &grid) const
@@ -105,7 +110,7 @@ void OnlineWgt::onUpdatePoints(quint32 points)
 	onPoints->update(points);
 	if (meDefeat && onPoints->getPoints() > ofPoints->getPoints())
 	{
-		openEndPanel(false);
+		openEndPanel(EndState::Defeat);
 	}
 }
 
@@ -123,6 +128,10 @@ void OnlineWgt::onDefeat()
 {
 	onPg->setState(PlaygroundPnl::Defeat);
 	opponentDefeat = true;
+	if (meDefeat && ofPoints->getPoints() == onPoints->getPoints())
+	{
+		openEndPanel(EndState::Draw);
+	}
 }
 
 void OnlineWgt::unableToConnect()
@@ -253,11 +262,13 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 	{
 		if (buttonName == "Повтор")
 		{
+			emit startCtrlSignal();
 			emit closeEndPanel();
 			openReadyPanel();
 		}
 		else if (buttonName == "Выход")
 		{
+			emit startCtrlSignal();
 			emit closeEndPanel();
 			emit disconnectSignal();
 			clear();
@@ -358,19 +369,25 @@ void OnlineWgt::openReadyPanel()
 	connect(this, &OnlineWgt::wgtResize, readyPanel, [=](){readyPanel->resize(size());});
 }
 
-void OnlineWgt::openEndPanel(bool isWinner)
+void OnlineWgt::openEndPanel(EndState state)
 {
 	clear();
+	blockEsc = true;
 	
 	ButtonPanel *endPanel;
-	if (isWinner)
+	switch (state)
 	{
+	case Victory:
 		endPanel = new ButtonPanel("Вы победили!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
-	}
-	else
-	{
+		break;
+	case Defeat:
 		endPanel = new ButtonPanel("Вы проиграли!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+		break;
+	case Draw:
+		endPanel = new ButtonPanel("Ничья!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+		break;
 	}
+
 	endPanel->setObjectName(END_PANEL_NAME);
 	endPanel->resize(size());
 	endPanel->setVisible(true);

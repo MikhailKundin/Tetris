@@ -45,6 +45,9 @@ public slots:
 	void deleteServer();
 	void deleteSocket();
 	
+	void stop();
+	void start();
+	
 private slots:
 	void readSocket();
 	void connectedToServer();
@@ -64,6 +67,8 @@ private:
 	QTcpSocket *socket = nullptr;
 	
 	const quint16 PORT = 28128;
+	
+	bool m_stop = false;
 };
 
 #endif // ONLINECONTROLLER_H

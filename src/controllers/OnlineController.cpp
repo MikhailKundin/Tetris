@@ -57,6 +57,18 @@ void OnlineController::deleteSocket()
 	socket = nullptr;
 }
 
+void OnlineController::stop()
+{
+	m_stop = true;
+	qDebug() << "stop";
+}
+
+void OnlineController::start()
+{
+	qDebug() << "start";
+	m_stop = false;
+}
+
 void OnlineController::moveRight()
 {
 	writeSocket(Code::MoveRight);
@@ -185,6 +197,7 @@ void OnlineController::connectedToServer()
 	//disconnect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	socket = server->nextPendingConnection();
 	emit connectedSignal();
+	start();
 	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
 	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
 	connect(this, &OnlineController::deleteClientSignal, socket, &QTcpSocket::deleteLater);
@@ -199,6 +212,7 @@ void OnlineController::onDisconnected()
 void OnlineController::clientConnected()
 {
 	emit connectedSignal();
+	start();
 	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
 	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
 }
@@ -211,6 +225,11 @@ void OnlineController::connectionTimeout()
 
 void OnlineController::writeSocket(const OnlineController::Code code)
 {
+	if (m_stop)
+	{
+		return;
+	}
+	
 	if (socket != nullptr)
 	{
 		//qDebug() << "Send:" << code;

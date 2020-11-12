@@ -143,6 +143,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	connect(onlineWgt, &OnlineWgt::stopSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineWgt, &OnlineWgt::startCtrlSignal, onlineCtrl, &OnlineController::start);
 	
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
 	connect(ofGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::ofUpdatePoints);
@@ -153,13 +154,15 @@ void MainWindow::openOnlineLayout()
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::ofDefeat);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
-	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineCtrl, &OnlineController::defeat);
+	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineCtrl, [=](){
+		onlineCtrl->defeat();
+		onlineCtrl->stop();
+	});
 	
 	connect(onGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::onUpdateGrid);
 	connect(onGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::onUpdatePoints);
 	connect(onGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::onUpdateLevel);
 	connect(onGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::onUpdateFigure);
-	connect(onGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);
 	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	
