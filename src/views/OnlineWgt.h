@@ -12,6 +12,7 @@ class QLabel;
 class SaveResultsWgt;
 class SingleExitWgt;
 class ConnectOnlineWgt;
+class ButtonPanel;
 
 namespace Ui {
 class OnlineWgt;
@@ -43,6 +44,7 @@ public slots:
 	void ready();
 	void disconnected();
 	void clear();
+	void escBtnPress();
 	
 private slots:
 	void connectToServer(QString ip);
@@ -70,9 +72,13 @@ signals:
 	void closeConnectingErrPanel();
 	void disconnectSignal();
 	void closeReadyPanel();
+	void closeEndPanel();
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;
+	
+	void openReadyPanel();
+	void openEndPanel(bool isWinner);
 	
 	Ui::OnlineWgt *ui;
 	
@@ -87,15 +93,24 @@ private:
 	std::unique_ptr<QLabel> yellow;
 	std::unique_ptr<QLabel> topYellow;
 	
+	ButtonPanel *escPanel;
+	
 	const quint16 BASE_YELLOW_WIDTH = 100;
 	
 	const QString WAITING_PANEL_NAME = "waitingPanel";
 	const QString CONNECTING_PANEL_NAME = "connectingPanel";
 	const QString CONNECTING_ERROR_PANEL_NAME = "connectingErrorPanel";
 	const QString READY_PANEL_NAME = "readyPanel";
+	const QString ESCAPE_PANEL_NAME = "escapePanel";
+	const QString END_PANEL_NAME = "endPanel";
 	
 	bool meReady = false;
 	bool opponentReady = false;
+	
+	bool meDefeat = false;
+	bool opponentDefeat = false;
+	
+	bool blockEsc = true;
 };
 
 #endif // ONLINEWGT_H

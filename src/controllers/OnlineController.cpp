@@ -208,8 +208,4 @@ void OnlineController::writeSocket(const OnlineController::Code code)
 		socket->waitForBytesWritten();
 		socket->flush();
 	}
-	else
-	{
-		qDebug() << "Socket is not valid!";
-	}
 }

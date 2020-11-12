@@ -48,6 +48,12 @@ OnlineWgt::OnlineWgt(QWidget *parent) :
 	setMinimumWidth(ui->ofLevelFigurePnl->width() + ofPg->width() + ui->yellowLbl->width() + 
 					ui->onLevelFigurePnl->width() + onPg->width());
 	
+	escPanel = new ButtonPanel("Меню", {"Продолжить", "Выход"}, getPanelPixmaps(), MULT, this);
+	escPanel->setObjectName(ESCAPE_PANEL_NAME);
+	escPanel->setVisible(false);
+	connect(escPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, escPanel, [=](){escPanel->resize(size());});
+	
 	onPg->setState(PlaygroundPnl::NotReady);
 	ofPg->setState(PlaygroundPnl::NotReady);
 	openConnectWgt();
@@ -55,6 +61,7 @@ OnlineWgt::OnlineWgt(QWidget *parent) :
 
 OnlineWgt::~OnlineWgt()
 {
+	delete escPanel;
 	delete ui;
 }
 
@@ -66,6 +73,10 @@ void OnlineWgt::ofUpdateGrid(const QMap<qint16, QImage *> &grid) const
 void OnlineWgt::ofUpdatePoints(quint32 points)
 {
 	ofPoints->update(points);
+	if (opponentDefeat && ofPoints->getPoints() > onPoints->getPoints())
+	{
+		openEndPanel(true);
+	}
 }
 
 void OnlineWgt::ofUpdateLevel(quint16 level)
@@ -81,6 +92,7 @@ void OnlineWgt::ofUpdateFigure(AbstractFigure *&figure)
 void OnlineWgt::ofDefeat()
 {
 	ofPg->setState(PlaygroundPnl::Defeat);
+	meDefeat = true;
 }
 
 void OnlineWgt::onUpdateGrid(const QMap<qint16, QImage *> &grid) const
@@ -91,6 +103,10 @@ void OnlineWgt::onUpdateGrid(const QMap<qint16, QImage *> &grid) const
 void OnlineWgt::onUpdatePoints(quint32 points)
 {
 	onPoints->update(points);
+	if (meDefeat && onPoints->getPoints() > ofPoints->getPoints())
+	{
+		openEndPanel(false);
+	}
 }
 
 void OnlineWgt::onUpdateLevel(quint16 level)
@@ -106,6 +122,7 @@ void OnlineWgt::onUpdateFigure(AbstractFigure *&figure)
 void OnlineWgt::onDefeat()
 {
 	onPg->setState(PlaygroundPnl::Defeat);
+	opponentDefeat = true;
 }
 
 void OnlineWgt::unableToConnect()
@@ -116,6 +133,8 @@ void OnlineWgt::unableToConnect()
 	}
 	
 	emit unableToConnectSignal();
+	
+	blockEsc = true;
 	
 	ButtonPanel *connectingErr = new ButtonPanel("Подключение разорвано", {"Ок"}, getPanelPixmaps(), MULT, this);
 	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
@@ -202,6 +221,7 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 			{
 				ofPg->setState(PlaygroundPnl::Default);
 				onPg->setState(PlaygroundPnl::Default);
+				blockEsc = false;
 				emit startGame();
 			}
 		}
@@ -209,6 +229,35 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			emit disconnectSignal();
 			emit closeReadyPanel();
+			openConnectWgt();
+		}
+	}
+	else if (sender()->objectName() == ESCAPE_PANEL_NAME)
+	{
+		if (buttonName == "Продолжить")
+		{
+			escPanel->setVisible(false);
+		}
+		else if (buttonName == "Выход")
+		{
+			escPanel->setVisible(false);
+			emit disconnectSignal();
+			clear();
+			openConnectWgt();
+		}
+	}
+	else if (sender()->objectName() == END_PANEL_NAME)
+	{
+		if (buttonName == "Повтор")
+		{
+			emit closeEndPanel();
+			openReadyPanel();
+		}
+		else if (buttonName == "Выход")
+		{
+			emit closeEndPanel();
+			emit disconnectSignal();
+			clear();
 			openConnectWgt();
 		}
 	}
@@ -234,16 +283,7 @@ void OnlineWgt::connected()
 	emit connectedSignal();
 	ofPg->setState(PlaygroundPnl::NotReady);
 	onPg->setState(PlaygroundPnl::NotReady);
-	
-	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
-	readyPanel->setObjectName(READY_PANEL_NAME);
-	readyPanel->resize(size());
-	readyPanel->setVisible(true);
-	
-	connect(this, &OnlineWgt::closeReadyPanel, readyPanel, &ButtonPanel::deleteLater);
-	connect(this, &OnlineWgt::unableToConnectSignal, readyPanel, &ButtonPanel::deleteLater);
-	connect(readyPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
-	connect(this, &OnlineWgt::wgtResize, readyPanel, [=](){readyPanel->resize(size());});
+	openReadyPanel();
 }
 
 void OnlineWgt::ready()
@@ -254,6 +294,7 @@ void OnlineWgt::ready()
 	{
 		ofPg->setState(PlaygroundPnl::Default);
 		onPg->setState(PlaygroundPnl::Default);
+		blockEsc = false;
 		emit startGame();
 	}
 }
@@ -271,6 +312,7 @@ void OnlineWgt::clear()
 	ofLevelFigure->clearFigure();
 	ofPg->setState(PlaygroundPnl::NotReady);
 	meReady = false;
+	meDefeat = false;
 	
 	onPg->update({});
 	onPoints->update(0);
@@ -278,6 +320,17 @@ void OnlineWgt::clear()
 	onLevelFigure->clearFigure();
 	onPg->setState(PlaygroundPnl::NotReady);
 	opponentReady = false;
+	opponentDefeat = false;
+}
+
+void OnlineWgt::escBtnPress()
+{
+	if (blockEsc)
+	{
+		return;
+	}
+	
+	escPanel->setVisible(!escPanel->isVisible());
 }
 
 void OnlineWgt::resizeEvent(QResizeEvent *e)
@@ -285,4 +338,37 @@ void OnlineWgt::resizeEvent(QResizeEvent *e)
 	Q_UNUSED(e)
 	
 	emit wgtResize();
+}
+
+void OnlineWgt::openReadyPanel()
+{
+	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
+	readyPanel->setObjectName(READY_PANEL_NAME);
+	readyPanel->resize(size());
+	readyPanel->setVisible(true);
+	
+	connect(this, &OnlineWgt::closeReadyPanel, readyPanel, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::unableToConnectSignal, readyPanel, &ButtonPanel::deleteLater);
+	connect(readyPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, readyPanel, [=](){readyPanel->resize(size());});
+}
+
+void OnlineWgt::openEndPanel(bool isWinner)
+{
+	ButtonPanel *endPanel;
+	if (isWinner)
+	{
+		endPanel = new ButtonPanel("Вы победили!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+	}
+	else
+	{
+		endPanel = new ButtonPanel("Вы проиграли!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+	}
+	endPanel->setObjectName(END_PANEL_NAME);
+	endPanel->resize(size());
+	endPanel->setVisible(true);
+	
+	connect(endPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
+	connect(this, &OnlineWgt::wgtResize, endPanel, [=](){endPanel->resize(size());});
+	connect(this, &OnlineWgt::closeEndPanel, endPanel, &ButtonPanel::deleteLater);
 }

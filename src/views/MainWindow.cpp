@@ -133,9 +133,18 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::cancelConnectingSignal, onlineCtrl, &OnlineController::deleteSocket);
 	connect(onlineWgt, &OnlineWgt::readySignal, onlineCtrl, &OnlineController::ready);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, onlineCtrl, &OnlineController::disconnectSocket);
-	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
-	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
-	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
+	connect(onlineWgt, &OnlineWgt::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
+	connect(onlineWgt, &OnlineWgt::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
+	connect(onlineWgt, &OnlineWgt::disconnectSignal, offlineCtrl, &OfflineController::stop);
+//	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
+//	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
+//	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
+	connect(onlineWgt, &OnlineWgt::startGame, [=]()
+	{
+		ofGeneralCtrl->restart();
+		onGeneralCtrl->restart();
+		offlineCtrl->restart();
+	});
 	
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
 	connect(ofGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::ofUpdatePoints);
@@ -167,11 +176,21 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	connect(onlineCtrl, &OnlineController::readySignal, onlineWgt, &OnlineWgt::ready);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::disconnected);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, offlineCtrl, &OfflineController::stop);
+//	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::disconnected);
+//	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
+//	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
+//	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
+//	connect(onlineCtrl, &OnlineController::disconnectSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, [=](){
+		onlineWgt->disconnected();
+		ofGeneralCtrl->restart();
+		ofGeneralCtrl->stop();
+		onGeneralCtrl->restart();
+		onGeneralCtrl->stop();
+		offlineCtrl->restart();
+		offlineCtrl->stop();
+		onlineWgt->clear();
+	});
 	
 	connect(this, &MainWindow::newLayout, onlineWgt, &OnlineWgt::deleteLater);
 	connect(this, &MainWindow::moveRightSignal, ofGeneralCtrl, &GeneralController::moveRight);
@@ -182,6 +201,7 @@ void MainWindow::openOnlineLayout()
 	connect(this, &MainWindow::moveLeftSignal, onlineCtrl, &OnlineController::moveLeft);
 	connect(this, &MainWindow::moveDownSignal, onlineCtrl, &OnlineController::moveDown);
 	connect(this, &MainWindow::rotateSignal, onlineCtrl, &OnlineController::rotate);
+	connect(this, &MainWindow::pauseBtnPress, onlineWgt, &OnlineWgt::escBtnPress);
 }
 
 void MainWindow::closeAll()
