@@ -159,7 +159,7 @@ void MainWindow::openOnlineLayout()
 	connect(onGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::onUpdateLevel);
 	connect(onGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::onUpdateFigure);
 	connect(onGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);
-	connect(onGeneralCtrl, &GeneralController::defeatSignal, ofGeneralCtrl, &GeneralController::stop);
+	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::stop);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, onlineCtrl, &OnlineController::moveDown);
 	connect(offlineCtrl, &OfflineController::tickSignal, ofGeneralCtrl, &GeneralController::newTick);

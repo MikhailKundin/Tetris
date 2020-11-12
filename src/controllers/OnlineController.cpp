@@ -130,6 +130,10 @@ void OnlineController::readSocket()
 	{
 		Code code = static_cast<Code>(bytes.at(i));
 		//qDebug() << "Get:" << code;
+		if (static_cast<qint8>(bytes.at(i)) > 12)
+		{
+			qDebug() << "Socket: unknown code" << static_cast<qint8>(bytes.at(i));
+		}
 		switch (code)
 		{
 		case Code::IFigure:

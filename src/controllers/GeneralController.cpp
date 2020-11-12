@@ -156,6 +156,7 @@ void GeneralController::newTick()
 	else if (isNegativeCoords(cells))
 	{
 		emit defeatSignal();
+		//qDebug() << "Defeat:" << grid << figure->getCells();
 	}
 	else
 	{
@@ -165,9 +166,24 @@ void GeneralController::newTick()
 
 void GeneralController::restart()
 {
+	//if (objectName() != "Online") qDebug() << 1;
 	isReadyToStart = false;
 	grid.clear();
 	m_stop = false;
+//	if (figure != nullptr && objectName() != "Online")
+//	{
+//		//if (objectName() != "Online") qDebug() << 11;
+//		//if (objectName() == "Online") qDebug() << 21;
+//		delete figure;
+//		figure = nullptr;
+//	}
+//	if (secondFigure != nullptr && objectName() != "Online")
+//	{
+//		//if (objectName() != "Online") qDebug() << 12;
+//		//if (objectName() == "Online") qDebug() << 22;
+//		delete secondFigure;
+//		secondFigure = nullptr;
+//	}
 	emit getNewFigureSignal();
 	emit getNewFigureSignal();
 }
