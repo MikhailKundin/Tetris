@@ -133,6 +133,7 @@ void OnlineWgt::unableToConnect()
 	}
 	
 	emit unableToConnectSignal();
+	emit closeEndPanel();
 	
 	blockEsc = true;
 	
@@ -367,6 +368,8 @@ void OnlineWgt::openEndPanel(bool isWinner)
 	endPanel->setObjectName(END_PANEL_NAME);
 	endPanel->resize(size());
 	endPanel->setVisible(true);
+	
+	emit stopSignal();
 	
 	connect(endPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, endPanel, [=](){endPanel->resize(size());});

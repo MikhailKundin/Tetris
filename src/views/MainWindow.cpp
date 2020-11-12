@@ -155,6 +155,7 @@ void MainWindow::openOnlineLayout()
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::ofDefeat);
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineCtrl, &OnlineController::defeat);
 	
 	connect(onGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::onUpdateGrid);
 	connect(onGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::onUpdatePoints);
@@ -176,6 +177,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	connect(onlineCtrl, &OnlineController::readySignal, onlineWgt, &OnlineWgt::ready);
+	connect(onlineCtrl, &OnlineController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);
 //	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::disconnected);
 //	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
 //	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);

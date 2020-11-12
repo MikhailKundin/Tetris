@@ -118,6 +118,11 @@ void OnlineController::disconnectSocket()
 	deleteSocket();
 }
 
+void OnlineController::defeat()
+{
+	writeSocket(Code::Defeat);
+}
+
 void OnlineController::readSocket()
 {
 	QByteArray bytes = socket->readAll();
@@ -162,6 +167,9 @@ void OnlineController::readSocket()
 			break;
 		case Code::Ready:
 			emit readySignal();
+			break;
+		case Code::Defeat:
+			emit defeatSignal();
 			break;
 		}
 	}

@@ -19,6 +19,7 @@ signals:
 	void rotateSignal();
 	void newFigureSignal(quint8 figure);
 	void readySignal();
+	void defeatSignal();
 	
 	void connectedSignal();
 	void startSignal();
@@ -37,6 +38,7 @@ public slots:
 	void newFigure(quint8 figure);
 	void ready();
 	void disconnectSocket();
+	void defeat();
 	
 	void makeServer();
 	void makeClient(const QString &ip);
@@ -54,7 +56,7 @@ private:
 	enum Code : qint8
 	{
 		IFigure, TFigure, OFigure, LFigure, JFigure, SFigure, ZFigure, 
-		MoveRight, MoveLeft, MoveDown, Rotate, Ready
+		MoveRight, MoveLeft, MoveDown, Rotate, Ready, Defeat
 	};
 	
 	void writeSocket(const Code code);
