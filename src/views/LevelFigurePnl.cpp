@@ -48,6 +48,11 @@ void LevelFigurePnl::setFigure(AbstractFigure *&figure)
 	nextFigurePnl->update(figure);
 }
 
+void LevelFigurePnl::clearFigure()
+{
+	nextFigurePnl->clear();
+}
+
 void LevelFigurePnl::resizeEvent(QResizeEvent *e)
 {
 	Q_UNUSED(e)

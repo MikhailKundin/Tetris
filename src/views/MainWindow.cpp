@@ -167,7 +167,11 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	connect(onlineCtrl, &OnlineController::readySignal, onlineWgt, &OnlineWgt::ready);
-	
+	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::disconnected);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, offlineCtrl, &OfflineController::stop);
 	
 	connect(this, &MainWindow::newLayout, onlineWgt, &OnlineWgt::deleteLater);
 	connect(this, &MainWindow::moveRightSignal, ofGeneralCtrl, &GeneralController::moveRight);

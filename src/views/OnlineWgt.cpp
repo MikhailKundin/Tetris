@@ -110,6 +110,11 @@ void OnlineWgt::onDefeat()
 
 void OnlineWgt::unableToConnect()
 {
+	if (findChild<ButtonPanel *>(CONNECTING_ERROR_PANEL_NAME) != nullptr)
+	{
+		return;
+	}
+	
 	emit unableToConnectSignal();
 	
 	ButtonPanel *connectingErr = new ButtonPanel("Подключение разорвано", {"Ок"}, getPanelPixmaps(), MULT, this);
@@ -120,8 +125,8 @@ void OnlineWgt::unableToConnect()
 	connect(this, &OnlineWgt::closeConnectingErrPanel, connectingErr, &ButtonPanel::deleteLater);
 	connect(connectingErr, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, connectingErr, [=](){connectingErr->resize(size());});
+	disconnect(this, &OnlineWgt::closeConnectingErrPanel, this, &OnlineWgt::openConnectWgt);
 	connect(this, &OnlineWgt::closeConnectingErrPanel, this, &OnlineWgt::openConnectWgt);
-	//connect(this, &OnlineWgt::closeConnectingErrPanel, [](){qDebug() << 1;});
 }
 
 void OnlineWgt::connectToServer(QString ip)
@@ -137,8 +142,8 @@ void OnlineWgt::connectToServer(QString ip)
 	connect(this, &OnlineWgt::cancelConnectingSignal, connectingPnl, &ButtonPanel::deleteLater);
 	connect(connectingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, connectingPnl, [=](){connectingPnl->resize(size());});
+	disconnect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
 	connect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
-	//connect(this, &OnlineWgt::cancelConnectingSignal, [](){qDebug() << 1;});
 }
 
 void OnlineWgt::waitingClient()
@@ -153,6 +158,7 @@ void OnlineWgt::waitingClient()
 	connect(waitingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, waitingPnl, [=](){waitingPnl->resize(size());});
 	connect(this, &OnlineWgt::cancelWaitingSignal, waitingPnl, &ButtonPanel::deleteLater);
+	disconnect(this, &OnlineWgt::cancelWaitingSignal, this, &OnlineWgt::openConnectWgt);
 	connect(this, &OnlineWgt::cancelWaitingSignal, this, &OnlineWgt::openConnectWgt);
 }
 
@@ -250,6 +256,28 @@ void OnlineWgt::ready()
 		onPg->setState(PlaygroundPnl::Default);
 		emit startGame();
 	}
+}
+
+void OnlineWgt::disconnected()
+{
+	unableToConnect();
+}
+
+void OnlineWgt::clear()
+{
+	ofPg->update({});
+	ofPoints->update(0);
+	ofLevelFigure->setLevel(0);
+	ofLevelFigure->clearFigure();
+	ofPg->setState(PlaygroundPnl::NotReady);
+	meReady = false;
+	
+	onPg->update({});
+	onPoints->update(0);
+	onLevelFigure->setLevel(0);
+	onLevelFigure->clearFigure();
+	onPg->setState(PlaygroundPnl::NotReady);
+	opponentReady = false;
 }
 
 void OnlineWgt::resizeEvent(QResizeEvent *e)

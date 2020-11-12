@@ -26,6 +26,7 @@ signals:
 	void cannotConnectSignal();
 	
 	void deleteServerSignal();
+	void deleteClientSignal();
 	void deleteTimer();
 	
 public slots:
@@ -58,7 +59,6 @@ private:
 	
 	void writeSocket(const Code code);
 	
-	bool connected = false;
 	QTcpSocket *socket = nullptr;
 	
 	const quint16 PORT = 28128;

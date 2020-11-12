@@ -32,6 +32,11 @@ void NextFigurePnl::update(AbstractFigure *&figure)
 	repaint();
 }
 
+void NextFigurePnl::clear()
+{
+	type = -1;
+}
+
 void NextFigurePnl::paintEvent(QPaintEvent *e)
 {
 	Q_UNUSED(e)

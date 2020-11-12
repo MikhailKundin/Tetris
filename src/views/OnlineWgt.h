@@ -41,6 +41,8 @@ public slots:
 	void unableToConnect();
 	void connected();
 	void ready();
+	void disconnected();
+	void clear();
 	
 private slots:
 	void connectToServer(QString ip);

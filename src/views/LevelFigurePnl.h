@@ -22,6 +22,7 @@ public:
 	
 	void setLevel(quint16 level);
 	void setFigure(AbstractFigure *&figure);
+	void clearFigure();
 	
 private:
 	Ui::LevelFigurePnl *ui;
