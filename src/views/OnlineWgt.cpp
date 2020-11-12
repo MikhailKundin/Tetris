@@ -223,6 +223,8 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 				ofPg->setState(PlaygroundPnl::Default);
 				onPg->setState(PlaygroundPnl::Default);
 				blockEsc = false;
+				meReady = false;
+				opponentReady = false;
 				emit startGame();
 			}
 		}
@@ -296,6 +298,8 @@ void OnlineWgt::ready()
 		ofPg->setState(PlaygroundPnl::Default);
 		onPg->setState(PlaygroundPnl::Default);
 		blockEsc = false;
+		meReady = false;
+		opponentReady = false;
 		emit startGame();
 	}
 }
@@ -356,6 +360,8 @@ void OnlineWgt::openReadyPanel()
 
 void OnlineWgt::openEndPanel(bool isWinner)
 {
+	clear();
+	
 	ButtonPanel *endPanel;
 	if (isWinner)
 	{
