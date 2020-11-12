@@ -141,6 +141,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
 	connect(onlineWgt, &OnlineWgt::stopSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
+	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	connect(onlineWgt, &OnlineWgt::stopSignal, offlineCtrl, &OfflineController::stop);
 	
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
@@ -160,6 +161,7 @@ void MainWindow::openOnlineLayout()
 	connect(onGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::onUpdateFigure);
 	connect(onGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);
 	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::stop);
+	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, onlineCtrl, &OnlineController::moveDown);
 	connect(offlineCtrl, &OfflineController::tickSignal, ofGeneralCtrl, &GeneralController::newTick);
@@ -179,6 +181,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
 	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	connect(onlineCtrl, &OnlineController::disconnectSignal, offlineCtrl, &OfflineController::stop);
 	
 	connect(this, &MainWindow::newLayout, onlineWgt, &OnlineWgt::deleteLater);

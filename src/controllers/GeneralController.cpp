@@ -170,20 +170,16 @@ void GeneralController::restart()
 	isReadyToStart = false;
 	grid.clear();
 	m_stop = false;
-//	if (figure != nullptr && objectName() != "Online")
-//	{
-//		//if (objectName() != "Online") qDebug() << 11;
-//		//if (objectName() == "Online") qDebug() << 21;
-//		delete figure;
-//		figure = nullptr;
-//	}
-//	if (secondFigure != nullptr && objectName() != "Online")
-//	{
-//		//if (objectName() != "Online") qDebug() << 12;
-//		//if (objectName() == "Online") qDebug() << 22;
-//		delete secondFigure;
-//		secondFigure = nullptr;
-//	}
+	if (figure != nullptr && objectName() != "Online")
+	{
+		delete figure;
+		figure = nullptr;
+	}
+	if (secondFigure != nullptr && objectName() != "Online")
+	{
+		delete secondFigure;
+		secondFigure = nullptr;
+	}
 	emit getNewFigureSignal();
 	emit getNewFigureSignal();
 }
@@ -196,6 +192,20 @@ void GeneralController::stop()
 void GeneralController::start()
 {
 	m_stop = false;
+}
+
+void GeneralController::clearFigure()
+{
+	if (figure != nullptr)
+	{
+		delete figure;
+		figure = nullptr;
+	}
+	if (secondFigure != nullptr)
+	{
+		delete secondFigure;
+		secondFigure = nullptr;
+	}
 }
 
 void GeneralController::figureFall()

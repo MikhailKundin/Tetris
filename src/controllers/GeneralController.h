@@ -30,6 +30,8 @@ public slots:
 	void stop();
 	void start();
 	
+	void clearFigure();
+	
 signals:
 	void update(QMap<qint16, QImage *> &);
 	
