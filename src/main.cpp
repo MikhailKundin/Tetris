@@ -38,8 +38,25 @@ int main(int argc, char *argv[])
 	window.move(750, 0);
 	window.showMaximized();
 	
-//	WidgetInfo w;
-//	w.show();
+//	SingleWgt *w = new SingleWgt;
+//	w->show();
+	
+//	std::unique_ptr<LevelFigurePnl> w;
+//	w = std::make_unique<LevelFigurePnl>(50, 30, 1);
+//	w->show();
+	
+//	LevelFigurePnl *w = new LevelFigurePnl(50, 30, 1);
+//	w->show();
+	
+//	std::unique_ptr<NextFigurePnl> w;
+//	w = std::make_unique<NextFigurePnl>(30, 1);
+//	w->show();
+	
+//	NextFigurePnl *w = new NextFigurePnl(30, 1);
+//	w->show();
+	
+//	WidgetInfo *w = new WidgetInfo;
+//	w->show();
 //	auto p = w.getPanelPixmaps();
 //	ConnectOnlineWgt *wi = new ConnectOnlineWgt(p, 1);
 //	wi->show();

@@ -23,6 +23,8 @@ NextFigurePnl::NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent) : QW
 	border = std::make_unique<QLabel>(this);
 	border->resize(size());
 	border->setPixmap(img.scaled(border->size()));
+	
+	clear();
 }
 
 void NextFigurePnl::update(AbstractFigure *&figure)

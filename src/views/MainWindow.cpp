@@ -108,7 +108,7 @@ void MainWindow::openSingleLayout()
 }
 
 void MainWindow::openOnlineLayout()
-{
+{	
 	emit newLayout();
 	
 	OnlineWgt *onlineWgt = new OnlineWgt;

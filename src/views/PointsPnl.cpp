@@ -1,5 +1,5 @@
 #include "PointsPnl.h"
-#include "ui_pointswgt.h"
+#include "ui_PointsPnl.h"
 
 #include <QDebug>
 

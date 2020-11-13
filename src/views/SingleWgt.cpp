@@ -53,7 +53,7 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	pauseWgt->setObjectName(PAUSE_NAME);
 	pauseWgt->setVisible(false);
 	connect(pauseWgt.get(), &ButtonPanel::clicked, this, &SingleWgt::buttonsFilter);
-	connect(this, &SingleWgt::wgtResize, [=](){pauseWgt->resize(size());});
+	connect(this, &SingleWgt::wgtResize, pauseWgt.get(), [=](){pauseWgt->resize(size());});
 	
 	screenSize = size();
 }

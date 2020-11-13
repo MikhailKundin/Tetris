@@ -20,7 +20,7 @@ LevelFigurePnl::LevelFigurePnl(quint16 pointsHeight, quint8 blockSize, qreal mul
 	
 	levelPnl = std::make_unique<LevelPnl>(nextFigurePnl->width(), pointsHeight, mult, this);
 	levelPnl->setFixedSize(levelPnl->size());
-	
+
 	quint16 height = static_cast<quint16>(pointsHeight + blockSize*mult*TetrisInfo::ROW_COUNT);
 	resize(nextFigurePnl->width(), height);
 	
