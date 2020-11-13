@@ -35,7 +35,6 @@ const QMap<qint16, QImage *> &GeneralController::getGrid() const
 
 void GeneralController::moveRight()
 {
-	//if (objectName() == "Online") qDebug() << "07";
 	if (m_stop)
 	{
 		return;
@@ -49,7 +48,6 @@ void GeneralController::moveRight()
 		if (!isLayerOverflow(newCells))
 		{
 			addFigure(newCells);
-			emit moveRightSignal();
 			emit update(grid);
 		}
 		else
@@ -62,7 +60,6 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
-	//if (objectName() == "Online") qDebug() << "08";
 	if (m_stop)
 	{
 		return;
@@ -76,7 +73,6 @@ void GeneralController::moveLeft()
 		if (!isLayerOverflow(newCells))
 		{
 			addFigure(newCells);
-			emit moveLeftSignal();
 			emit update(grid);
 		}
 		else
@@ -89,7 +85,6 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
-	//if (objectName() == "Online") qDebug() << "0a";
 	if (m_stop)
 	{
 		return;
@@ -103,7 +98,6 @@ void GeneralController::rotate()
 		if (!isLayerOverflow(newCells))
 		{
 			addFigure(newCells);
-			emit rotateSignal();
 			emit update(grid);
 		}
 		else
@@ -116,7 +110,6 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
-	//if (objectName() == "Online") qDebug() << "09";
 	if (m_stop)
 	{
 		return;
@@ -130,7 +123,6 @@ void GeneralController::moveDown()
 		if (!isLayerOverflow(newCells))
 		{
 			addFigure(newCells);
-			emit moveDownSignal();
 			emit update(grid);
 		}
 		else
@@ -160,8 +152,6 @@ void GeneralController::newTick()
 	else if (isNegativeCoords(cells))
 	{
 		emit defeatSignal();
-		//if (objectName()!="Online") qDebug() << "0c";
-		//qDebug() << "Defeat:" << grid << figure->getCells();
 	}
 	else
 	{
@@ -171,7 +161,6 @@ void GeneralController::newTick()
 
 void GeneralController::restart()
 {
-	//if (objectName() != "Online") qDebug() << 1;
 	isReadyToStart = false;
 	grid.clear();
 	m_stop = false;
@@ -237,31 +226,24 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	switch (newFigure)
 	{
 	case TetrisInfo::Figures::I:
-		//if (objectName() == "Online") qDebug() << "00";
 		secondFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
 	case TetrisInfo::Figures::O:
-		//if (objectName() == "Online") qDebug() << "02";
 		secondFigure = new OFigure(m_blocks.value(TetrisInfo::Figures::O));
 		break;
 	case TetrisInfo::Figures::T:
-		//if (objectName() == "Online") qDebug() << "01";
 		secondFigure = new TFigure(m_blocks.value(TetrisInfo::Figures::T));
 		break;
 	case TetrisInfo::Figures::L:
-		//if (objectName() == "Online") qDebug() << "03";
 		secondFigure = new LFigure(m_blocks.value(TetrisInfo::Figures::L));
 		break;
 	case TetrisInfo::Figures::J:
-		//if (objectName() == "Online") qDebug() << "04";
 		secondFigure = new JFigure(m_blocks.value(TetrisInfo::Figures::J));
 		break;
 	case TetrisInfo::Figures::S:
-		//if (objectName() == "Online") qDebug() << "05";
 		secondFigure = new SFigure(m_blocks.value(TetrisInfo::Figures::S));
 		break;
 	case TetrisInfo::Figures::Z:
-		//if (objectName() == "Online") qDebug() << "06";
 		secondFigure = new ZFigure(m_blocks.value(TetrisInfo::Figures::Z));
 		break;
 	}
@@ -269,7 +251,7 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	
 	if (isReadyToStart)
 	{
-		//newTick();
+		moveDownSignal();
 	}
 	else if (!isReadyToStart && figure != nullptr)
 	{

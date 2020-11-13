@@ -69,6 +69,7 @@ private:
 	const quint16 PORT = 28128;
 	
 	bool m_stop = false;
+	bool connected = false;
 };
 
 #endif // ONLINECONTROLLER_H

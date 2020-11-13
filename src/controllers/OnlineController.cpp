@@ -20,6 +20,7 @@ OnlineController::~OnlineController()
 void OnlineController::makeServer()
 {
 	QTcpServer *server = new QTcpServer(this);
+	connected = false;
 	server->listen(QHostAddress::Any, PORT);
 	connect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
 	connect(this, &OnlineController::deleteServerSignal, server, &QTcpServer::deleteLater);
@@ -139,11 +140,6 @@ void OnlineController::readSocket()
 	for (quint8 i = 0; i < bytes.size(); i++)
 	{
 		Code code = static_cast<Code>(bytes.at(i));
-		//qDebug() << "Get:" << code;
-		if (static_cast<qint8>(bytes.at(i)) > 12)
-		{
-			qDebug() << "Socket: unknown code" << static_cast<qint8>(bytes.at(i));
-		}
 		switch (code)
 		{
 		case Code::IFigure:
@@ -192,13 +188,20 @@ void OnlineController::readSocket()
 void OnlineController::connectedToServer()
 {
 	QTcpServer *server = qobject_cast<QTcpServer *>(sender());
-	//disconnect(server, &QTcpServer::newConnection, this, &OnlineController::connectedToServer);
-	socket = server->nextPendingConnection();
-	emit connectedSignal();
-	start();
-	connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
-	connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
-	connect(this, &OnlineController::deleteClientSignal, socket, &QTcpSocket::deleteLater);
+	if (!connected)
+	{
+		connected = true;
+		socket = server->nextPendingConnection();
+		emit connectedSignal();
+		start();
+		connect(socket, &QTcpSocket::readyRead, this, &OnlineController::readSocket);
+		connect(socket, &QTcpSocket::disconnected, this, &OnlineController::onDisconnected);
+		connect(this, &OnlineController::deleteClientSignal, socket, &QTcpSocket::deleteLater);
+	}
+	else
+	{
+		server->nextPendingConnection()->close();
+	}
 }
 
 void OnlineController::onDisconnected()
@@ -230,11 +233,6 @@ void OnlineController::writeSocket(const OnlineController::Code code)
 	
 	if (socket != nullptr)
 	{
-//		quint8 deb = code;
-//		if (deb == 10) qDebug() << "Send:" << "0a";
-//		else if (deb == 11) qDebug() << "Send:" << "0b";
-//		else if (deb == 12) qDebug() << "Send:" << "0c";
-//		else qDebug() << "Send:" << "0"+QString::number(code);
 		QByteArray data;
 		data.append(code);
 		socket->write(data);

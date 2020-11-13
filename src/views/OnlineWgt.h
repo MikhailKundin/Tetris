@@ -39,7 +39,7 @@ public slots:
 	void onUpdateFigure(AbstractFigure *&figure);
 	void onDefeat();
 	
-	void unableToConnect();
+	void unableToConnect(const QString &message = "Подключение разорвано");
 	void connected();
 	void ready();
 	void disconnected();
@@ -115,6 +115,7 @@ private:
 	bool opponentDefeat = false;
 	
 	bool blockEsc = true;
+	bool connectingToServer = false;
 };
 
 #endif // ONLINEWGT_H

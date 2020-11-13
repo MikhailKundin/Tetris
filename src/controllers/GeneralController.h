@@ -35,16 +35,13 @@ public slots:
 signals:
 	void update(QMap<qint16, QImage *> &);
 	
-	void moveRightSignal();
-	void moveLeftSignal();
-	void rotateSignal();
-	void moveDownSignal();
-	void defeatSignal();
 	void newPointsSignal(quint32 points);
 	void newLevelSignal(quint16 level);
 	void newFigureSignal(AbstractFigure *&secondFigure);
 	void getNewFigureSignal();
 	void readyToStart();
+	void moveDownSignal();
+	void defeatSignal();
 	
 private:
 	void figureFall();

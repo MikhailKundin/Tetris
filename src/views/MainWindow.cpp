@@ -83,6 +83,7 @@ void MainWindow::openSingleLayout()
 	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
 	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
 	
+	connect(generalCtrl, &GeneralController::moveDownSignal, generalCtrl, &GeneralController::newTick);
 	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
 	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
 	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
@@ -149,6 +150,8 @@ void MainWindow::openOnlineLayout()
 		onlineCtrl->defeat();
 		onlineCtrl->stop();
 	});
+	connect(ofGeneralCtrl, &GeneralController::moveDownSignal, onlineCtrl, &OnlineController::moveDown);
+	connect(ofGeneralCtrl, &GeneralController::moveDownSignal, ofGeneralCtrl, &GeneralController::newTick);
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
 	connect(ofGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::ofUpdatePoints);
 	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::ofUpdateLevel);
@@ -176,7 +179,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::moveRightSignal, onGeneralCtrl, &GeneralController::moveRight);
 	connect(onlineCtrl, &OnlineController::moveLeftSignal, onGeneralCtrl, &GeneralController::moveLeft);
 	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::getNextFigure);
-	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::unableToConnect);
+	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::disconnected);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	connect(onlineCtrl, &OnlineController::readySignal, onlineWgt, &OnlineWgt::ready);
 	connect(onlineCtrl, &OnlineController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);

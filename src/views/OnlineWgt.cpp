@@ -7,7 +7,6 @@
 #include "PlaygroundPnl.h"
 #include "PointsPnl.h"
 #include "LevelFigurePnl.h"
-#include "SaveResultsWgt.h"
 #include "ConnectOnlineWgt.h"
 #include "ButtonPanel.h"
 
@@ -129,7 +128,6 @@ void OnlineWgt::onUpdateFigure(AbstractFigure *&figure)
 
 void OnlineWgt::onDefeat()
 {
-	//qDebug() << "0c";
 	onPg->setState(PlaygroundPnl::Defeat);
 	opponentDefeat = true;
 	if (meDefeat && ofPoints->getPoints() == onPoints->getPoints())
@@ -142,7 +140,7 @@ void OnlineWgt::onDefeat()
 	}
 }
 
-void OnlineWgt::unableToConnect()
+void OnlineWgt::unableToConnect(const QString &message)
 {
 	if (findChild<ButtonPanel *>(CONNECTING_ERROR_PANEL_NAME) != nullptr)
 	{
@@ -154,7 +152,7 @@ void OnlineWgt::unableToConnect()
 	
 	blockEsc = true;
 	
-	ButtonPanel *connectingErr = new ButtonPanel("Подключение разорвано", {"Ок"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *connectingErr = new ButtonPanel(message, {"Ок"}, getPanelPixmaps(), MULT, this);
 	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
 	connectingErr->resize(size());
 	connectingErr->setVisible(true);
@@ -168,15 +166,25 @@ void OnlineWgt::unableToConnect()
 
 void OnlineWgt::connectToServer(QString ip)
 {
+	connectingToServer = true;
 	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	connectingPnl->setObjectName(CONNECTING_PANEL_NAME);
 	connectingPnl->resize(size());
 	connectingPnl->setVisible(true);
 	emit makeClientSignal(ip);
 	
-	connect(this, &OnlineWgt::unableToConnectSignal, connectingPnl, &ButtonPanel::deleteLater);
-	connect(this, &OnlineWgt::connectedSignal, connectingPnl, &ButtonPanel::deleteLater);
-	connect(this, &OnlineWgt::cancelConnectingSignal, connectingPnl, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::unableToConnectSignal, connectingPnl, [=](){
+		connectingPnl->deleteLater();
+		connectingToServer = false;
+	});
+	connect(this, &OnlineWgt::connectedSignal, connectingPnl, [=](){
+		connectingPnl->deleteLater();
+		connectingToServer = false;
+	});
+	connect(this, &OnlineWgt::cancelConnectingSignal, connectingPnl, [=](){
+		connectingPnl->deleteLater();
+		connectingToServer = false;
+	});
 	connect(connectingPnl, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, connectingPnl, [=](){connectingPnl->resize(size());});
 	disconnect(this, &OnlineWgt::cancelConnectingSignal, this, &OnlineWgt::openConnectWgt);
@@ -233,14 +241,13 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			meReady = true;
 			ofPg->setState(PlaygroundPnl::Ready);
-			//qDebug() << "0b";
 			emit readySignal();
 			emit closeReadyPanel();
+			blockEsc = false;
 			if (meReady && opponentReady)
 			{
 				ofPg->setState(PlaygroundPnl::Default);
 				onPg->setState(PlaygroundPnl::Default);
-				blockEsc = false;
 				meReady = false;
 				opponentReady = false;
 				emit startGame();
@@ -250,6 +257,7 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			emit disconnectSignal();
 			emit closeReadyPanel();
+			blockEsc = true;
 			openConnectWgt();
 		}
 	}
@@ -262,6 +270,7 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		else if (buttonName == "Выход")
 		{
 			escPanel->setVisible(false);
+			blockEsc = true;
 			emit disconnectSignal();
 			clear();
 			openConnectWgt();
@@ -311,7 +320,6 @@ void OnlineWgt::connected()
 
 void OnlineWgt::ready()
 {
-	//qDebug() << "0b";
 	opponentReady = true;
 	onPg->setState(PlaygroundPnl::Ready);
 	if (meReady && opponentReady)
@@ -327,7 +335,14 @@ void OnlineWgt::ready()
 
 void OnlineWgt::disconnected()
 {
-	unableToConnect();
+	if (connectingToServer)
+	{
+		unableToConnect("Нет соединения с сервером");
+	}
+	else
+	{
+		unableToConnect();
+	}
 }
 
 void OnlineWgt::clear()
