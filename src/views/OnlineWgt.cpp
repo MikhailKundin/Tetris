@@ -91,12 +91,15 @@ void OnlineWgt::ofUpdateFigure(AbstractFigure *&figure)
 
 void OnlineWgt::ofDefeat()
 {
-	//emit stopCtrlSignal();
 	ofPg->setState(PlaygroundPnl::Defeat);
 	meDefeat = true;
 	if (opponentDefeat && ofPoints->getPoints() == onPoints->getPoints())
 	{
 		openEndPanel(EndState::Draw);
+	}
+	else if (ofPoints->getPoints() < onPoints->getPoints())
+	{
+		openEndPanel(EndState::Defeat);
 	}
 }
 
@@ -132,6 +135,10 @@ void OnlineWgt::onDefeat()
 	if (meDefeat && ofPoints->getPoints() == onPoints->getPoints())
 	{
 		openEndPanel(EndState::Draw);
+	}
+	else if (ofPoints->getPoints() > onPoints->getPoints())
+	{
+		openEndPanel(EndState::Victory);
 	}
 }
 
@@ -226,7 +233,7 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			meReady = true;
 			ofPg->setState(PlaygroundPnl::Ready);
-			qDebug() << "0b";
+			//qDebug() << "0b";
 			emit readySignal();
 			emit closeReadyPanel();
 			if (meReady && opponentReady)

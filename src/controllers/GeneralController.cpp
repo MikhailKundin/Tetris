@@ -160,7 +160,7 @@ void GeneralController::newTick()
 	else if (isNegativeCoords(cells))
 	{
 		emit defeatSignal();
-		if (objectName()!="Online") qDebug() << "0c";
+		//if (objectName()!="Online") qDebug() << "0c";
 		//qDebug() << "Defeat:" << grid << figure->getCells();
 	}
 	else

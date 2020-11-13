@@ -63,7 +63,6 @@ signals:
 	void makeServerSignal();
 	void makeClientSignal(const QString &ip);
 	void stopSignal();
-	void stopCtrlSignal();
 	void startCtrlSignal();
 	
 	void wgtResize();

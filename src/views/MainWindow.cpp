@@ -244,22 +244,22 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 		{
 		case Qt::Key_Up:
 		case Qt::Key_W:
-			qDebug() << "0a";
+			//qDebug() << "0a";
 			emit rotateSignal();
 			break;
 		case Qt::Key_Down:
 		case Qt::Key_S:
-			qDebug() << "09";
+			//qDebug() << "09";
 			emit moveDownSignal();
 			break;
 		case Qt::Key_Right:
 		case Qt::Key_D:
-			qDebug() << "07";
+			//qDebug() << "07";
 			emit moveRightSignal();
 			break;
 		case Qt::Key_Left:
 		case Qt::Key_A:
-			qDebug() << "08";
+			//qDebug() << "08";
 			emit moveLeftSignal();
 			break;
 		}

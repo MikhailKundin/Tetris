@@ -230,11 +230,11 @@ void OnlineController::writeSocket(const OnlineController::Code code)
 	
 	if (socket != nullptr)
 	{
-		quint8 deb = code;
-		if (deb == 10) qDebug() << "Send:" << "0a";
-		else if (deb == 11) qDebug() << "Send:" << "0b";
-		else if (deb == 12) qDebug() << "Send:" << "0c";
-		else qDebug() << "Send:" << "0"+QString::number(code);
+//		quint8 deb = code;
+//		if (deb == 10) qDebug() << "Send:" << "0a";
+//		else if (deb == 11) qDebug() << "Send:" << "0b";
+//		else if (deb == 12) qDebug() << "Send:" << "0c";
+//		else qDebug() << "Send:" << "0"+QString::number(code);
 		QByteArray data;
 		data.append(code);
 		socket->write(data);
