@@ -15,6 +15,7 @@ OfflineController::OfflineController()
 void OfflineController::tick()
 {
 	timer->setInterval(currentInterval);
+	qDebug() << "09";
 	emit tickSignal();
 }
 
@@ -43,6 +44,9 @@ void OfflineController::restart()
 void OfflineController::getNewFigure()
 {
 	quint8 figure = random.generate() % 7;
+	if(figure==1) qDebug()<<"0"+QString::number(figure+1);
+	else if(figure==2) qDebug()<<"0"+QString::number(figure-1);
+	else qDebug()<<"0"+QString::number(figure);
 	emit newFigureSignal(figure);
 }
 

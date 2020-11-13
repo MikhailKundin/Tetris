@@ -60,12 +60,10 @@ void OnlineController::deleteSocket()
 void OnlineController::stop()
 {
 	m_stop = true;
-	qDebug() << "stop";
 }
 
 void OnlineController::start()
 {
-	qDebug() << "start";
 	m_stop = false;
 }
 
@@ -141,7 +139,7 @@ void OnlineController::readSocket()
 	for (quint8 i = 0; i < bytes.size(); i++)
 	{
 		Code code = static_cast<Code>(bytes.at(i));
-		qDebug() << "Get:" << code;
+		//qDebug() << "Get:" << code;
 		if (static_cast<qint8>(bytes.at(i)) > 12)
 		{
 			qDebug() << "Socket: unknown code" << static_cast<qint8>(bytes.at(i));
@@ -232,7 +230,11 @@ void OnlineController::writeSocket(const OnlineController::Code code)
 	
 	if (socket != nullptr)
 	{
-		//qDebug() << "Send:" << code;
+		quint8 deb = code;
+		if (deb == 10) qDebug() << "Send:" << "0a";
+		else if (deb == 11) qDebug() << "Send:" << "0b";
+		else if (deb == 12) qDebug() << "Send:" << "0c";
+		else qDebug() << "Send:" << "0"+QString::number(code);
 		QByteArray data;
 		data.append(code);
 		socket->write(data);

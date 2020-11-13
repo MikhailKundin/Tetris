@@ -35,7 +35,7 @@ const QMap<qint16, QImage *> &GeneralController::getGrid() const
 
 void GeneralController::moveRight()
 {
-	if (objectName() == "Online") qDebug() << "07";
+	//if (objectName() == "Online") qDebug() << "07";
 	if (m_stop)
 	{
 		return;
@@ -62,7 +62,7 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
-	if (objectName() == "Online") qDebug() << "08";
+	//if (objectName() == "Online") qDebug() << "08";
 	if (m_stop)
 	{
 		return;
@@ -89,7 +89,7 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
-	if (objectName() == "Online") qDebug() << "0a";
+	//if (objectName() == "Online") qDebug() << "0a";
 	if (m_stop)
 	{
 		return;
@@ -116,7 +116,7 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
-	if (objectName() == "Online") qDebug() << "09";
+	//if (objectName() == "Online") qDebug() << "09";
 	if (m_stop)
 	{
 		return;
@@ -160,6 +160,7 @@ void GeneralController::newTick()
 	else if (isNegativeCoords(cells))
 	{
 		emit defeatSignal();
+		if (objectName()!="Online") qDebug() << "0c";
 		//qDebug() << "Defeat:" << grid << figure->getCells();
 	}
 	else
@@ -236,31 +237,31 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	switch (newFigure)
 	{
 	case TetrisInfo::Figures::I:
-		if (objectName() == "Online") qDebug() << "00";
+		//if (objectName() == "Online") qDebug() << "00";
 		secondFigure = new IFigure(m_blocks.value(TetrisInfo::Figures::I));
 		break;
 	case TetrisInfo::Figures::O:
-		if (objectName() == "Online") qDebug() << "02";
+		//if (objectName() == "Online") qDebug() << "02";
 		secondFigure = new OFigure(m_blocks.value(TetrisInfo::Figures::O));
 		break;
 	case TetrisInfo::Figures::T:
-		if (objectName() == "Online") qDebug() << "01";
+		//if (objectName() == "Online") qDebug() << "01";
 		secondFigure = new TFigure(m_blocks.value(TetrisInfo::Figures::T));
 		break;
 	case TetrisInfo::Figures::L:
-		if (objectName() == "Online") qDebug() << "03";
+		//if (objectName() == "Online") qDebug() << "03";
 		secondFigure = new LFigure(m_blocks.value(TetrisInfo::Figures::L));
 		break;
 	case TetrisInfo::Figures::J:
-		if (objectName() == "Online") qDebug() << "04";
+		//if (objectName() == "Online") qDebug() << "04";
 		secondFigure = new JFigure(m_blocks.value(TetrisInfo::Figures::J));
 		break;
 	case TetrisInfo::Figures::S:
-		if (objectName() == "Online") qDebug() << "05";
+		//if (objectName() == "Online") qDebug() << "05";
 		secondFigure = new SFigure(m_blocks.value(TetrisInfo::Figures::S));
 		break;
 	case TetrisInfo::Figures::Z:
-		if (objectName() == "Online") qDebug() << "06";
+		//if (objectName() == "Online") qDebug() << "06";
 		secondFigure = new ZFigure(m_blocks.value(TetrisInfo::Figures::Z));
 		break;
 	}
@@ -268,7 +269,7 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	
 	if (isReadyToStart)
 	{
-		newTick();
+		//newTick();
 	}
 	else if (!isReadyToStart && figure != nullptr)
 	{
