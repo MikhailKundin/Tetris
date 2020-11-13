@@ -164,7 +164,7 @@ void OnlineWgt::unableToConnect(const QString &message)
 	connect(this, &OnlineWgt::closeConnectingErrPanel, this, &OnlineWgt::openConnectWgt);
 }
 
-void OnlineWgt::connectToServer(QString ip)
+void OnlineWgt::connectToServer(const QString &ip)
 {
 	connectingToServer = true;
 	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);

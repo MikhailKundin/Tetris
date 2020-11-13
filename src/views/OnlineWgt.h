@@ -47,7 +47,7 @@ public slots:
 	void escBtnPress();
 	
 private slots:
-	void connectToServer(QString ip);
+	void connectToServer(const QString &ip);
 	void waitingClient();
 	void cancelConnecting();
 	
