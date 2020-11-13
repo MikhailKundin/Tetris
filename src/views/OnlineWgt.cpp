@@ -280,13 +280,13 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 	{
 		if (buttonName == "Повтор")
 		{
-			emit startCtrlSignal();
+			//emit startCtrlSignal();
 			emit closeEndPanel();
 			openReadyPanel();
 		}
 		else if (buttonName == "Выход")
 		{
-			emit startCtrlSignal();
+			//emit startCtrlSignal();
 			emit closeEndPanel();
 			emit disconnectSignal();
 			clear();

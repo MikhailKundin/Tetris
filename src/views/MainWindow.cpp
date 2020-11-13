@@ -117,13 +117,17 @@ void MainWindow::openOnlineLayout()
 	GeneralController *onGeneralCtrl = new GeneralController(blocks);
 	OfflineController *offlineCtrl = new OfflineController;
 	OnlineController *onlineCtrl = new OnlineController;
+	
+	ofGeneralCtrl->stop();
 	onGeneralCtrl->setObjectName("Online");
+	onGeneralCtrl->stop();
+	onlineCtrl->stop();
+	offlineCtrl->stop();
 	
 	ui->scenePlace = onlineWgt;
 	ui->scenePlace->setMinimumSize(onlineWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	connect(onlineWgt, &OnlineWgt::startCtrlSignal, onlineCtrl, &OnlineController::start);
 	connect(onlineWgt, &OnlineWgt::exitSignal, ofGeneralCtrl, &GeneralController::deleteLater);
 	connect(onlineWgt, &OnlineWgt::exitSignal, onGeneralCtrl, &GeneralController::deleteLater);
 	connect(onlineWgt, &OnlineWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
@@ -138,6 +142,7 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineWgt, &OnlineWgt::startGame, onlineCtrl, &OnlineController::start);
 	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
