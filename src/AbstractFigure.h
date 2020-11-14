@@ -30,8 +30,6 @@ protected:
 	
 	void updateCoords(const QList<QPair<qint8, qint8> > &coords);
 	bool isOutOfBounds(const QList<QPair<qint8, qint8> > &coords) const;
-	bool isNegativeMoveRight(const QList<qint16> &cells) const;
-	bool isNegativeMoveLeft(const QList<qint16> &cells) const;
 	
 	enum Rotation {up, down, left, right};
 	enum Direction : qint8 {forward = 1, backward = -1};

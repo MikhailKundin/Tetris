@@ -7,154 +7,108 @@
 bool AbstractFigure::moveRight()
 {
 	QList<QPair<qint8, qint8> > coords;
-	QList<qint16> cells;
-	bool negative = false;
 	foreach (Block block, blocks)
 	{
 		qint16 cell = block.getCell();
-		cells.append(cell);
+		QPair<qint8, qint8> coord = TetrisInfo::getCoord(cell);
 		if (cell < 0)
 		{
-			negative = true;
+			if (coord.first != 0)
+			{
+				coord.first += TetrisInfo::COLUMN_COUNT;
+				coord.second = coord.second - 1;
+			}
 		}
+		coord.first += 1;
+		coords.append(coord);
 	}
-	if (!negative)
+	if (isOutOfBounds(coords))
 	{
-		for (qint8 i = 0; i < blocks.length(); i++)
-		{
-			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
-			coord.first += 1;
-			coords.append(coord);
-		}
-		if (isOutOfBounds(coords))
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if (!isNegativeMoveRight(cells))
-		{
-			return false;
-		}
+		return false;
 	}
 	
-	for (qint8 i = 0; i < blocks.length(); i++)
-	{
-		blocks[i].setCell(cells.at(i)+1);
-	}
+	updateCoords(coords);
 	return true;
 }
 
 bool AbstractFigure::moveLeft()
 {
 	QList<QPair<qint8, qint8> > coords;
-	QList<qint16> cells;
-	bool negative = false;
 	foreach (Block block, blocks)
 	{
 		qint16 cell = block.getCell();
-		cells.append(cell);
+		QPair<qint8, qint8> coord = TetrisInfo::getCoord(cell);
 		if (cell < 0)
 		{
-			negative = true;
+			if (coord.first != 0)
+			{
+				coord.first += TetrisInfo::COLUMN_COUNT;
+				coord.second = coord.second - 1;
+			}
 		}
+		coord.first -= 1;
+		coords.append(coord);
 	}
-	if (!negative)
+	if (isOutOfBounds(coords))
 	{
-		for (qint8 i = 0; i < blocks.length(); i++)
-		{
-			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
-			coord.first -= 1;
-			coords.append(coord);
-		}
-		if (isOutOfBounds(coords))
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if (!isNegativeMoveLeft(cells))
-		{
-			return false;
-		}
+		return false;
 	}
 	
-	for (qint8 i = 0; i < blocks.length(); i++)
-	{
-		blocks[i].setCell(cells.at(i)-1);
-	}
+	updateCoords(coords);
 	return true;
 }
 
 bool AbstractFigure::moveDown()
 {
 	QList<QPair<qint8, qint8> > coords;
-	QList<qint16> cells;
-	bool negative = false;
 	foreach (Block block, blocks)
 	{
 		qint16 cell = block.getCell();
-		cells.append(cell);
+		QPair<qint8, qint8> coord = TetrisInfo::getCoord(cell);
 		if (cell < 0)
 		{
-			negative = true;
+			if (coord.first != 0)
+			{
+				coord.first += TetrisInfo::COLUMN_COUNT;
+				coord.second = coord.second - 1;
+			}
 		}
+		coord.second += 1;
+		coords.append(coord);
 	}
-	if (!negative)
+	if (isOutOfBounds(coords))
 	{
-		for (qint8 i = 0; i < blocks.length(); i++)
-		{
-			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
-			coord.second += 1;
-			coords.append(coord);
-		}
-		if (isOutOfBounds(coords))
-		{
-			return false;
-		}
+		return false;
 	}
 	
-	for (qint8 i = 0; i < blocks.length(); i++)
-	{
-		blocks[i].setCell(cells.at(i)+TetrisInfo::COLUMN_COUNT);
-	}
+	updateCoords(coords);
 	return true;
 }
 
 bool AbstractFigure::moveUp()
 {
 	QList<QPair<qint8, qint8> > coords;
-	QList<qint16> cells;
-	bool negative = false;
 	foreach (Block block, blocks)
 	{
 		qint16 cell = block.getCell();
-		cells.append(cell);
+		QPair<qint8, qint8> coord = TetrisInfo::getCoord(cell);
 		if (cell < 0)
 		{
-			negative = true;
+			if (coord.first != 0)
+			{
+				coord.first += TetrisInfo::COLUMN_COUNT;
+				coord.second = coord.second - 1;
+			}
 		}
+		coord.second -= 1;
+		coords.append(coord);
 	}
-	if (!negative)
+	if (isOutOfBounds(coords))
 	{
-		for (qint8 i = 0; i < blocks.length(); i++)
-		{
-			QPair<qint8, qint8> coord = TetrisInfo::getCoord(blocks.at(i).getCell());
-			coord.second -= 1;
-			coords.append(coord);
-		}
-		if (isOutOfBounds(coords))
-		{
-			return false;
-		}
+		return false;
 	}
 	
-	for (qint8 i = 0; i < blocks.length(); i++)
-	{
-		blocks[i].setCell(cells.at(i)-TetrisInfo::COLUMN_COUNT);
-	}
+	updateCoords(coords);
 	return true;
 }
 
@@ -324,52 +278,6 @@ bool AbstractFigure::isOutOfBounds(const QList<QPair<qint8, qint8> > &coords) co
 		}
 	}
 	return false;
-}
-
-bool AbstractFigure::isNegativeMoveRight(const QList<qint16> &cells) const
-{
-	QList<QPair<qint8, qint8> > positiveCoords;
-	foreach (qint16 cell, cells)
-	{
-		if (cell > 0)
-		{
-			QPair<qint8, qint8> positiveCoord = TetrisInfo::getCoord(cell);
-			positiveCoord.first += 1;
-			positiveCoords.append(positiveCoord);
-		}
-		if (cell % TetrisInfo::ROW_COUNT == -1)
-		{
-			return false;
-		}
-	}
-	if (isOutOfBounds(positiveCoords))
-	{
-		return false;
-	}
-	return true;
-}
-
-bool AbstractFigure::isNegativeMoveLeft(const QList<qint16> &cells) const
-{
-	QList<QPair<qint8, qint8> > positiveCoords;
-	foreach (qint16 cell, cells)
-	{
-		if (cell > 0)
-		{
-			QPair<qint8, qint8> positiveCoord = TetrisInfo::getCoord(cell);
-			positiveCoord.first -= 1;
-			positiveCoords.append(positiveCoord);
-		}
-		if (cell % TetrisInfo::ROW_COUNT == 0)
-		{
-			return false;
-		}
-	}
-	if (isOutOfBounds(positiveCoords))
-	{
-		return false;
-	}
-	return true;
 }
 
 IFigure::IFigure(QImage *image)
