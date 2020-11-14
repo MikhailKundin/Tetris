@@ -166,6 +166,7 @@ void OnlineWgt::unableToConnect(const QString &message)
 
 void OnlineWgt::connectToServer(const QString &ip)
 {
+	blockEsc = true;
 	connectingToServer = true;
 	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	connectingPnl->setObjectName(CONNECTING_PANEL_NAME);
@@ -193,6 +194,7 @@ void OnlineWgt::connectToServer(const QString &ip)
 
 void OnlineWgt::waitingClient()
 {
+	blockEsc = true;
 	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	waitingPnl->setObjectName(WAITING_PANEL_NAME);
 	waitingPnl->resize(size());
@@ -297,6 +299,7 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 
 void OnlineWgt::openConnectWgt()
 {
+	blockEsc = true;
 	ConnectOnlineWgt *connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
 	connectOnlineWgt->resize(size());
 	connectOnlineWgt->setVisible(true);
@@ -349,7 +352,7 @@ void OnlineWgt::clear()
 {
 	ofPg->update({});
 	ofPoints->update(0);
-	ofLevelFigure->setLevel(0);
+	ofLevelFigure->setLevel(1);
 	ofLevelFigure->clearFigure();
 	ofPg->setState(PlaygroundPnl::NotReady);
 	meReady = false;
@@ -383,6 +386,8 @@ void OnlineWgt::resizeEvent(QResizeEvent *e)
 
 void OnlineWgt::openReadyPanel()
 {
+	blockEsc = true;
+	clear();
 	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
 	readyPanel->setObjectName(READY_PANEL_NAME);
 	readyPanel->resize(size());
@@ -396,7 +401,6 @@ void OnlineWgt::openReadyPanel()
 
 void OnlineWgt::openEndPanel(EndState state)
 {
-	clear();
 	blockEsc = true;
 	
 	ButtonPanel *endPanel;

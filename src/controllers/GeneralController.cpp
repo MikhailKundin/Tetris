@@ -164,16 +164,6 @@ void GeneralController::restart()
 	isReadyToStart = false;
 	grid.clear();
 	m_stop = false;
-	if (figure != nullptr && objectName() != "Online")
-	{
-		delete figure;
-		figure = nullptr;
-	}
-	if (secondFigure != nullptr && objectName() != "Online")
-	{
-		delete secondFigure;
-		secondFigure = nullptr;
-	}
 	emit getNewFigureSignal();
 	emit getNewFigureSignal();
 }
@@ -205,18 +195,7 @@ void GeneralController::clearFigure()
 void GeneralController::figureFall()
 {
 	QList<qint16> cells = figure->getCells();
-	
-	qint8 topRow = 0;
-	qint8 rowCount = 0;
-	checkRows(cells, topRow, rowCount);
-	if (rowCount > 0)
-	{
-		{
-			shiftRows(topRow, rowCount);
-			addPoints(POINTS[rowCount-1]);
-		}
-	}
-	
+	checkRows(cells);
 	emit getNewFigureSignal();
 }
 
@@ -263,9 +242,15 @@ void GeneralController::getNextFigure(quint8 newFigure)
 bool GeneralController::isRowFull(qint8 rowNumber) const
 {
 	qint16 cell = TetrisInfo::getCell({0, rowNumber});
-	for (qint8 i = 0; i < TetrisInfo::COLUMN_COUNT; i++, cell++)
+	
+	if (!grid.contains(cell))
 	{
-		if (!grid.contains(cell))
+		return false;
+	}
+	QMap<qint16, QImage *>::const_iterator it = grid.find(cell);
+	for (qint8 i = 0; i < TetrisInfo::COLUMN_COUNT; i++, cell++, it++)
+	{
+		if (it.key() != cell)
 		{
 			return false;
 		}
@@ -283,23 +268,23 @@ void GeneralController::deleteRow(qint8 rowNumber)
 	}
 }
 
-void GeneralController::shiftRows(qint8 bottomRow, qint8 count)
+void GeneralController::shiftRow(qint8 rowNumber)
 {
 	QList<qint16> cells;
-	qint16 cell = TetrisInfo::getCell({TetrisInfo::COLUMN_COUNT-1, bottomRow});
+	qint16 cell = TetrisInfo::getCell({TetrisInfo::COLUMN_COUNT-1, rowNumber});
 	QMap<qint16, QImage *>::iterator it = grid.end();
 	while (it != grid.begin())
 	{
 		it--;
-		qint16 key = it.key();
-		if (key <= cell)
+		if (it.key() > cell)
 		{
-			cells.append(key);
+			continue;
 		}
+		cells.append(it.key());
 	}
 	foreach (cell, cells)
 	{
-		grid.insert(cell + TetrisInfo::COLUMN_COUNT*count, grid.value(cell));
+		grid.insert(cell + TetrisInfo::COLUMN_COUNT, grid.value(cell));
 		grid.remove(cell);
 	}
 }
@@ -357,22 +342,29 @@ void GeneralController::deleteFigure(const QList<qint16> &cells)
 	}
 }
 
-void GeneralController::checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out)
+void GeneralController::checkRows(QList<qint16> &cells)
 {
-	rowCount_out = 0;
-	topRow_out = TetrisInfo::ROW_COUNT;
+	std::sort(cells.begin(), cells.end());
+	qint8 rowCount = 0;
+	qint8 lastY = TetrisInfo::ROW_COUNT;
 	foreach (qint16 cell, cells)
 	{
-		QPair<qint8, qint8> pairCoord = TetrisInfo::getCoord(cell);
-		if (isRowFull(pairCoord.second))
+		QPair<qint8, qint8> coord = TetrisInfo::getCoord(cell);
+		if (coord.second == lastY)
 		{
-			if (pairCoord.second < topRow_out)
-			{
-				topRow_out = pairCoord.second;
-			}
-			deleteRow(pairCoord.second);
-			rowCount_out++;
+			continue;
 		}
+		lastY = coord.second;
+		if (isRowFull(coord.second))
+		{
+			deleteRow(coord.second);
+			shiftRow(coord.second-1);
+			rowCount++;
+		}
+	}
+	if (rowCount > 0)
+	{
+		addPoints(POINTS[rowCount-1]);
 	}
 }
 

@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 	
 	MainWindow window;
 	window.move(750, 0);
-	//window.showMaximized();
-	window.showFullScreen();
+	window.showMaximized();
+	//window.showFullScreen();
 	
 //	SingleWgt *w = new SingleWgt;
 //	w->show();

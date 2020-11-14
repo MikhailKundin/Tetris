@@ -47,12 +47,12 @@ private:
 	void figureFall();
 	bool isRowFull(qint8 rowNumber) const;
 	void deleteRow(qint8 rowNumber);
-	void shiftRows(qint8 bottomRow, qint8 count);
+	void shiftRow(qint8 rowNumber);
 	bool isObstacle(const QList<qint16> &cells) const;
 	bool isLayerOverflow(const QList<qint16> &cells) const;
 	void addFigure(const QList<qint16> &cells);
 	void deleteFigure(const QList<qint16> &cells);
-	void checkRows(const QList<qint16> &cells, qint8 &topRow_out, qint8 &rowCount_out);
+	void checkRows(QList<qint16> &cells);
 	void addPoints(quint32 count);
 	bool isNegativeCoords(const QList<qint16> &cells) const;
 	void startGame();
