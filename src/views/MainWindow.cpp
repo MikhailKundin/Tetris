@@ -143,13 +143,14 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, offlineCtrl, &OfflineController::stop);
 	connect(onlineWgt, &OnlineWgt::startGame, onlineCtrl, &OnlineController::start);
+	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::clearGrid);
 	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::clearFigure);
 	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
 	connect(onlineWgt, &OnlineWgt::stopSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
-	//connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
+	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
 	connect(onlineWgt, &OnlineWgt::stopSignal, offlineCtrl, &OfflineController::stop);
 	
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineCtrl, [=](){

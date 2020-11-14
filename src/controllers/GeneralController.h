@@ -31,6 +31,7 @@ public slots:
 	void start();
 	
 	void clearFigure();
+	void clearGrid();
 	
 signals:
 	void update(QMap<qint16, QImage *> &);

@@ -192,6 +192,11 @@ void GeneralController::clearFigure()
 	}
 }
 
+void GeneralController::clearGrid()
+{
+	grid.clear();
+}
+
 void GeneralController::figureFall()
 {
 	QList<qint16> cells = figure->getCells();

@@ -151,6 +151,7 @@ void OnlineWgt::unableToConnect(const QString &message)
 	emit closeEndPanel();
 	
 	blockEsc = true;
+	escPanel->setVisible(false);
 	
 	ButtonPanel *connectingErr = new ButtonPanel(message, {"Ок"}, getPanelPixmaps(), MULT, this);
 	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
@@ -167,6 +168,8 @@ void OnlineWgt::unableToConnect(const QString &message)
 void OnlineWgt::connectToServer(const QString &ip)
 {
 	blockEsc = true;
+	escPanel->setVisible(false);
+	
 	connectingToServer = true;
 	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	connectingPnl->setObjectName(CONNECTING_PANEL_NAME);
@@ -195,6 +198,8 @@ void OnlineWgt::connectToServer(const QString &ip)
 void OnlineWgt::waitingClient()
 {
 	blockEsc = true;
+	escPanel->setVisible(false);
+	
 	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника...", {"Отмена"}, getPanelPixmaps(), MULT, this);
 	waitingPnl->setObjectName(WAITING_PANEL_NAME);
 	waitingPnl->resize(size());
@@ -259,7 +264,6 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			emit disconnectSignal();
 			emit closeReadyPanel();
-			blockEsc = true;
 			openConnectWgt();
 		}
 	}
@@ -272,7 +276,6 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		else if (buttonName == "Выход")
 		{
 			escPanel->setVisible(false);
-			blockEsc = true;
 			emit disconnectSignal();
 			clear();
 			openConnectWgt();
@@ -282,13 +285,11 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 	{
 		if (buttonName == "Повтор")
 		{
-			//emit startCtrlSignal();
 			emit closeEndPanel();
 			openReadyPanel();
 		}
 		else if (buttonName == "Выход")
 		{
-			//emit startCtrlSignal();
 			emit closeEndPanel();
 			emit disconnectSignal();
 			clear();
@@ -300,6 +301,8 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 void OnlineWgt::openConnectWgt()
 {
 	blockEsc = true;
+	escPanel->setVisible(false);
+	
 	ConnectOnlineWgt *connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
 	connectOnlineWgt->resize(size());
 	connectOnlineWgt->setVisible(true);
@@ -387,7 +390,9 @@ void OnlineWgt::resizeEvent(QResizeEvent *e)
 void OnlineWgt::openReadyPanel()
 {
 	blockEsc = true;
+	escPanel->setVisible(false);
 	clear();
+	
 	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
 	readyPanel->setObjectName(READY_PANEL_NAME);
 	readyPanel->resize(size());
@@ -402,6 +407,7 @@ void OnlineWgt::openReadyPanel()
 void OnlineWgt::openEndPanel(EndState state)
 {
 	blockEsc = true;
+	escPanel->setVisible(false);
 	
 	ButtonPanel *endPanel;
 	switch (state)
