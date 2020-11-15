@@ -115,6 +115,8 @@ private:
 	
 	bool blockEsc = true;
 	bool connectingToServer = false;
+	
+	bool blockChangePgState = false;
 };
 
 #endif // ONLINEWGT_H

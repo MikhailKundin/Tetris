@@ -277,7 +277,6 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			escPanel->setVisible(false);
 			emit disconnectSignal();
-			clear();
 			openConnectWgt();
 		}
 	}
@@ -292,7 +291,6 @@ void OnlineWgt::buttonFilter(const QString &buttonName)
 		{
 			emit closeEndPanel();
 			emit disconnectSignal();
-			clear();
 			openConnectWgt();
 		}
 	}
@@ -302,6 +300,8 @@ void OnlineWgt::openConnectWgt()
 {
 	blockEsc = true;
 	escPanel->setVisible(false);
+	
+	clear();
 	
 	ConnectOnlineWgt *connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
 	connectOnlineWgt->resize(size());
@@ -336,7 +336,10 @@ void OnlineWgt::connected()
 void OnlineWgt::ready()
 {
 	opponentReady = true;
-	onPg->setState(PlaygroundPnl::Ready);
+	if (!blockChangePgState)
+	{
+		onPg->setState(PlaygroundPnl::Ready);
+	}
 	if (meReady && opponentReady)
 	{
 		ofPg->setState(PlaygroundPnl::Default);
@@ -362,21 +365,28 @@ void OnlineWgt::disconnected()
 
 void OnlineWgt::clear()
 {
+	meDefeat = false;
+	meReady = false;
 	ofPg->update({});
 	ofPoints->update(0);
 	ofLevelFigure->setLevel(1);
 	ofLevelFigure->clearFigure();
 	ofPg->setState(PlaygroundPnl::NotReady);
-	meReady = false;
-	meDefeat = false;
 	
+	opponentDefeat = false;
+	opponentReady = false;
 	onPg->update({});
 	onPoints->update(0);
 	onLevelFigure->setLevel(0);
 	onLevelFigure->clearFigure();
-	onPg->setState(PlaygroundPnl::NotReady);
-	opponentReady = false;
-	opponentDefeat = false;
+	if (!opponentReady)
+	{
+		onPg->setState(PlaygroundPnl::NotReady);
+	}
+	else
+	{
+		onPg->setState(PlaygroundPnl::Ready);
+	}
 }
 
 void OnlineWgt::escBtnPress()
@@ -400,7 +410,12 @@ void OnlineWgt::openReadyPanel()
 {
 	blockEsc = true;
 	escPanel->setVisible(false);
+	bool opponentCheck = opponentReady;
 	clear();
+	if (opponentCheck)
+	{
+		ready();
+	}
 	
 	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
 	readyPanel->setObjectName(READY_PANEL_NAME);
@@ -417,6 +432,8 @@ void OnlineWgt::openEndPanel(EndState state)
 {
 	blockEsc = true;
 	escPanel->setVisible(false);
+	
+	blockChangePgState = true;
 	
 	ButtonPanel *endPanel;
 	switch (state)
@@ -441,4 +458,9 @@ void OnlineWgt::openEndPanel(EndState state)
 	connect(endPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
 	connect(this, &OnlineWgt::wgtResize, endPanel, [=](){endPanel->resize(size());});
 	connect(this, &OnlineWgt::closeEndPanel, endPanel, &ButtonPanel::deleteLater);
+	connect(this, &OnlineWgt::closeEndPanel, endPanel, [=]()
+	{
+		endPanel->deleteLater();
+		blockChangePgState = false;
+	});
 }
