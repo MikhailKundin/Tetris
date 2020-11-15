@@ -7,7 +7,7 @@
 
 OfflineController::OfflineController()
 {
-	timer = std::make_unique<QTimer>();
+	timer = std::make_unique<QTimer>(this);
 	connect(timer.get(), &QTimer::timeout, this, &OfflineController::tick);
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
 }
@@ -18,7 +18,7 @@ void OfflineController::tick()
 	emit tickSignal();
 }
 
-void OfflineController::newLevel(qint16 level)
+void OfflineController::newLevel(quint16 level)
 {
 	quint16 interval = static_cast<quint16>(START_INTERVAL / qPow(INTERVAL_DIV, level-1));
 	if (interval < MIN_INTERVAL)

@@ -3,6 +3,7 @@
 #include "../TetrisInfo.h"
 
 #include <QtMath>
+#include <QImage>
 
 #include <QDebug>
 

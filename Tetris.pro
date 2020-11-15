@@ -7,18 +7,18 @@ CONFIG -= debug_and_release debug_and_release_target
 
 CONFIG(debug, debug|release){
 DESTDIR = build/debug
-OBJECTS_DIR = build/debug/bin
-MOC_DIR = build/debug/bin
-RCC_DIR = build/debug/bin
-UI_DIR = build/debug/bin
+OBJECTS_DIR = build/temp/debug/obj
+MOC_DIR = build/temp/debug/moc
+RCC_DIR = build/temp/debug/rcc
+UI_DIR = build/temp/debug/ui
 }
 
 CONFIG(release, debug|release){
 DESTDIR = build/release
-OBJECTS_DIR = build/release/bin
-MOC_DIR = build/release/bin
-RCC_DIR = build/release/bin
-UI_DIR = build/release/bin
+OBJECTS_DIR = build/temp/release/obj
+MOC_DIR = build/temp/release/moc
+RCC_DIR = build/temp/release/rcc
+UI_DIR = build/temp/release/ui
 }
 
 # You can make your code fail to compile if it uses deprecated APIs.

@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
+#include <QThread>
 
 #include "MainMenuWgt.h"
 #include "SingleWgt.h"
@@ -72,28 +73,46 @@ void MainWindow::openSingleLayout()
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	connect(singleWgt, &SingleWgt::resumeSignal, generalCtrl, &GeneralController::start);
-	connect(singleWgt, &SingleWgt::resumeSignal, offlineCtrl, &OfflineController::resume);
-	connect(singleWgt, &SingleWgt::pauseSignal, generalCtrl, &GeneralController::stop);
-	connect(singleWgt, &SingleWgt::pauseSignal, offlineCtrl, &OfflineController::pause);
-	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::clearFigure);
-	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::restart);
-	connect(singleWgt, &SingleWgt::restartSignal, offlineCtrl, &OfflineController::restart);
-	connect(singleWgt, &SingleWgt::restartSignal, singleWgt, &SingleWgt::restart);
-	connect(singleWgt, &SingleWgt::exitSignal, generalCtrl, &GeneralController::deleteLater);
-	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
-	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
+	connect(singleWgt, &SingleWgt::resumeSignal, [=]()
+	{
+		generalCtrl->start();
+		offlineCtrl->resume();
+	});
+	connect(singleWgt, &SingleWgt::pauseSignal, [=]()
+	{
+		generalCtrl->stop();
+		offlineCtrl->pause();
+	});
+	connect(singleWgt, &SingleWgt::restartSignal, [=]()
+	{
+		generalCtrl->clearFigure();
+		generalCtrl->restart();
+		offlineCtrl->restart();
+		singleWgt->restart();
+	});
+	connect(singleWgt, &SingleWgt::exitSignal, [=]()
+	{
+		generalCtrl->deleteLater();
+		offlineCtrl->deleteLater();
+		openMainMenuLayout();
+	});
 	
 	connect(generalCtrl, &GeneralController::moveDownSignal, generalCtrl, &GeneralController::newTick);
 	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
 	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
-	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
-	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt, &SingleWgt::updateLevel);
+	connect(generalCtrl, &GeneralController::newLevelSignal, [=](quint16 level)
+	{
+		offlineCtrl->newLevel(level);
+		singleWgt->updateLevel(level);
+	});
 	connect(generalCtrl, &GeneralController::getNewFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt, &SingleWgt::updateFigure);
-	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
-	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
-	connect(generalCtrl, &GeneralController::defeatSignal, singleWgt, &SingleWgt::defeat);
+	connect(generalCtrl, &GeneralController::defeatSignal, [=]()
+	{
+		generalCtrl->stop();
+		offlineCtrl->stop();
+		singleWgt->defeat();
+	});
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
@@ -142,12 +161,15 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, offlineCtrl, &OfflineController::stop);
-	connect(onlineWgt, &OnlineWgt::startGame, onlineCtrl, &OnlineController::start);
-	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::clearGrid);
-	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::clearFigure);
-	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
-	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
-	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
+	connect(onlineWgt, &OnlineWgt::startGame, [=]()
+	{
+		onlineCtrl->start();
+		onGeneralCtrl->clearGrid();
+		ofGeneralCtrl->clearFigure();
+		ofGeneralCtrl->restart();
+		onGeneralCtrl->restart();
+		offlineCtrl->restart();
+	});
 	connect(onlineWgt, &OnlineWgt::stopSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);

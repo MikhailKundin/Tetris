@@ -79,7 +79,7 @@ void SingleWgt::updateLevel(quint16 level)
 	lfPnl->setLevel(level);
 }
 
-void SingleWgt::updateFigure(AbstractFigure *&figure)
+void SingleWgt::updateFigure(AbstractFigure *figure)
 {
 	lfPnl->setFigure(figure);
 }

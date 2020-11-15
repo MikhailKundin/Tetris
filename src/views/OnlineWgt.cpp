@@ -83,7 +83,7 @@ void OnlineWgt::ofUpdateLevel(quint16 level)
 	ofLevelFigure->setLevel(level);
 }
 
-void OnlineWgt::ofUpdateFigure(AbstractFigure *&figure)
+void OnlineWgt::ofUpdateFigure(AbstractFigure *figure)
 {
 	ofLevelFigure->setFigure(figure);
 }
@@ -121,7 +121,7 @@ void OnlineWgt::onUpdateLevel(quint16 level)
 	onLevelFigure->setLevel(level);
 }
 
-void OnlineWgt::onUpdateFigure(AbstractFigure *&figure)
+void OnlineWgt::onUpdateFigure(AbstractFigure *figure)
 {
 	onLevelFigure->setFigure(figure);
 }
@@ -307,11 +307,13 @@ void OnlineWgt::openConnectWgt()
 	connectOnlineWgt->resize(size());
 	connectOnlineWgt->setVisible(true);
 	
-	connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, this, &OnlineWgt::waitingClient);
 	connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, this, &OnlineWgt::connectToServer);
 	connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, this, &OnlineWgt::cancelConnecting);
 	connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
-	connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
+	connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, [=](){
+		waitingClient();
+		connectOnlineWgt->deleteLater();
+	});
 	connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, connectOnlineWgt, &ConnectOnlineWgt::deleteLater);
 	connect(this, &OnlineWgt::wgtResize, connectOnlineWgt, [=](){connectOnlineWgt->resize(size());});
 }

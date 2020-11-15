@@ -34,11 +34,11 @@ public slots:
 	void clearGrid();
 	
 signals:
-	void update(QMap<qint16, QImage *> &);
+	void update(QMap<qint16, QImage *>);
 	
 	void newPointsSignal(quint32 points);
 	void newLevelSignal(quint16 level);
-	void newFigureSignal(AbstractFigure *&secondFigure);
+	void newFigureSignal(AbstractFigure *secondFigure);
 	void getNewFigureSignal();
 	void readyToStart();
 	void moveDownSignal();

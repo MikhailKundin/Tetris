@@ -53,3 +53,4 @@ compile_commands.json
 *.obj
 *.pdb
 *.ilk
+build/temp/

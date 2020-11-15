@@ -37,7 +37,7 @@ public slots:
 	void updateGrid(const QMap<qint16, QImage *> &grid) const;
 	void updatePoints(quint32 points);
 	void updateLevel(quint16 level);
-	void updateFigure(AbstractFigure *&figure);
+	void updateFigure(AbstractFigure *figure);
 	
 	void pauseBtnPress();
 	void restart();

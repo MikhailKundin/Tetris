@@ -14,7 +14,7 @@ public:
 	
 public slots:
 	void tick();
-	void newLevel(qint16 level);
+	void newLevel(quint16 level);
 	void stop();
 	void restart();
 	void getNewFigure();

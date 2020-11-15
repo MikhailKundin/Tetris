@@ -30,13 +30,13 @@ public slots:
 	void ofUpdateGrid(const QMap<qint16, QImage *> &grid) const;
 	void ofUpdatePoints(quint32 points);
 	void ofUpdateLevel(quint16 level);
-	void ofUpdateFigure(AbstractFigure *&figure);
+	void ofUpdateFigure(AbstractFigure *figure);
 	void ofDefeat();
 	
 	void onUpdateGrid(const QMap<qint16, QImage *> &grid) const;
 	void onUpdatePoints(quint32 points);
 	void onUpdateLevel(quint16 level);
-	void onUpdateFigure(AbstractFigure *&figure);
+	void onUpdateFigure(AbstractFigure *figure);
 	void onDefeat();
 	
 	void unableToConnect(const QString &message = "Подключение разорвано");
