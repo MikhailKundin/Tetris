@@ -38,13 +38,13 @@ void PlaygroundPnl::setState(PlaygroundPnl::PgState state)
 		color = qRgb(20, 20, 60);
 		break;
 	case Defeat:
-		color = Qt::darkRed;
+		color = qRgb(100, 0, 0);
 		break;
 	case Ready:
-		color = Qt::darkGreen;
+		color = qRgb(0, 100, 0);
 		break;
 	case NotReady:
-		color = Qt::darkYellow;
+		color = qRgb(100, 100, 0);
 		break;
 	}
 	pal.setColor(QPalette::Window, color);

@@ -307,17 +307,18 @@ void OnlineWgt::openConnectWgt()
 	connectOnlineWgt->resize(size());
 	connectOnlineWgt->setVisible(true);
 	
-	connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, [=]()
+	connect(connectOnlineWgt, &ConnectOnlineWgt::exitSignal, this, [=]()
 	{
 		cancelConnecting();
 		connectOnlineWgt->deleteLater();
 	});
-	connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, [=](QString ip)
+	connect(connectOnlineWgt, &ConnectOnlineWgt::connectSignal, this, [=](QString ip)
 	{
 		connectToServer(ip);
 		connectOnlineWgt->deleteLater();
 	});
-	connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, [=](){
+	connect(connectOnlineWgt, &ConnectOnlineWgt::createSignal, this, [=]()
+	{
 		waitingClient();
 		connectOnlineWgt->deleteLater();
 	});
