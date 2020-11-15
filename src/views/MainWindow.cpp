@@ -147,20 +147,26 @@ void MainWindow::openOnlineLayout()
 	ui->scenePlace->setMinimumSize(onlineWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	connect(onlineWgt, &OnlineWgt::exitSignal, ofGeneralCtrl, &GeneralController::deleteLater);
-	connect(onlineWgt, &OnlineWgt::exitSignal, onGeneralCtrl, &GeneralController::deleteLater);
-	connect(onlineWgt, &OnlineWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
-	connect(onlineWgt, &OnlineWgt::exitSignal, onlineCtrl, &OnlineController::deleteLater);
-	connect(onlineWgt, &OnlineWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
+	connect(onlineWgt, &OnlineWgt::exitSignal, [=]()
+	{
+		ofGeneralCtrl->deleteLater();
+		onGeneralCtrl->deleteLater();
+		offlineCtrl->deleteLater();
+		onlineCtrl->deleteLater();
+		openMainMenuLayout();
+	});
 	connect(onlineWgt, &OnlineWgt::makeServerSignal, onlineCtrl, &OnlineController::makeServer);
 	connect(onlineWgt, &OnlineWgt::makeClientSignal, onlineCtrl, &OnlineController::makeClient);
 	connect(onlineWgt, &OnlineWgt::cancelWaitingSignal, onlineCtrl, &OnlineController::deleteServer);
 	connect(onlineWgt, &OnlineWgt::cancelConnectingSignal, onlineCtrl, &OnlineController::deleteSocket);
 	connect(onlineWgt, &OnlineWgt::readySignal, onlineCtrl, &OnlineController::ready);
-	connect(onlineWgt, &OnlineWgt::disconnectSignal, onlineCtrl, &OnlineController::disconnectSocket);
-	connect(onlineWgt, &OnlineWgt::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
-	connect(onlineWgt, &OnlineWgt::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
-	connect(onlineWgt, &OnlineWgt::disconnectSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineWgt, &OnlineWgt::disconnectSignal, [=]()
+	{
+		onlineCtrl->disconnectSocket();
+		ofGeneralCtrl->stop();
+		onGeneralCtrl->stop();
+		offlineCtrl->stop();
+	});
 	connect(onlineWgt, &OnlineWgt::startGame, [=]()
 	{
 		onlineCtrl->start();
@@ -170,38 +176,59 @@ void MainWindow::openOnlineLayout()
 		onGeneralCtrl->restart();
 		offlineCtrl->restart();
 	});
-	connect(onlineWgt, &OnlineWgt::stopSignal, ofGeneralCtrl, &GeneralController::stop);
-	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
-	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
-	connect(onlineWgt, &OnlineWgt::stopSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineWgt, &OnlineWgt::stopSignal, [=]()
+	{
+		ofGeneralCtrl->stop();
+		onGeneralCtrl->stop();
+		onGeneralCtrl->clearFigure();
+		offlineCtrl->stop();
+	});
 	
 	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineCtrl, [=](){
 		onlineCtrl->defeat();
 		onlineCtrl->stop();
 	});
-	connect(ofGeneralCtrl, &GeneralController::moveDownSignal, onlineCtrl, &OnlineController::moveDown);
-	connect(ofGeneralCtrl, &GeneralController::moveDownSignal, ofGeneralCtrl, &GeneralController::newTick);
+	connect(ofGeneralCtrl, &GeneralController::moveDownSignal, [=]()
+	{
+		onlineCtrl->moveDown();
+		ofGeneralCtrl->newTick();
+	});
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
 	connect(ofGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::ofUpdatePoints);
-	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::ofUpdateLevel);
-	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+	connect(ofGeneralCtrl, &GeneralController::newLevelSignal, [=](quint16 level)
+	{
+		onlineWgt->ofUpdateLevel(level);
+		offlineCtrl->newLevel(level);
+	});
 	connect(ofGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::ofUpdateFigure);
 	connect(ofGeneralCtrl, &GeneralController::getNewFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
-	connect(ofGeneralCtrl, &GeneralController::defeatSignal, ofGeneralCtrl, &GeneralController::stop);
-	connect(ofGeneralCtrl, &GeneralController::defeatSignal, onlineWgt, &OnlineWgt::ofDefeat);
-	connect(ofGeneralCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(ofGeneralCtrl, &GeneralController::defeatSignal, [=]()
+	{
+		ofGeneralCtrl->stop();
+		onlineWgt->ofDefeat();
+		offlineCtrl->stop();
+	});
 	
 	connect(onGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::onUpdateGrid);
 	connect(onGeneralCtrl, &GeneralController::newPointsSignal, onlineWgt, &OnlineWgt::onUpdatePoints);
 	connect(onGeneralCtrl, &GeneralController::newLevelSignal, onlineWgt, &OnlineWgt::onUpdateLevel);
 	connect(onGeneralCtrl, &GeneralController::newFigureSignal, onlineWgt, &OnlineWgt::onUpdateFigure);
-	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::stop);
-	connect(onGeneralCtrl, &GeneralController::defeatSignal, onGeneralCtrl, &GeneralController::clearFigure);
+	connect(onGeneralCtrl, &GeneralController::defeatSignal, [=]()
+	{
+		onGeneralCtrl->stop();
+		onGeneralCtrl->clearFigure();
+	});
 	
-	connect(offlineCtrl, &OfflineController::tickSignal, onlineCtrl, &OnlineController::moveDown);
-	connect(offlineCtrl, &OfflineController::newFigureSignal, onlineCtrl, &OnlineController::newFigure);
-	connect(offlineCtrl, &OfflineController::tickSignal, ofGeneralCtrl, &GeneralController::newTick);
-	connect(offlineCtrl, &OfflineController::newFigureSignal, ofGeneralCtrl, &GeneralController::getNextFigure);
+	connect(offlineCtrl, &OfflineController::tickSignal, [=]()
+	{
+		onlineCtrl->moveDown();
+		ofGeneralCtrl->newTick();
+	});
+	connect(offlineCtrl, &OfflineController::newFigureSignal, [=](quint8 figure)
+	{
+		onlineCtrl->newFigure(figure);
+		ofGeneralCtrl->getNextFigure(figure);
+	});
 	
 	connect(onlineCtrl, &OnlineController::moveDownSignal, onGeneralCtrl, &GeneralController::newTick);
 	connect(onlineCtrl, &OnlineController::rotateSignal, onGeneralCtrl, &GeneralController::rotate);
@@ -212,23 +239,38 @@ void MainWindow::openOnlineLayout()
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
 	connect(onlineCtrl, &OnlineController::readySignal, onlineWgt, &OnlineWgt::ready);
 	connect(onlineCtrl, &OnlineController::defeatSignal, onlineWgt, &OnlineWgt::onDefeat);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::disconnected);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onlineWgt, &OnlineWgt::clear);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, ofGeneralCtrl, &GeneralController::stop);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::stop);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, onGeneralCtrl, &GeneralController::clearFigure);
-	connect(onlineCtrl, &OnlineController::disconnectSignal, offlineCtrl, &OfflineController::stop);
+	connect(onlineCtrl, &OnlineController::disconnectSignal, [=]()
+	{
+		onlineWgt->disconnected();
+		onlineWgt->clear();
+		ofGeneralCtrl->stop();
+		onGeneralCtrl->stop();
+		onGeneralCtrl->clearFigure();
+		offlineCtrl->stop();
+	});
 	
-	connect(this, &MainWindow::moveRightSignal, onlineCtrl, &OnlineController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, onlineCtrl, &OnlineController::moveLeft);
-	connect(this, &MainWindow::rotateSignal, onlineCtrl, &OnlineController::rotate);
-	connect(this, &MainWindow::moveDownSignal, onlineCtrl, &OnlineController::moveDown);
-	connect(this, &MainWindow::moveRightSignal, ofGeneralCtrl, &GeneralController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, ofGeneralCtrl, &GeneralController::moveLeft);
-	connect(this, &MainWindow::moveDownSignal, ofGeneralCtrl, &GeneralController::newTick);
-	connect(this, &MainWindow::rotateSignal, ofGeneralCtrl, &GeneralController::rotate);
 	connect(this, &MainWindow::newLayout, onlineWgt, &OnlineWgt::deleteLater);
 	connect(this, &MainWindow::pauseBtnPress, onlineWgt, &OnlineWgt::escBtnPress);
+	connect(this, &MainWindow::moveRightSignal, [=]()
+	{
+		onlineCtrl->moveRight();
+		ofGeneralCtrl->moveRight();
+	});
+	connect(this, &MainWindow::moveLeftSignal, [=]()
+	{
+		onlineCtrl->moveLeft();
+		ofGeneralCtrl->moveLeft();
+	});
+	connect(this, &MainWindow::rotateSignal, [=]()
+	{
+		onlineCtrl->rotate();
+		ofGeneralCtrl->rotate();
+	});
+	connect(this, &MainWindow::moveDownSignal, [=]()
+	{
+		onlineCtrl->moveDown();
+		ofGeneralCtrl->newTick();
+	});
 }
 
 void MainWindow::closeAll()
