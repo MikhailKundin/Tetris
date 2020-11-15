@@ -2,6 +2,7 @@
 
 #include <QtMath>
 #include <QTime>
+#include <QTimer>
 
 #include <QDebug>
 
@@ -38,12 +39,74 @@ void OfflineController::restart()
 {
 	timer->setInterval(START_INTERVAL);
 	timer->start();
+	pool.clear();
+	pool.reserve(35);
+	figureStat.clear();
+	figureStat.reserve(7);
+	for (quint8 i = 0; i < 5; i++)
+	{
+		for (quint8 j = 0; j < 7; j++)
+		{
+			pool.append(j);
+		}
+	}
+	for (qint16 i = 0; i < 7; i++)
+	{
+		figureStat.append(0);
+	}
 }
 
 void OfflineController::getNewFigure()
 {
-	quint8 figure = random.generate() % 7;
+	quint8 figure = pool.takeAt(random.generate() % 35);
 	emit newFigureSignal(figure);
+	
+	qint16 maxVal = 0;
+	quint8 count = 0;
+	for (quint8 i = 0; i < 7; i++)
+	{
+		if (i == figure)
+		{
+			figureStat[i] = 0;
+			continue;
+		}
+		
+		figureStat[i]++;
+		qint16 val = figureStat.at(i);
+		if (val > maxVal)
+		{
+			maxVal = val;
+			count = 1;
+		}
+		else if (val == maxVal)
+		{
+			count++;
+		}
+	}
+	
+	if (count == 1)
+	{
+		pool.append(static_cast<quint8>(figureStat.indexOf(maxVal)));
+	}
+	else
+	{
+		quint8 newFigureIndex = random.generate() % count;
+		for (quint8 i = 0; i < 7; i++)
+		{
+			if (figureStat.at(i) == maxVal)
+			{
+				if (newFigureIndex == 0)
+				{
+					pool.append(i);
+					break;
+				}
+				else
+				{
+					newFigureIndex--;
+				}
+			}
+		}
+	}
 }
 
 void OfflineController::pause()

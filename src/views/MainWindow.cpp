@@ -74,8 +74,8 @@ void MainWindow::openSingleLayout()
 	
 	connect(singleWgt, &SingleWgt::resumeSignal, this, [=]()
 	{
-		generalCtrl->start();
 		offlineCtrl->resume();
+		generalCtrl->start();
 	});
 	connect(singleWgt, &SingleWgt::pauseSignal, this, [=]()
 	{
@@ -123,8 +123,8 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	
-	generalCtrl->restart();
 	offlineCtrl->restart();
+	generalCtrl->restart();
 }
 
 void MainWindow::openOnlineLayout()
@@ -168,12 +168,12 @@ void MainWindow::openOnlineLayout()
 	});
 	connect(onlineWgt, &OnlineWgt::startGame, this, [=]()
 	{
+		offlineCtrl->restart();
 		onlineCtrl->start();
 		onGeneralCtrl->clearGrid();
 		ofGeneralCtrl->clearFigure();
 		ofGeneralCtrl->restart();
 		onGeneralCtrl->restart();
-		offlineCtrl->restart();
 	});
 	connect(onlineWgt, &OnlineWgt::stopSignal, this, [=]()
 	{

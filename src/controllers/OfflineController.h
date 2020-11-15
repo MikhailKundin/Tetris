@@ -2,8 +2,9 @@
 #define TIMERCONTROLLER_H
 
 #include <QObject>
-#include <QTimer>
 #include <QRandomGenerator>
+
+class QTimer;
 
 class OfflineController : public QObject
 {
@@ -36,6 +37,9 @@ private:
 	quint16 currentInterval = START_INTERVAL;
 	
 	QRandomGenerator random;
+	
+	QList<quint8> pool;
+	QList<qint16> figureStat;
 };
 
 #endif // TIMERCONTROLLER_H
