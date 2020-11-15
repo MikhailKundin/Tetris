@@ -123,8 +123,8 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	
-	offlineCtrl->restart();
 	generalCtrl->restart();
+	offlineCtrl->restart();
 }
 
 void MainWindow::openOnlineLayout()
@@ -164,22 +164,24 @@ void MainWindow::openOnlineLayout()
 		onlineCtrl->disconnectSocket();
 		ofGeneralCtrl->stop();
 		onGeneralCtrl->stop();
+		onGeneralCtrl->clearGrid();
+		onGeneralCtrl->clearFigure();
 		offlineCtrl->stop();
 	});
 	connect(onlineWgt, &OnlineWgt::startGame, this, [=]()
 	{
-		offlineCtrl->restart();
 		onlineCtrl->start();
-		onGeneralCtrl->clearGrid();
 		ofGeneralCtrl->clearFigure();
 		ofGeneralCtrl->restart();
 		onGeneralCtrl->restart();
+		offlineCtrl->restart();
 	});
 	connect(onlineWgt, &OnlineWgt::stopSignal, this, [=]()
 	{
 		ofGeneralCtrl->stop();
 		onGeneralCtrl->stop();
 		onGeneralCtrl->clearFigure();
+		onGeneralCtrl->clearGrid();
 		offlineCtrl->stop();
 	});
 	
@@ -216,6 +218,7 @@ void MainWindow::openOnlineLayout()
 	{
 		onGeneralCtrl->stop();
 		onGeneralCtrl->clearFigure();
+		onGeneralCtrl->clearGrid();
 	});
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, this, [=]()
@@ -245,6 +248,7 @@ void MainWindow::openOnlineLayout()
 		ofGeneralCtrl->stop();
 		onGeneralCtrl->stop();
 		onGeneralCtrl->clearFigure();
+		onGeneralCtrl->clearGrid();
 		offlineCtrl->stop();
 	});
 	

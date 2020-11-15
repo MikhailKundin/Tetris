@@ -11,6 +11,7 @@ OfflineController::OfflineController()
 	timer = std::make_unique<QTimer>(this);
 	connect(timer.get(), &QTimer::timeout, this, &OfflineController::tick);
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
+	updatePool();
 }
 
 void OfflineController::tick()
@@ -33,27 +34,13 @@ void OfflineController::newLevel(quint16 level)
 void OfflineController::stop()
 {
 	timer->stop();
+	updatePool();
 }
 
 void OfflineController::restart()
 {
 	timer->setInterval(START_INTERVAL);
 	timer->start();
-	pool.clear();
-	pool.reserve(35);
-	figureStat.clear();
-	figureStat.reserve(7);
-	for (quint8 i = 0; i < 5; i++)
-	{
-		for (quint8 j = 0; j < 7; j++)
-		{
-			pool.append(j);
-		}
-	}
-	for (qint16 i = 0; i < 7; i++)
-	{
-		figureStat.append(0);
-	}
 }
 
 void OfflineController::getNewFigure()
@@ -119,4 +106,23 @@ void OfflineController::pause()
 void OfflineController::resume()
 {
 	timer->start();
+}
+
+void OfflineController::updatePool()
+{
+	pool.clear();
+	pool.reserve(35);
+	figureStat.clear();
+	figureStat.reserve(7);
+	for (quint8 i = 0; i < 5; i++)
+	{
+		for (quint8 j = 0; j < 7; j++)
+		{
+			pool.append(j);
+		}
+	}
+	for (qint16 i = 0; i < 7; i++)
+	{
+		figureStat.append(0);
+	}
 }

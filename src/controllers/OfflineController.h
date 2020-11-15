@@ -27,6 +27,8 @@ signals:
 	void newFigureSignal(quint8 figure);
 	
 private:
+	void updatePool();
+	
 	std::unique_ptr<QTimer> timer;
 	
 	const quint16 START_INTERVAL = 1000;
