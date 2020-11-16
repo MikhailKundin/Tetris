@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class PushLabel;
+class QSoundEffect;
 
 namespace Ui {
 class SaveResultsWgt;
@@ -14,7 +15,8 @@ class SaveResultsWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent = nullptr);
+	explicit SaveResultsWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
+							qreal mult, QWidget *parent = nullptr);
 	~SaveResultsWgt();
 	
 signals:

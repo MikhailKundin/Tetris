@@ -8,12 +8,16 @@
 
 #include <QDebug>
 
-ConnectOnlineWgt::ConnectOnlineWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent) :
+ConnectOnlineWgt::ConnectOnlineWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
+								   qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::ConnectOnlineWgt), MULT(mult)
 {
 	ui->setupUi(this);
 	
 	setLayout(ui->gridLayout);
+	
+	QHash<QString, QPixmap *> pixmaps = media.first;
+	QHash<QString, QSoundEffect *> sounds = media.second;
 	
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);
@@ -37,6 +41,10 @@ ConnectOnlineWgt::ConnectOnlineWgt(QHash<QString, QPixmap *> pixmaps, qreal mult
 	createBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	connectBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	cancelBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	
+	createBtn->loadSounds(sounds["enterSound"]);
+	connectBtn->loadSounds(sounds["enterSound"]);
+	cancelBtn->loadSounds(sounds["enterSound"]);
 	
 	createBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	connectBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);

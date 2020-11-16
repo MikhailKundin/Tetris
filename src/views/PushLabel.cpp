@@ -2,6 +2,7 @@
 
 #include <QEvent>
 #include <QPixmap>
+#include <QSoundEffect>
 
 #include <QDebug>
 
@@ -13,17 +14,29 @@ PushLabel::PushLabel(QString name, QWidget *parent) : QLabel(parent)
 	
 	imageLbl = std::make_unique<QLabel>(this);
 	
-	imgEnter = std::make_unique<QPixmap>();
-	imgLeave = std::make_unique<QPixmap>();
+	//imgEnter = std::make_unique<QPixmap>();
+	//imgLeave = std::make_unique<QPixmap>();
 	
 	installEventFilter(this);
 }
 
+PushLabel::~PushLabel()
+{
+	imgEnter = nullptr;
+	imgLeave = nullptr;
+	enterSound = nullptr;
+}
+
 void PushLabel::loadPixmaps(QPixmap *enter, QPixmap *leave)
 {
-	imgEnter = std::make_unique<QPixmap>(*enter);
-	imgLeave = std::make_unique<QPixmap>(*leave);
+	imgEnter = enter;
+	imgLeave = leave;
 	imageLbl->setPixmap(imgLeave->scaled(size()));
+}
+
+void PushLabel::loadSounds(QSoundEffect *enter)
+{
+	enterSound = enter;
 }
 
 bool PushLabel::eventFilter(QObject *obj, QEvent *e)
@@ -36,12 +49,11 @@ bool PushLabel::eventFilter(QObject *obj, QEvent *e)
 			emit clicked();
 			return true;
 		case QEvent::Enter:
+			enterSound->play();
 			hoverEnter();
-			emit hoverEnterSignal();
 			return true;
 		case QEvent::Leave:
 			hoverLeave();
-			emit hoverLeaveSignal();
 			return true;
 		default:
 			return false;
@@ -66,5 +78,8 @@ void PushLabel::hoverEnter()
 
 void PushLabel::hoverLeave()
 {
-	imageLbl->setPixmap(imgLeave->scaled(size()));
+	if (imgLeave != nullptr)
+	{
+		imageLbl->setPixmap(imgLeave->scaled(size()));
+	}
 }

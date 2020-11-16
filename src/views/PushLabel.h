@@ -3,18 +3,20 @@
 
 #include <QLabel>
 
+class QSoundEffect;
+
 class PushLabel : public QLabel
 {
 	Q_OBJECT
 	
 public:
 	PushLabel(QString name, QWidget *parent = nullptr);
+	~PushLabel() override;
 	void loadPixmaps(QPixmap *enter, QPixmap *leave);
+	void loadSounds(QSoundEffect *enter);
 	
 signals:
 	void clicked();
-	void hoverEnterSignal();
-	void hoverLeaveSignal();
 	
 private:
 	bool eventFilter(QObject *obj, QEvent *e) override;
@@ -22,9 +24,11 @@ private:
 	void hoverEnter();
 	void hoverLeave();
 	
-	std::unique_ptr<QPixmap> imgEnter;
-	std::unique_ptr<QPixmap> imgLeave;
 	std::unique_ptr<QLabel> imageLbl;
+	
+	QPixmap *imgEnter;
+	QPixmap *imgLeave;
+	QSoundEffect *enterSound;
 };
 
 #endif // PUSHLABEL_H

@@ -12,6 +12,7 @@ public:
 	
 private:
 	static QSoundEffect *channel1;
+	static QSoundEffect *channel2;
 };
 
 #endif // SOUNDCONTROLLER_H

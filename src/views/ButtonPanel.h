@@ -6,6 +6,7 @@
 class PushLabel;
 class QLabel;
 class QSpacerItem;
+class QSoundEffect;
 
 namespace Ui {
 class ButtonPanel;
@@ -16,9 +17,11 @@ class ButtonPanel : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit ButtonPanel(QString info, QList<QString> buttons, QHash<QString, QPixmap *> pixmaps,
+	explicit ButtonPanel(QString info, QList<QString> buttons, 
+						 QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media,
 						 qreal mult, QWidget *parent = nullptr);
-	explicit ButtonPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps,
+	explicit ButtonPanel(QList<QString> buttons, 
+						 QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media,
 						 qreal mult, QWidget *parent = nullptr);
 	~ButtonPanel();
 	
@@ -31,7 +34,8 @@ private slots:
 private:
 	Ui::ButtonPanel *ui;
 	
-	void buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps);
+	void buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps, QHash<QString, 
+					QSoundEffect *> sounds);
 	
 	QList<PushLabel *> m_buttons;
 	std::unique_ptr<QLabel> infoLbl;

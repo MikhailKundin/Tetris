@@ -7,17 +7,23 @@
 
 #include <QDebug>
 
-SaveResultsWgt::SaveResultsWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent) :
+SaveResultsWgt::SaveResultsWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
+							   qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::SaveResultsWgt), MULT(mult)
 {
 	ui->setupUi(this);
 	
 	setLayout(ui->gridLayout);
 	
+	QHash<QString, QPixmap *> pixmaps = media.first;
+	QHash<QString, QSoundEffect *> sounds = media.second;
+	
 	saveBtn = std::make_unique<PushLabel>("Сохранить", this);
 	cancelBtn = std::make_unique<PushLabel>("Отмена", this);
 	saveBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 	cancelBtn->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+	saveBtn->loadSounds(sounds["enterSound"]);
+	cancelBtn->loadSounds(sounds["enterSound"]);
 	ui->verticalLayout->addWidget(saveBtn.get());
 	ui->verticalLayout->addWidget(cancelBtn.get());
 	

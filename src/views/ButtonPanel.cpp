@@ -3,12 +3,14 @@
 
 #include <QLabel>
 #include <QSpacerItem>
+#include <QSoundEffect>
 
 #include "PushLabel.h"
 
 #include <QDebug>
 
-ButtonPanel::ButtonPanel(QString info, QList<QString> buttons, QHash<QString, QPixmap *> pixmaps, 
+ButtonPanel::ButtonPanel(QString info, QList<QString> buttons, 
+						 QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
 						 qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::ButtonPanel), MULT(mult)
 {
@@ -29,20 +31,20 @@ ButtonPanel::ButtonPanel(QString info, QList<QString> buttons, QHash<QString, QP
 	infoLbl->setFixedWidth(static_cast<qint32>(BASE_ELEMENT_WIDTH*MULT));
 	ui->verticalLayout->addWidget(infoLbl.get());
 	
-	//spacer = new QSpacerItem(1, static_cast<qint32>(BASE_SPACE*MULT));
 	spacer = std::make_unique<QSpacerItem>(1, static_cast<qint32>(BASE_SPACE*MULT));
 	ui->verticalLayout->addSpacerItem(spacer.get());
 	
-	buildPanel(buttons, pixmaps);
+	buildPanel(buttons, media.first, media.second);
 }
 
-ButtonPanel::ButtonPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps, 
+ButtonPanel::ButtonPanel(QList<QString> buttons, 
+						 QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
 						 qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::ButtonPanel), MULT(mult)
 {
 	ui->setupUi(this);
 	
-	buildPanel(buttons, pixmaps);
+	buildPanel(buttons, media.first, media.second);
 }
 
 ButtonPanel::~ButtonPanel()
@@ -55,7 +57,8 @@ ButtonPanel::~ButtonPanel()
 	delete ui;
 }
 
-void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps)
+void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> pixmaps,
+							 QHash<QString, QSoundEffect *> sounds)
 {
 	ELEMENT_HEIGHT = static_cast<quint16>(BASE_ELEMENT_HEIGHT*MULT);
 	ELEMENT_WIDTH = static_cast<quint16>(BASE_ELEMENT_WIDTH*MULT);
@@ -76,6 +79,7 @@ void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> p
 		PushLabel *pushLabel = new PushLabel(button, this);
 		pushLabel->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 		pushLabel->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
+		pushLabel->loadSounds(sounds["enterSound"]);
 		
 		QFont font = pushLabel->font();
 		font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));

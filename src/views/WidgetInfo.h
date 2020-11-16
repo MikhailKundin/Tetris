@@ -3,13 +3,15 @@
 
 #include <QWidget>
 
+class QSoundEffect;
+
 class WidgetInfo : public QWidget
 {
 public:
 	WidgetInfo(QWidget *parent = nullptr);
 	~WidgetInfo();
 	qreal getMult() const;
-	const QHash<QString, QPixmap *> getPanelPixmaps() const;
+	const QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > getPanelMedia() const;
 	
 protected:
 	const quint8 BLOCK_SIZE = 30;
@@ -17,6 +19,7 @@ protected:
 	QPixmap *buttonEnter;
 	QPixmap *buttonLeave;
 	QPixmap *backPanel;
+	QSoundEffect *enter;
 	
 private:
 	const quint16 BASE_SCREEN_HEIGHT = 768;

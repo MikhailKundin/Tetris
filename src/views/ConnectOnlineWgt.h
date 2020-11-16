@@ -6,6 +6,7 @@
 class PushLabel;
 class QLineEdit;
 class QSpacerItem;
+class QSoundEffect;
 
 namespace Ui {
 class ConnectOnlineWgt;
@@ -16,7 +17,8 @@ class ConnectOnlineWgt : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit ConnectOnlineWgt(QHash<QString, QPixmap *> pixmaps, qreal mult, QWidget *parent = nullptr);
+	explicit ConnectOnlineWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
+							  qreal mult, QWidget *parent = nullptr);
 	~ConnectOnlineWgt();
 	
 private slots:

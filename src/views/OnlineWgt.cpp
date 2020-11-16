@@ -47,7 +47,7 @@ OnlineWgt::OnlineWgt(QWidget *parent) :
 	setMinimumWidth(ui->ofLevelFigurePnl->width() + ofPg->width() + ui->yellowLbl->width() + 
 					ui->onLevelFigurePnl->width() + onPg->width());
 	
-	escPanel = new ButtonPanel("Меню", {"Продолжить", "Выход"}, getPanelPixmaps(), MULT, this);
+	escPanel = new ButtonPanel("Меню", {"Продолжить", "Выход"}, getPanelMedia(), MULT, this);
 	escPanel->setObjectName(ESCAPE_PANEL_NAME);
 	escPanel->setVisible(false);
 	connect(escPanel, &ButtonPanel::clicked, this, &OnlineWgt::buttonFilter);
@@ -153,7 +153,7 @@ void OnlineWgt::unableToConnect(const QString &message)
 	blockEsc = true;
 	escPanel->setVisible(false);
 	
-	ButtonPanel *connectingErr = new ButtonPanel(message, {"Ок"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *connectingErr = new ButtonPanel(message, {"Ок"}, getPanelMedia(), MULT, this);
 	connectingErr->setObjectName(CONNECTING_ERROR_PANEL_NAME);
 	connectingErr->resize(size());
 	connectingErr->setVisible(true);
@@ -171,7 +171,7 @@ void OnlineWgt::connectToServer(const QString &ip)
 	escPanel->setVisible(false);
 	
 	connectingToServer = true;
-	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *connectingPnl = new ButtonPanel("Присоединение...", {"Отмена"}, getPanelMedia(), MULT, this);
 	connectingPnl->setObjectName(CONNECTING_PANEL_NAME);
 	connectingPnl->resize(size());
 	connectingPnl->setVisible(true);
@@ -200,7 +200,7 @@ void OnlineWgt::waitingClient()
 	blockEsc = true;
 	escPanel->setVisible(false);
 	
-	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника...", {"Отмена"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *waitingPnl = new ButtonPanel("Ожидание соперника...", {"Отмена"}, getPanelMedia(), MULT, this);
 	waitingPnl->setObjectName(WAITING_PANEL_NAME);
 	waitingPnl->resize(size());
 	waitingPnl->setVisible(true);
@@ -303,7 +303,7 @@ void OnlineWgt::openConnectWgt()
 	
 	clear();
 	
-	ConnectOnlineWgt *connectOnlineWgt = new ConnectOnlineWgt(getPanelPixmaps(), MULT, this);
+	ConnectOnlineWgt *connectOnlineWgt = new ConnectOnlineWgt(getPanelMedia(), MULT, this);
 	connectOnlineWgt->resize(size());
 	connectOnlineWgt->setVisible(true);
 	
@@ -417,7 +417,7 @@ void OnlineWgt::openReadyPanel()
 		ready();
 	}
 	
-	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelPixmaps(), MULT, this);
+	ButtonPanel *readyPanel = new ButtonPanel("Готов?", {"Готов!", "Отмена"}, getPanelMedia(), MULT, this);
 	readyPanel->setObjectName(READY_PANEL_NAME);
 	readyPanel->resize(size());
 	readyPanel->setVisible(true);
@@ -439,13 +439,13 @@ void OnlineWgt::openEndPanel(EndState state)
 	switch (state)
 	{
 	case Victory:
-		endPanel = new ButtonPanel("Вы победили!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+		endPanel = new ButtonPanel("Вы победили!", {"Повтор", "Выход"}, getPanelMedia(), MULT, this);
 		break;
 	case Defeat:
-		endPanel = new ButtonPanel("Вы проиграли!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+		endPanel = new ButtonPanel("Вы проиграли!", {"Повтор", "Выход"}, getPanelMedia(), MULT, this);
 		break;
 	case Draw:
-		endPanel = new ButtonPanel("Ничья!", {"Повтор", "Выход"}, getPanelPixmaps(), MULT, this);
+		endPanel = new ButtonPanel("Ничья!", {"Повтор", "Выход"}, getPanelMedia(), MULT, this);
 		break;
 	}
 

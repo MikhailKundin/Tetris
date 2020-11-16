@@ -26,8 +26,11 @@ MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
 	exitBtn = std::make_unique<PushLabel>("Выход", this);
 	
 	singleBtn->loadPixmaps(buttonEnter, buttonLeave);
+	singleBtn->loadSounds(enter);
 	onlineBtn->loadPixmaps(buttonEnter, buttonLeave);
+	onlineBtn->loadSounds(enter);
 	exitBtn->loadPixmaps(buttonEnter, buttonLeave);
+	exitBtn->loadSounds(enter);
 	
 	ui->verticalLayout->addWidget(singleBtn.get());
 	ui->verticalLayout->addWidget(onlineBtn.get());

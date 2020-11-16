@@ -49,7 +49,7 @@ SingleWgt::SingleWgt(QWidget *parent) :
 	setMinimumHeight(pg->height() + pointsPnl->height());
 	setMinimumWidth(ui->levelFigurePnlPlace->width() + pg->width() + rtPnl->width());
 	
-	pauseWgt = std::make_unique<ButtonPanel>("Пауза", pauseButtons, getPanelPixmaps(), MULT, this);
+	pauseWgt = std::make_unique<ButtonPanel>("Пауза", pauseButtons, getPanelMedia(), MULT, this);
 	pauseWgt->setObjectName(PAUSE_NAME);
 	pauseWgt->setVisible(false);
 	connect(pauseWgt.get(), &ButtonPanel::clicked, this, &SingleWgt::buttonsFilter);
@@ -89,7 +89,7 @@ void SingleWgt::defeat()
 	blockPause = true;
 	if (rtPnl->getPlace() < 10)
 	{
-		SaveResultsWgt *srWgt = new SaveResultsWgt(getPanelPixmaps(), MULT, this);
+		SaveResultsWgt *srWgt = new SaveResultsWgt(getPanelMedia(), MULT, this);
 		srWgt->setVisible(true);
 		srWgt->resize(size());
 		connect(srWgt, &SaveResultsWgt::saveResult, this, &SingleWgt::saveBtnPush);
@@ -180,7 +180,7 @@ void SingleWgt::resizeEvent(QResizeEvent *e)
 
 void SingleWgt::createDefeatPanel()
 {
-	ButtonPanel *defeatPnl = new ButtonPanel("Поражение", defeatButtons, getPanelPixmaps(), MULT, this);
+	ButtonPanel *defeatPnl = new ButtonPanel("Поражение", defeatButtons, getPanelMedia(), MULT, this);
 	defeatPnl->setObjectName(DEFEAT_NAME);
 	defeatPnl->setVisible(true);
 	defeatPnl->resize(size());

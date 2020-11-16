@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QScreen>
+#include <QSoundEffect>
 
 WidgetInfo::WidgetInfo(QWidget *parent) : 
 	QWidget(parent)
@@ -11,6 +12,8 @@ WidgetInfo::WidgetInfo(QWidget *parent) :
 	buttonEnter = new QPixmap(":/Images/Buttons/HoverEnter.png");
 	buttonLeave = new QPixmap(":/Images/Buttons/HoverLeave.png");
 	backPanel = new QPixmap(":/Images/Backgrounds/200x200PanelBackground.png");
+	enter = new QSoundEffect;
+	enter->setSource(QUrl::fromLocalFile(":Sounds/ButtonEnter.wav"));
 }
 
 WidgetInfo::~WidgetInfo()
@@ -18,6 +21,7 @@ WidgetInfo::~WidgetInfo()
 	delete buttonEnter;
 	delete buttonLeave;
 	delete backPanel;
+	enter->deleteLater();
 }
 
 qreal WidgetInfo::getMult() const
@@ -25,7 +29,9 @@ qreal WidgetInfo::getMult() const
 	return MULT;
 }
 
-const QHash<QString, QPixmap *> WidgetInfo::getPanelPixmaps() const
+const QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > WidgetInfo::getPanelMedia() const
 {
-	return {{"enter", buttonEnter}, {"leave", buttonLeave}, {"back", backPanel}};
+	QHash<QString, QPixmap *> imgMap = {{"enter", buttonEnter}, {"leave", buttonLeave}, {"back", backPanel}};
+	QHash<QString, QSoundEffect *> soundMap = {{"enterSound", enter}};
+	return {imgMap, soundMap};
 }
