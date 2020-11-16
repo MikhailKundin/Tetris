@@ -9,6 +9,7 @@
 #include "../controllers/GeneralController.h"
 #include "../controllers/OfflineController.h"
 #include "../controllers/OnlineController.h"
+#include "../controllers/SoundController.h"
 #include "../TetrisInfo.h"
 
 #include <QDebug>
@@ -32,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
+	SoundController::setSettings();
+	
 	openMainMenuLayout();
 }
 
@@ -54,10 +57,13 @@ void MainWindow::openMainMenuLayout()
 	ui->scenePlace->setMinimumSize(mainMenuWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
+	SoundController::startMainMenu();
+	
 	connect(mainMenuWgt, &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
 	connect(mainMenuWgt, &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
 	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, &MainWindow::openOnlineLayout);
 	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
+	connect(this, &MainWindow::newLayout, this, [](){SoundController::stopMainMenu();});
 }
 
 void MainWindow::openSingleLayout()

@@ -1,4 +1,4 @@
-QT       += core gui network sql
+QT       += core gui network sql multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,6 +33,7 @@ SOURCES += \
     src/AbstractFigure.cpp \
     src/Block.cpp \
     src/controllers/OnlineController.cpp \
+    src/controllers/SoundController.cpp \
     src/views/ButtonPanel.cpp \
     src/views/ConnectOnlineWgt.cpp \
     src/views/LevelFigurePnl.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
 	src/AbstractFigure.h \
 	src/Block.h \
 	src/controllers/OnlineController.h \
+	src/controllers/SoundController.h \
 	src/views/ButtonPanel.h \
 	src/views/ConnectOnlineWgt.h \
 	src/views/LevelFigurePnl.h \

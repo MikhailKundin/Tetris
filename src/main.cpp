@@ -27,6 +27,7 @@
 #include "views/ButtonPanel.h"
 #include "views/PushLabel.h"
 #include "views/MainMenuWgt.h"
+#include <QAudioDeviceInfo>
 
 #include <QDebug>
 

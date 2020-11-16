@@ -25,4 +25,14 @@
         <file alias="HoverEnter.png">etc/Images/Buttons/HoverEnter.png</file>
         <file alias="HoverLeave.png">etc/Images/Buttons/HoverLeave.png</file>
     </qresource>
+    <qresource prefix="/Sounds">
+        <file alias="ButtonEnter.wav">etc/Sounds/ButtonEnter.wav</file>
+        <file alias="ButtonPush.wav">etc/Sounds/ButtonPush.wav</file>
+        <file alias="Defeat.wav">etc/Sounds/Defeat.wav</file>
+        <file alias="MoveDown.wav">etc/Sounds/MoveDown.wav</file>
+        <file alias="MoveLeft.wav">etc/Sounds/MoveLeft.wav</file>
+        <file alias="MoveRight.wav">etc/Sounds/MoveRight.wav</file>
+        <file alias="Rotate.wav">etc/Sounds/Rotate.wav</file>
+        <file alias="RowDeleted.wav">etc/Sounds/RowDeleted.wav</file>
+    </qresource>
 </RCC>
