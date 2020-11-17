@@ -31,8 +31,8 @@ public slots:
 	void mute();
 	void unmute();
 	
-	void stop();
-	void start();
+//	void stop();
+//	void start();
 	
 private:
 	enum Name : quint8 {MainTheme, Down, Right, Left, Rotate, Defeat, RowDeleted};

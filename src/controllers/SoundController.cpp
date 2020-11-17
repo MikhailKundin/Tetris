@@ -218,15 +218,15 @@ void SoundController::unmute()
 	}
 }
 
-void SoundController::stop()
-{
-	m_stop = true;
-}
+//void SoundController::stop()
+//{
+//	m_stop = true;
+//}
 
-void SoundController::start()
-{
-	m_stop = false;
-}
+//void SoundController::start()
+//{
+//	m_stop = false;
+//}
 
 void SoundController::makeMainMenu()
 {

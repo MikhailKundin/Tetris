@@ -134,33 +134,13 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::downSignal, soundCtrl, &SoundController::moveDown);
 	connect(generalCtrl, &GeneralController::rotateSignal, soundCtrl, &SoundController::rotate);
 	
-	connect(offlineCtrl, &OfflineController::tickSignal, this, [=]()
-	{
-		generalCtrl->newTick();
-		//soundCtrl->moveDown();
-	});
+	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
-	connect(this, &MainWindow::moveRightSignal, this, [=]()
-	{
-		generalCtrl->moveRight();
-		//soundCtrl->moveRight();
-	});
-	connect(this, &MainWindow::moveLeftSignal, this, [=]()
-	{
-		generalCtrl->moveLeft();
-		//soundCtrl->moveLeft();
-	});
-	connect(this, &MainWindow::moveDownSignal, this, [=]()
-	{
-		generalCtrl->newTick();
-		//soundCtrl->moveDown();
-	});
-	connect(this, &MainWindow::rotateSignal, this, [=]()
-	{
-		generalCtrl->rotate();
-		//soundCtrl->rotate();
-	});
+	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
+	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
+	connect(this, &MainWindow::moveDownSignal, generalCtrl, &GeneralController::newTick);
+	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	
@@ -184,7 +164,6 @@ void MainWindow::openOnlineLayout()
 	ofGeneralCtrl->stop();
 	onGeneralCtrl->stop();
 	onlineCtrl->stop();
-	ofSoundCtrl->stop();
 	
 	ui->scenePlace = onlineWgt;
 	ui->scenePlace->setMinimumSize(onlineWgt->size());
@@ -213,7 +192,6 @@ void MainWindow::openOnlineLayout()
 		onGeneralCtrl->clearGrid();
 		onGeneralCtrl->clearFigure();
 		offlineCtrl->stop();
-		ofSoundCtrl->stop();
 		onlineWgt->restart();
 	});
 	connect(onlineWgt, &OnlineWgt::startGame, this, [=]()
@@ -223,7 +201,6 @@ void MainWindow::openOnlineLayout()
 		ofGeneralCtrl->restart();
 		onGeneralCtrl->restart();
 		offlineCtrl->restart();
-		ofSoundCtrl->start();
 		onlineWgt->restart();
 	});
 	connect(onlineWgt, &OnlineWgt::stopSignal, this, [=]()
@@ -233,7 +210,6 @@ void MainWindow::openOnlineLayout()
 		onGeneralCtrl->clearFigure();
 		onGeneralCtrl->clearGrid();
 		offlineCtrl->stop();
-		ofSoundCtrl->stop();
 	});
 	connect(onlineWgt, &OnlineWgt::escPnlSignal, this, [=](bool state)
 	{
@@ -253,7 +229,6 @@ void MainWindow::openOnlineLayout()
 	{
 		onlineCtrl->moveDown();
 		ofGeneralCtrl->newTick();
-		ofSoundCtrl->moveDown();
 	});
 	connect(ofGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::ofUpdateGrid);
 	connect(ofGeneralCtrl, &GeneralController::newPointsSignal, this, [=](quint32 points)
@@ -276,8 +251,11 @@ void MainWindow::openOnlineLayout()
 		onlineWgt->ofDefeat();
 		offlineCtrl->stop();
 		ofSoundCtrl->defeat();
-		ofSoundCtrl->stop();
 	});
+	connect(ofGeneralCtrl, &GeneralController::downSignal, ofSoundCtrl, &SoundController::moveDown);
+	connect(ofGeneralCtrl, &GeneralController::rotateSignal, ofSoundCtrl, &SoundController::rotate);
+	connect(ofGeneralCtrl, &GeneralController::rightSignal, ofSoundCtrl, &SoundController::moveRight);
+	connect(ofGeneralCtrl, &GeneralController::leftSignal, ofSoundCtrl, &SoundController::moveLeft);
 	
 	connect(onGeneralCtrl, &GeneralController::update, onlineWgt, &OnlineWgt::onUpdateGrid);
 	connect(onGeneralCtrl, &GeneralController::newPointsSignal, this, [=](quint32 points)
@@ -293,12 +271,15 @@ void MainWindow::openOnlineLayout()
 		onGeneralCtrl->clearFigure();
 		onGeneralCtrl->clearGrid();
 	});
+	connect(onGeneralCtrl, &GeneralController::downSignal, onSoundCtrl, &SoundController::moveDown);
+	connect(onGeneralCtrl, &GeneralController::rotateSignal, onSoundCtrl, &SoundController::rotate);
+	connect(onGeneralCtrl, &GeneralController::rightSignal, onSoundCtrl, &SoundController::moveRight);
+	connect(onGeneralCtrl, &GeneralController::leftSignal, onSoundCtrl, &SoundController::moveLeft);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, this, [=]()
 	{
 		onlineCtrl->moveDown();
 		ofGeneralCtrl->newTick();
-		ofSoundCtrl->moveDown();
 	});
 	connect(offlineCtrl, &OfflineController::newFigureSignal, this, [=](quint8 figure)
 	{
@@ -306,26 +287,10 @@ void MainWindow::openOnlineLayout()
 		ofGeneralCtrl->getNextFigure(figure);
 	});
 	
-	connect(onlineCtrl, &OnlineController::moveDownSignal, this, [=]()
-	{
-		onGeneralCtrl->newTick();
-		onSoundCtrl->moveDown();
-	});
-	connect(onlineCtrl, &OnlineController::rotateSignal, this, [=]()
-	{
-		onGeneralCtrl->rotate();
-		onSoundCtrl->rotate();
-	});
-	connect(onlineCtrl, &OnlineController::moveRightSignal, this, [=]()
-	{
-		onGeneralCtrl->moveRight();
-		onSoundCtrl->moveRight();
-	});
-	connect(onlineCtrl, &OnlineController::moveLeftSignal, this, [=]()
-	{
-		onGeneralCtrl->moveLeft();
-		onSoundCtrl->moveLeft();
-	});
+	connect(onlineCtrl, &OnlineController::moveDownSignal, onGeneralCtrl, &GeneralController::newTick);
+	connect(onlineCtrl, &OnlineController::rotateSignal, onGeneralCtrl, &GeneralController::rotate);
+	connect(onlineCtrl, &OnlineController::moveRightSignal, onGeneralCtrl, &GeneralController::moveRight);
+	connect(onlineCtrl, &OnlineController::moveLeftSignal, onGeneralCtrl, &GeneralController::moveLeft);
 	connect(onlineCtrl, &OnlineController::newFigureSignal, onGeneralCtrl, &GeneralController::getNextFigure);
 	connect(onlineCtrl, &OnlineController::cannotConnectSignal, onlineWgt, &OnlineWgt::disconnected);
 	connect(onlineCtrl, &OnlineController::connectedSignal, onlineWgt, &OnlineWgt::connected);
@@ -344,7 +309,6 @@ void MainWindow::openOnlineLayout()
 		onGeneralCtrl->clearFigure();
 		onGeneralCtrl->clearGrid();
 		offlineCtrl->stop();
-		ofSoundCtrl->stop();
 		onlineWgt->restart();
 	});
 	
@@ -354,25 +318,21 @@ void MainWindow::openOnlineLayout()
 	{
 		onlineCtrl->moveRight();
 		ofGeneralCtrl->moveRight();
-		ofSoundCtrl->moveRight();
 	});
 	connect(this, &MainWindow::moveLeftSignal, this, [=]()
 	{
 		onlineCtrl->moveLeft();
 		ofGeneralCtrl->moveLeft();
-		ofSoundCtrl->moveLeft();
 	});
 	connect(this, &MainWindow::rotateSignal, this, [=]()
 	{
 		onlineCtrl->rotate();
 		ofGeneralCtrl->rotate();
-		ofSoundCtrl->rotate();
 	});
 	connect(this, &MainWindow::moveDownSignal, this, [=]()
 	{
 		onlineCtrl->moveDown();
 		ofGeneralCtrl->newTick();
-		ofSoundCtrl->moveDown();
 	});
 }
 
