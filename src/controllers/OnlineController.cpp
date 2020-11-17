@@ -226,7 +226,7 @@ void OnlineController::connectionTimeout()
 
 void OnlineController::writeSocket(const OnlineController::Code code)
 {
-	if (m_stop && code != Code::Ready)
+	if (m_stop && code != Code::Ready && code != Code::Defeat)
 	{
 		return;
 	}

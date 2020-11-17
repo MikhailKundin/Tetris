@@ -13,11 +13,13 @@ class SoundController : public QObject
 public:
 	enum Mode : quint8 {MainMenu, Playground};
 	
+	SoundController();
 	SoundController(Mode mode);
 	~SoundController();
 	
 public slots:
 	void playMainTheme();
+	void stopMainTheme();
 	
 	void moveDown();
 	void moveRight();
@@ -29,10 +31,18 @@ public slots:
 	void mute();
 	void unmute();
 	
+	void stop();
+	void start();
+	
 private:
 	enum Name : quint8 {MainTheme, Down, Right, Left, Rotate, Defeat, RowDeleted};
 	
+	void makeMainMenu();
+	void makePlayground();
+	
 	QHash<Name, QSoundEffect *> sounds;
+	
+	bool m_stop = false;
 };
 
 #endif // SOUNDCONTROLLER_H

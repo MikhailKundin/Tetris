@@ -404,7 +404,7 @@ void GeneralController::startGame()
 	addFigure(figure->getCells());
 	emit update(grid);
 	m_points = 0;
-	emit newPointsSignal(m_points);
+	//emit newPointsSignal(m_points);
 	level = 1;
 	emit newLevelSignal(level);
 }

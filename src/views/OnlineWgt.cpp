@@ -64,6 +64,12 @@ OnlineWgt::~OnlineWgt()
 	delete ui;
 }
 
+void OnlineWgt::restart()
+{
+	ofPoints->update(0);
+	onPoints->update(0);
+}
+
 void OnlineWgt::ofUpdateGrid(const QMap<qint16, QImage *> &grid) const
 {
 	ofPg->update(grid);
@@ -397,6 +403,7 @@ void OnlineWgt::escBtnPress()
 	}
 	
 	escPanel->setVisible(!escPanel->isVisible());
+	emit escPnlSignal(escPanel->isVisible());
 }
 
 void OnlineWgt::resizeEvent(QResizeEvent *e)

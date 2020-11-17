@@ -27,6 +27,8 @@ public:
 	~OnlineWgt() override;
 	
 public slots:
+	void restart();
+	
 	void ofUpdateGrid(const QMap<qint16, QImage *> &grid) const;
 	void ofUpdatePoints(quint32 points);
 	void ofUpdateLevel(quint16 level);
@@ -63,6 +65,7 @@ signals:
 	void makeServerSignal();
 	void makeClientSignal(const QString &ip);
 	void stopSignal();
+	void escPnlSignal(bool state);
 	
 	void wgtResize();
 	
