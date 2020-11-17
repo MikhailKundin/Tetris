@@ -19,6 +19,7 @@ SoundController::SoundController(Mode mode)
 		QSoundEffect *sound;
 		sound = new QSoundEffect;
 		sound->setSource(QUrl::fromLocalFile(":Sounds/MoveDown.wav"));
+		sound->setVolume(0.4);
 		sounds.insert(Name::Down, sound);
 		sound = new QSoundEffect;
 		sound->setSource(QUrl::fromLocalFile(":Sounds/MoveRight.wav"));
@@ -28,9 +29,11 @@ SoundController::SoundController(Mode mode)
 		sounds.insert(Name::Left, sound);
 		sound = new QSoundEffect;
 		sound->setSource(QUrl::fromLocalFile(":Sounds/Rotate.wav"));
+		sound->setVolume(0.5);
 		sounds.insert(Name::Rotate, sound);
 		sound = new QSoundEffect;
 		sound->setSource(QUrl::fromLocalFile(":Sounds/RowDeleted.wav"));
+		sound->setVolume(0.25);
 		sounds.insert(Name::RowDeleted, sound);
 		sound = new QSoundEffect;
 		sound->setSource(QUrl::fromLocalFile(":Sounds/Defeat.wav"));
@@ -104,19 +107,6 @@ void SoundController::moveRight()
 	{
 		sound->play();
 	}
-//	bool check = true;
-//	foreach (QSoundEffect *sound, sounds)
-//	{
-//		if (sound->isPlaying())
-//		{
-//			check = false;
-//			break;
-//		}
-//	}
-//	if (check)
-//	{
-//		sounds[Name::Right]->play();
-//	}
 }
 
 void SoundController::moveLeft()
@@ -139,19 +129,6 @@ void SoundController::moveLeft()
 	{
 		sound->play();
 	}
-//	bool check = true;
-//	foreach (QSoundEffect *sound, sounds)
-//	{
-//		if (sound->isPlaying())
-//		{
-//			check = false;
-//			break;
-//		}
-//	}
-//	if (check)
-//	{
-//		sounds[Name::Left]->play();
-//	}
 }
 
 void SoundController::rotate()
@@ -174,19 +151,6 @@ void SoundController::rotate()
 	{
 		sound->play();
 	}
-//	bool check = true;
-//	foreach (QSoundEffect *sound, sounds)
-//	{
-//		if (sound->isPlaying())
-//		{
-//			check = false;
-//			break;
-//		}
-//	}
-//	if (check)
-//	{
-//		sounds[Name::Rotate]->play();
-//	}
 }
 
 void SoundController::rowDeleted()
