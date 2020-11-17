@@ -129,33 +129,37 @@ void MainWindow::openSingleLayout()
 		singleWgt->defeat();
 		soundCtrl->defeat();
 	});
+	connect(generalCtrl, &GeneralController::rightSignal, soundCtrl, &SoundController::moveRight);
+	connect(generalCtrl, &GeneralController::leftSignal, soundCtrl, &SoundController::moveLeft);
+	connect(generalCtrl, &GeneralController::downSignal, soundCtrl, &SoundController::moveDown);
+	connect(generalCtrl, &GeneralController::rotateSignal, soundCtrl, &SoundController::rotate);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, this, [=]()
 	{
 		generalCtrl->newTick();
-		soundCtrl->moveDown();
+		//soundCtrl->moveDown();
 	});
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
 	connect(this, &MainWindow::moveRightSignal, this, [=]()
 	{
 		generalCtrl->moveRight();
-		soundCtrl->moveRight();
+		//soundCtrl->moveRight();
 	});
 	connect(this, &MainWindow::moveLeftSignal, this, [=]()
 	{
 		generalCtrl->moveLeft();
-		soundCtrl->moveLeft();
+		//soundCtrl->moveLeft();
 	});
 	connect(this, &MainWindow::moveDownSignal, this, [=]()
 	{
 		generalCtrl->newTick();
-		soundCtrl->moveDown();
+		//soundCtrl->moveDown();
 	});
 	connect(this, &MainWindow::rotateSignal, this, [=]()
 	{
 		generalCtrl->rotate();
-		soundCtrl->rotate();
+		//soundCtrl->rotate();
 	});
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);

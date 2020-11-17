@@ -44,6 +44,11 @@ signals:
 	void moveDownSignal();
 	void defeatSignal();
 	
+	void downSignal();
+	void rotateSignal();
+	void leftSignal();
+	void rightSignal();
+	
 private:
 	void figureFall();
 	bool isRowFull(qint8 rowNumber) const;

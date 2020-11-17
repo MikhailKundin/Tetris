@@ -50,6 +50,7 @@ void GeneralController::moveRight()
 		{
 			addFigure(newCells);
 			emit update(grid);
+			emit rightSignal();
 		}
 		else
 		{
@@ -75,6 +76,7 @@ void GeneralController::moveLeft()
 		{
 			addFigure(newCells);
 			emit update(grid);
+			emit leftSignal();
 		}
 		else
 		{
@@ -100,6 +102,7 @@ void GeneralController::rotate()
 		{
 			addFigure(newCells);
 			emit update(grid);
+			emit rotateSignal();
 		}
 		else
 		{
@@ -125,6 +128,7 @@ void GeneralController::moveDown()
 		{
 			addFigure(newCells);
 			emit update(grid);
+			emit downSignal();
 		}
 		else
 		{
