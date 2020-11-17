@@ -31,9 +31,6 @@ public slots:
 	void mute();
 	void unmute();
 	
-//	void stop();
-//	void start();
-	
 private:
 	enum Name : quint8 {MainTheme, Down, Right, Left, Rotate, Defeat, RowDeleted};
 	
@@ -41,8 +38,6 @@ private:
 	void makePlayground();
 	
 	QHash<Name, QSoundEffect *> sounds;
-	
-	bool m_stop = false;
 };
 
 #endif // SOUNDCONTROLLER_H
