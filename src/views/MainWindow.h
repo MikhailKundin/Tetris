@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QMap>
 
+#include "../controllers/SoundController.h"
+
 class SingleWgt;
 class MainMenuWgt;
 class SaveResultsWgt;
@@ -48,6 +50,7 @@ private:
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
+	QHash<SoundController::Name, QSoundEffect *> sounds;
 };
 
 #endif // MAINWINDOW_H

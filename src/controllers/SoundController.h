@@ -2,17 +2,39 @@
 #define SOUNDCONTROLLER_H
 
 #include <QObject>
-#include <QSoundEffect>
+#include <QHash>
+
+class QSoundEffect;
 
 class SoundController : public QObject
-{	
+{
+	Q_OBJECT
+	
 public:
-	static void startMainMenu();
-	static void stopMainMenu();
+	enum Name : quint8 {/*MainTheme, */Down, Right, Left, Rotate, Defeat, RowDeleted};
+	
+	SoundController();
+	SoundController(const QHash<Name, QSoundEffect *> &sounds);
+	~SoundController();
+	
+	void setSounds(const QHash<Name, QSoundEffect *> &sounds);
+	
+public slots:
+	void playMainTheme();
+	void stopMainTheme();
+	
+	void moveDown();
+	void moveRight();
+	void moveLeft();
+	void rotate();
+	void rowDeleted();
+	void defeat();
+	
+signals:
+	void stopMainThemeSignal();
 	
 private:
-	static QSoundEffect *channel1;
-	static QSoundEffect *channel2;
+	QHash<Name, QSoundEffect *> m_sounds;
 };
 
 #endif // SOUNDCONTROLLER_H

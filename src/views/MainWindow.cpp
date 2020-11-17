@@ -2,6 +2,8 @@
 #include "ui_MainWindow.h"
 
 #include <QKeyEvent>
+#include <QSoundEffect>
+#include <QThread>
 
 #include "MainMenuWgt.h"
 #include "SingleWgt.h"
@@ -33,6 +35,28 @@ MainWindow::MainWindow(QWidget *parent) :
 	blocks.insert(TetrisInfo::Figures::S, new QImage(":Images/Blocks/SBlockOriginal.png"));
 	blocks.insert(TetrisInfo::Figures::Z, new QImage(":Images/Blocks/ZBlockOriginal.png"));
 	
+	QSoundEffect *sound;
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/MoveDown.wav"));
+	sound->setLoopCount(QSoundEffect::Infinite);
+	sounds.insert(SoundController::Down, sound);
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/MoveRight.wav"));
+	sounds.insert(SoundController::Right, sound);
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/MoveLeft.wav"));
+	sounds.insert(SoundController::Left, sound);
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/Rotate.wav"));
+	sounds.insert(SoundController::Rotate, sound);
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/RowDeleted.wav"));
+	sounds.insert(SoundController::RowDeleted, sound);
+	sound = new QSoundEffect;
+	sound->setSource(QUrl::fromLocalFile(":Sounds/Defeat.wav"));
+	sound->setLoopCount(QSoundEffect::Infinite);
+	sounds.insert(SoundController::Defeat, sound);
+	
 	openMainMenuLayout();
 }
 
@@ -44,24 +68,34 @@ MainWindow::~MainWindow()
 	{
 		delete block;
 	}
+	foreach (QSoundEffect *sound, sounds)
+	{
+		delete sound;
+	}
 }
 
 void MainWindow::openMainMenuLayout()
 {
 	emit newLayout();
 	
+	SoundController *soundController = new SoundController;
+	SoundController *soundController2 = new SoundController(sounds);
+	SoundController *soundController3 = new SoundController(sounds);
+	
 	MainMenuWgt *mainMenuWgt = new MainMenuWgt;
 	ui->scenePlace = mainMenuWgt;
 	ui->scenePlace->setMinimumSize(mainMenuWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	SoundController::startMainMenu();
-	
 	connect(mainMenuWgt, &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
 	connect(mainMenuWgt, &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
 	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, &MainWindow::openOnlineLayout);
 	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
-	connect(this, &MainWindow::newLayout, this, [](){SoundController::stopMainMenu();});
+	connect(this, &MainWindow::newLayout, soundController, &SoundController::deleteLater);
+	
+	soundController->playMainTheme();
+	soundController3->defeat();
+	soundController2->moveDown();
 }
 
 void MainWindow::openSingleLayout()
