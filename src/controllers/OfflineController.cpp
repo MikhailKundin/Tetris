@@ -46,8 +46,7 @@ void OfflineController::restart()
 void OfflineController::getNewFigure()
 {
 	quint8 figure = pool.takeAt(random.generate() % 35);
-	//emit newFigureSignal(figure);
-	emit newFigureSignal(6);
+	emit newFigureSignal(figure);
 	
 	qint16 maxVal = 0;
 	quint8 count = 0;
