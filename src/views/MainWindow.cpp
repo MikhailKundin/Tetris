@@ -74,6 +74,7 @@ void MainWindow::openSingleLayout()
 	SingleWgt *singleWgt = new SingleWgt;
 	GeneralController *generalCtrl = new GeneralController(blocks);
 	OfflineController *offlineCtrl = new OfflineController;
+	SoundController *soundCtrl = new SoundController(SoundController::Playground);
 	
 	ui->scenePlace = singleWgt;
 	ui->scenePlace->setMinimumSize(singleWgt->size());
@@ -83,11 +84,13 @@ void MainWindow::openSingleLayout()
 	{
 		offlineCtrl->resume();
 		generalCtrl->start();
+		soundCtrl->unmute();
 	});
 	connect(singleWgt, &SingleWgt::pauseSignal, this, [=]()
 	{
 		generalCtrl->stop();
 		offlineCtrl->pause();
+		soundCtrl->mute();
 	});
 	connect(singleWgt, &SingleWgt::restartSignal, this, [=]()
 	{
@@ -100,12 +103,17 @@ void MainWindow::openSingleLayout()
 	{
 		generalCtrl->deleteLater();
 		offlineCtrl->deleteLater();
+		soundCtrl->deleteLater();
 		openMainMenuLayout();
 	});
 	
 	connect(generalCtrl, &GeneralController::moveDownSignal, generalCtrl, &GeneralController::newTick);
 	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
-	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
+	connect(generalCtrl, &GeneralController::newPointsSignal, this, [=](quint32 points)
+	{
+		singleWgt->updatePoints(points);
+		soundCtrl->rowDeleted();
+	});
 	connect(generalCtrl, &GeneralController::newLevelSignal, this, [=](quint16 level)
 	{
 		offlineCtrl->newLevel(level);
@@ -118,15 +126,36 @@ void MainWindow::openSingleLayout()
 		generalCtrl->stop();
 		offlineCtrl->stop();
 		singleWgt->defeat();
+		soundCtrl->defeat();
 	});
 	
-	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
+	connect(offlineCtrl, &OfflineController::tickSignal, this, [=]()
+	{
+		generalCtrl->newTick();
+		soundCtrl->moveDown();
+	});
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
-	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
-	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
-	connect(this, &MainWindow::moveDownSignal, generalCtrl, &GeneralController::newTick);
-	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
+	connect(this, &MainWindow::moveRightSignal, this, [=]()
+	{
+		generalCtrl->moveRight();
+		soundCtrl->moveRight();
+	});
+	connect(this, &MainWindow::moveLeftSignal, this, [=]()
+	{
+		generalCtrl->moveLeft();
+		soundCtrl->moveLeft();
+	});
+	connect(this, &MainWindow::moveDownSignal, this, [=]()
+	{
+		generalCtrl->newTick();
+		soundCtrl->moveDown();
+	});
+	connect(this, &MainWindow::rotateSignal, this, [=]()
+	{
+		generalCtrl->rotate();
+		soundCtrl->rotate();
+	});
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	

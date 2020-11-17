@@ -64,62 +64,129 @@ void SoundController::playMainTheme()
 
 void SoundController::moveDown()
 {
+	bool check = true;
+	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Down)
 		{
-			it.value()->play();
+			sound = it.value();
+			if (sound->isPlaying())
+			{
+				check = false;
+				break;
+			}
 		}
-		else
-		{
-			it.value()->stop();
-		}
+	}
+	if (check && sound != nullptr)
+	{
+		sound->play();
 	}
 }
 
 void SoundController::moveRight()
 {
+	bool check = true;
+	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Right)
 		{
-			it.value()->play();
-		}
-		else
-		{
-			it.value()->stop();
+			sound = it.value();
+			if (sound->isPlaying())
+			{
+				check = false;
+				break;
+			}
 		}
 	}
+	if (check && sound != nullptr)
+	{
+		sound->play();
+	}
+//	bool check = true;
+//	foreach (QSoundEffect *sound, sounds)
+//	{
+//		if (sound->isPlaying())
+//		{
+//			check = false;
+//			break;
+//		}
+//	}
+//	if (check)
+//	{
+//		sounds[Name::Right]->play();
+//	}
 }
 
 void SoundController::moveLeft()
 {
+	bool check = true;
+	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Left)
 		{
-			it.value()->play();
-		}
-		else
-		{
-			it.value()->stop();
+			sound = it.value();
+			if (sound->isPlaying())
+			{
+				check = false;
+				break;
+			}
 		}
 	}
+	if (check && sound != nullptr)
+	{
+		sound->play();
+	}
+//	bool check = true;
+//	foreach (QSoundEffect *sound, sounds)
+//	{
+//		if (sound->isPlaying())
+//		{
+//			check = false;
+//			break;
+//		}
+//	}
+//	if (check)
+//	{
+//		sounds[Name::Left]->play();
+//	}
 }
 
 void SoundController::rotate()
 {
+	bool check = true;
+	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Rotate)
 		{
-			it.value()->play();
-		}
-		else
-		{
-			it.value()->stop();
+			sound = it.value();
+			if (sound->isPlaying())
+			{
+				check = false;
+				break;
+			}
 		}
 	}
+	if (check && sound != nullptr)
+	{
+		sound->play();
+	}
+//	bool check = true;
+//	foreach (QSoundEffect *sound, sounds)
+//	{
+//		if (sound->isPlaying())
+//		{
+//			check = false;
+//			break;
+//		}
+//	}
+//	if (check)
+//	{
+//		sounds[Name::Rotate]->play();
+//	}
 }
 
 void SoundController::rowDeleted()
