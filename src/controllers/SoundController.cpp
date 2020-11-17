@@ -9,7 +9,7 @@ QSoundEffect *SoundController::channel2 = new QSoundEffect;
 
 void SoundController::startMainMenu()
 {
-	channel1->setSource(QUrl::fromLocalFile("../../etc/Sounds/MainMenu.wav"));
+	channel1->setSource(QUrl::fromLocalFile(":/Sounds/MainMenu.wav"));
 	channel1->setVolume(0.2);
 	channel1->setLoopCount(QSoundEffect::Infinite);
 	channel1->play();

@@ -34,5 +34,6 @@
         <file alias="MoveRight.wav">etc/Sounds/MoveRight.wav</file>
         <file alias="Rotate.wav">etc/Sounds/Rotate.wav</file>
         <file alias="RowDeleted.wav">etc/Sounds/RowDeleted.wav</file>
+        <file alias="MainMenu.wav">etc/Sounds/MainMenu.wav</file>
     </qresource>
 </RCC>

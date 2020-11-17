@@ -3,6 +3,7 @@ QT       += core gui network sql multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
+CONFIG += resources_big
 CONFIG -= debug_and_release debug_and_release_target
 
 CONFIG(debug, debug|release){
