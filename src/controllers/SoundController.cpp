@@ -6,46 +6,65 @@
 
 SoundController::SoundController(Mode mode)
 {
-	
+	if (mode == MainMenu)
+	{
+		QSoundEffect *sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/MainMenu.wav"));
+		sound->setVolume(0.25);
+		sound->setLoopCount(QSoundEffect::Infinite);
+		sounds.insert(Name::MainTheme, sound);
+	}
+	else
+	{
+		QSoundEffect *sound;
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/MoveDown.wav"));
+		sounds.insert(Name::Down, sound);
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/MoveRight.wav"));
+		sounds.insert(Name::Right, sound);
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/MoveLeft.wav"));
+		sounds.insert(Name::Left, sound);
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/Rotate.wav"));
+		sounds.insert(Name::Rotate, sound);
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/RowDeleted.wav"));
+		sounds.insert(Name::RowDeleted, sound);
+		sound = new QSoundEffect;
+		sound->setSource(QUrl::fromLocalFile(":Sounds/Defeat.wav"));
+		sounds.insert(Name::Defeat, sound);
+	}
 }
 
 SoundController::~SoundController()
 {
-	emit stopMainThemeSignal();
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	foreach (QSoundEffect *sound, sounds)
 	{
-		it.value()->stop();
+		sound->setSource(QUrl::fromLocalFile(":Sounds/null"));
+		sound->deleteLater();
 	}
-}
-
-void SoundController::setSounds(const QHash<SoundController::Name, QSoundEffect *> &sounds)
-{
-	m_sounds = sounds;
 }
 
 void SoundController::playMainTheme()
 {
-	QSoundEffect *mainTheme = new QSoundEffect;
-	mainTheme->setSource(QUrl::fromLocalFile(":Sounds/MainMenu.wav"));
-	mainTheme->setLoopCount(QSoundEffect::Infinite);
-	mainTheme->setVolume(0.25);
-	mainTheme->play();
-	
-	connect(this, &SoundController::stopMainThemeSignal, mainTheme, [=]()
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
-		mainTheme->setSource(QUrl::fromLocalFile(":Sounds/null"));
-		mainTheme->deleteLater();
-	});
-}
-
-void SoundController::stopMainTheme()
-{
-	emit stopMainThemeSignal();
+		if (it.key() == Name::MainTheme)
+		{
+			it.value()->play();
+		}
+		else
+		{
+			it.value()->stop();
+		}
+	}
 }
 
 void SoundController::moveDown()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Down)
 		{
@@ -60,7 +79,7 @@ void SoundController::moveDown()
 
 void SoundController::moveRight()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Right)
 		{
@@ -75,7 +94,7 @@ void SoundController::moveRight()
 
 void SoundController::moveLeft()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Left)
 		{
@@ -90,7 +109,7 @@ void SoundController::moveLeft()
 
 void SoundController::rotate()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Rotate)
 		{
@@ -105,7 +124,7 @@ void SoundController::rotate()
 
 void SoundController::rowDeleted()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::RowDeleted)
 		{
@@ -120,7 +139,7 @@ void SoundController::rowDeleted()
 
 void SoundController::defeat()
 {
-	for (QHash<Name, QSoundEffect *>::ConstIterator it = m_sounds.begin(); it != m_sounds.end(); it++)
+	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Defeat)
 		{
@@ -130,5 +149,21 @@ void SoundController::defeat()
 		{
 			it.value()->stop();
 		}
+	}
+}
+
+void SoundController::mute()
+{
+	foreach (QSoundEffect *sound, sounds)
+	{
+		sound->setMuted(true);
+	}
+}
+
+void SoundController::unmute()
+{
+	foreach (QSoundEffect *sound, sounds)
+	{
+		sound->setMuted(false);
 	}
 }

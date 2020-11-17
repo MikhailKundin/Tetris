@@ -50,7 +50,6 @@ private:
 	
 	QList<qint32> keyList;
 	QMap<qint8, QImage *> blocks;
-	QHash<SoundController::Name, QSoundEffect *> sounds;
 };
 
 #endif // MAINWINDOW_H

@@ -11,17 +11,13 @@ class SoundController : public QObject
 	Q_OBJECT
 	
 public:
-	enum Name : quint8 {/*MainTheme, */Down, Right, Left, Rotate, Defeat, RowDeleted};
+	enum Mode : quint8 {MainMenu, Playground};
 	
-	SoundController();
-	SoundController(const QHash<Name, QSoundEffect *> &sounds);
+	SoundController(Mode mode);
 	~SoundController();
-	
-	void setSounds(const QHash<Name, QSoundEffect *> &sounds);
 	
 public slots:
 	void playMainTheme();
-	void stopMainTheme();
 	
 	void moveDown();
 	void moveRight();
@@ -30,11 +26,13 @@ public slots:
 	void rowDeleted();
 	void defeat();
 	
-signals:
-	void stopMainThemeSignal();
+	void mute();
+	void unmute();
 	
 private:
-	QHash<Name, QSoundEffect *> m_sounds;
+	enum Name : quint8 {MainTheme, Down, Right, Left, Rotate, Defeat, RowDeleted};
+	
+	QHash<Name, QSoundEffect *> sounds;
 };
 
 #endif // SOUNDCONTROLLER_H
