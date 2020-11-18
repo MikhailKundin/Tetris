@@ -13,6 +13,7 @@ class QImage;
 class GeneralController;
 class OnlineController;
 class OfflineController;
+class QThread;
 
 namespace Ui {
 class MainWindow;
