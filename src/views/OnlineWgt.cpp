@@ -68,6 +68,8 @@ void OnlineWgt::restart()
 {
 	ofPoints->update(0);
 	onPoints->update(0);
+	ofLevelFigure->setLevel(1);
+	onLevelFigure->setLevel(1);
 }
 
 void OnlineWgt::ofUpdateGrid(const QMap<qint16, QImage *> &grid) const

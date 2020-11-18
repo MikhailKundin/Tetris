@@ -123,6 +123,7 @@ void SingleWgt::restart()
 	blockPause = false;
 	rtPnl->restart();
 	pointsPnl->update(0);
+	lfPnl->setLevel(1);
 }
 
 void SingleWgt::saveBtnPush(QString name)

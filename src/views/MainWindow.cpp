@@ -75,19 +75,20 @@ void MainWindow::openMainMenuLayout()
 	connect(this, &MainWindow::destroySignal, soundThread, [=]()
 	{
 		soundThread->quit();
-		soundThread->deleteLater();
 	});
 	
 	connect(soundController, &SoundController::destroyed, soundThread, [=]()
 	{
 		soundThread->quit();
-		soundThread->wait();
-		soundThread->deleteLater();
 	});
 	
 	connect(soundThread, &QThread::started, soundController, &SoundController::playMainTheme);
+	connect(soundThread, &QThread::finished, soundThread, &QThread::deleteLater);
 	
 	soundThread->start();
+	
+	connect(soundController, &SoundController::destroyed, this, [](){qDebug() << "soundController";});
+	connect(soundThread, &QThread::destroyed, this, [](){qDebug() << "soundThread";});
 }
 
 void MainWindow::openSingleLayout()
@@ -104,6 +105,9 @@ void MainWindow::openSingleLayout()
 	
 	QThread *generalThread = new QThread(this);
 	generalCtrl->moveToThread(generalThread);
+	
+	QThread *offlineThread = new QThread(this);
+	offlineCtrl->moveToThread(offlineThread);
 	
 	ui->scenePlace = singleWgt;
 	ui->scenePlace->setMinimumSize(singleWgt->size());
@@ -150,6 +154,12 @@ void MainWindow::openSingleLayout()
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
+	connect(offlineCtrl, &OfflineController::destroyed, offlineThread, [=]()
+	{
+		offlineThread->quit();
+		offlineThread->wait();
+		offlineThread->deleteLater();
+	});
 	
 	connect(soundCtrl, &SoundController::destroyed, soundThread, [=]()
 	{
@@ -166,18 +176,28 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	connect(this, &MainWindow::destroySignal, this, [=]()
 	{
-		soundThread->quit();
+		soundThread->terminate();
+		generalThread->terminate();
+		offlineThread->terminate();
 		soundThread->deleteLater();
-		generalThread->quit();
 		generalThread->deleteLater();
+		offlineThread->deleteLater();
 	});
 	
 	connect(generalThread, &QThread::started, generalCtrl, &GeneralController::restart);
 	
+	connect(offlineThread, &QThread::started, offlineCtrl, &OfflineController::restart);
+	
 	soundThread->start();
 	generalThread->start();
+	offlineThread->start();
 	
-	offlineCtrl->restart();
+//	connect(soundCtrl, &SoundController::destroyed, this, [](){qDebug() << "soundCtrl";});
+//	connect(generalCtrl, &GeneralController::destroyed, this, [](){qDebug() << "generalCtrl";});
+//	connect(offlineCtrl, &OfflineController::destroyed, this, [](){qDebug() << "offlineCtrl";});
+//	connect(soundThread, &QThread::destroyed, this, [](){qDebug() << "soundThread";});
+//	connect(generalThread, &QThread::destroyed, this, [](){qDebug() << "generalThread";});
+//	connect(offlineThread, &QThread::destroyed, this, [](){qDebug() << "offlineThread";});
 }
 
 void MainWindow::openOnlineLayout()
