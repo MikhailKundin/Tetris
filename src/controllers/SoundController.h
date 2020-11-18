@@ -28,6 +28,7 @@ public slots:
 	void rowDeleted();
 	void defeat();
 	
+	void setMute(bool state);
 	void mute();
 	void unmute();
 	

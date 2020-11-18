@@ -148,7 +148,6 @@ void SoundController::rowDeleted()
 	{
 		if (it.key() == Name::RowDeleted)
 		{
-			qDebug() << 1;
 			it.value()->play();
 		}
 		else
@@ -173,20 +172,22 @@ void SoundController::defeat()
 	}
 }
 
-void SoundController::mute()
+void SoundController::setMute(bool state)
 {
 	foreach (QSoundEffect *sound, sounds)
 	{
-		sound->setMuted(true);
+		sound->setMuted(state);
 	}
+}
+
+void SoundController::mute()
+{
+	setMute(true);
 }
 
 void SoundController::unmute()
 {
-	foreach (QSoundEffect *sound, sounds)
-	{
-		sound->setMuted(false);
-	}
+	setMute(false);
 }
 
 void SoundController::makeMainMenu()
