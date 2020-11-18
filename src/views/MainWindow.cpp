@@ -72,11 +72,18 @@ void MainWindow::openMainMenuLayout()
 	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, &MainWindow::openOnlineLayout);
 	
 	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
-	connect(this, &MainWindow::destroySignal, soundThread, &QThread::quit);
-	connect(this, &MainWindow::destroySignal, soundThread, &QThread::deleteLater);
+	connect(this, &MainWindow::destroySignal, soundThread, [=]()
+	{
+		soundThread->quit();
+		soundThread->deleteLater();
+	});
 	
-	connect(soundController, &SoundController::destroyed, soundThread, &QThread::quit);
-	connect(soundController, &SoundController::destroyed, soundThread, &QThread::deleteLater);
+	connect(soundController, &SoundController::destroyed, soundThread, [=]()
+	{
+		soundThread->quit();
+		soundThread->wait();
+		soundThread->deleteLater();
+	});
 	
 	connect(soundThread, &QThread::started, soundController, &SoundController::playMainTheme);
 	
@@ -94,6 +101,7 @@ void MainWindow::openSingleLayout()
 	
 	QThread *soundThread = new QThread(this);
 	soundCtrl->moveToThread(soundThread);
+	
 	QThread *generalThread = new QThread(this);
 	generalCtrl->moveToThread(generalThread);
 	
@@ -133,14 +141,22 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::leftSignal, soundCtrl, &SoundController::moveLeft);
 	connect(generalCtrl, &GeneralController::downSignal, soundCtrl, &SoundController::moveDown);
 	connect(generalCtrl, &GeneralController::rotateSignal, soundCtrl, &SoundController::rotate);
-	connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::terminate);
-	connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::deleteLater);
+	connect(generalCtrl, &GeneralController::destroyed, generalThread, [=]()
+	{
+		generalThread->quit();
+		generalThread->wait();
+		generalThread->deleteLater();
+	});
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
-	connect(soundCtrl, &SoundController::destroyed, soundThread, &QThread::terminate);
-	connect(soundCtrl, &SoundController::destroyed, soundThread, &QThread::deleteLater);
+	connect(soundCtrl, &SoundController::destroyed, soundThread, [=]()
+	{
+		soundThread->quit();
+		soundThread->wait();
+		soundThread->deleteLater();
+	});
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
@@ -148,10 +164,13 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
-	connect(this, &MainWindow::destroySignal, soundThread, &QThread::terminate);
-	connect(this, &MainWindow::destroySignal, generalThread, &QThread::terminate);
-	connect(this, &MainWindow::destroySignal, soundThread, &QThread::deleteLater);
-	connect(this, &MainWindow::destroySignal, generalThread, &QThread::deleteLater);
+	connect(this, &MainWindow::destroySignal, this, [=]()
+	{
+		soundThread->quit();
+		soundThread->deleteLater();
+		generalThread->quit();
+		generalThread->deleteLater();
+	});
 	
 	connect(generalThread, &QThread::started, generalCtrl, &GeneralController::restart);
 	
