@@ -56,35 +56,31 @@ void MainWindow::openMainMenuLayout()
 	
 	SoundController *soundController = new SoundController(SoundController::MainMenu);
 	
-	QThread *thread = new QThread(this);
-	soundController->moveToThread(thread);
-	thread->start();
+	QThread *soundThread = new QThread(this);
+	soundController->moveToThread(soundThread);
 	
 	MainMenuWgt *mainMenuWgt = new MainMenuWgt;
 	ui->scenePlace = mainMenuWgt;
 	ui->scenePlace->setMinimumSize(mainMenuWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	connect(mainMenuWgt, &MainMenuWgt::exitSignal, this, [=]()
-	{
-		soundController->deleteLater();
-		closeAll();
-	});
-	connect(mainMenuWgt, &MainMenuWgt::singleSignal, this, [=]()
-	{
-		soundController->deleteLater();
-		openSingleLayout();
-	});
-	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, [=]()
-	{
-		soundController->deleteLater();
-		openOnlineLayout();
-	});
-	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
-	connect(soundController, &SoundController::destroyed, thread, &QThread::terminate);
-	connect(this, &MainWindow::destroySignal, thread, &QThread::terminate);
+	connect(mainMenuWgt, &MainMenuWgt::exitSignal, soundController, &SoundController::deleteLater);
+	connect(mainMenuWgt, &MainMenuWgt::exitSignal, this, &MainWindow::closeAll);
+	connect(mainMenuWgt, &MainMenuWgt::singleSignal, soundController, &SoundController::deleteLater);
+	connect(mainMenuWgt, &MainMenuWgt::singleSignal, this, &MainWindow::openSingleLayout);
+	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, soundController, &SoundController::deleteLater);
+	connect(mainMenuWgt, &MainMenuWgt::onlineSignal, this, &MainWindow::openOnlineLayout);
 	
-	soundController->playMainTheme();
+	connect(this, &MainWindow::newLayout, mainMenuWgt, &MainMenuWgt::deleteLater);
+	connect(this, &MainWindow::destroySignal, soundThread, &QThread::quit);
+	connect(this, &MainWindow::destroySignal, soundThread, &QThread::deleteLater);
+	
+	connect(soundController, &SoundController::destroyed, soundThread, &QThread::quit);
+	connect(soundController, &SoundController::destroyed, soundThread, &QThread::deleteLater);
+	
+	connect(soundThread, &QThread::started, soundController, &SoundController::playMainTheme);
+	
+	soundThread->start();
 }
 
 void MainWindow::openSingleLayout()
@@ -98,77 +94,53 @@ void MainWindow::openSingleLayout()
 	
 	QThread *soundThread = new QThread(this);
 	soundCtrl->moveToThread(soundThread);
-	soundThread->start();
 	QThread *generalThread = new QThread(this);
 	generalCtrl->moveToThread(generalThread);
-	generalThread->start();
 	
 	ui->scenePlace = singleWgt;
 	ui->scenePlace->setMinimumSize(singleWgt->size());
 	ui->gBox->addWidget(ui->scenePlace, 1, 1);
 	
-	connect(singleWgt, &SingleWgt::resumeSignal, this, [=]()
-	{
-		offlineCtrl->resume();
-		generalCtrl->start();
-		soundCtrl->unmute();
-	});
-	connect(singleWgt, &SingleWgt::pauseSignal, this, [=]()
-	{
-		generalCtrl->stop();
-		offlineCtrl->pause();
-		soundCtrl->mute();
-	});
-	connect(singleWgt, &SingleWgt::restartSignal, this, [=]()
-	{
-		generalCtrl->clearFigure();
-		generalCtrl->restart();
-		offlineCtrl->restart();
-		singleWgt->restart();
-		soundCtrl->unmute();
-	});
-	connect(singleWgt, &SingleWgt::exitSignal, this, [=]()
-	{
-		generalCtrl->deleteLater();
-		offlineCtrl->deleteLater();
-		soundCtrl->deleteLater();
-		openMainMenuLayout();
-	});
+	connect(singleWgt, &SingleWgt::resumeSignal, offlineCtrl, &OfflineController::resume);
+	connect(singleWgt, &SingleWgt::resumeSignal, generalCtrl, &GeneralController::start);
+	connect(singleWgt, &SingleWgt::resumeSignal, soundCtrl, &SoundController::unmute);
+	connect(singleWgt, &SingleWgt::pauseSignal, generalCtrl, &GeneralController::stop);
+	connect(singleWgt, &SingleWgt::pauseSignal, offlineCtrl, &OfflineController::pause);
+	connect(singleWgt, &SingleWgt::pauseSignal, soundCtrl, &SoundController::mute);
+	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::clearFigure);
+	connect(singleWgt, &SingleWgt::restartSignal, generalCtrl, &GeneralController::restart);
+	connect(singleWgt, &SingleWgt::restartSignal, offlineCtrl, &OfflineController::restart);
+	connect(singleWgt, &SingleWgt::restartSignal, singleWgt, &SingleWgt::restart);
+	connect(singleWgt, &SingleWgt::restartSignal, soundCtrl, &SoundController::unmute);
+	connect(singleWgt, &SingleWgt::exitSignal, generalCtrl, &GeneralController::deleteLater);
+	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
+	connect(singleWgt, &SingleWgt::exitSignal, soundCtrl, &SoundController::deleteLater);
+	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
 	
 	connect(generalCtrl, &GeneralController::moveDownSignal, generalCtrl, &GeneralController::newTick);
 	connect(generalCtrl, &GeneralController::update, singleWgt, &SingleWgt::updateGrid);
-	connect(generalCtrl, &GeneralController::newPointsSignal, this, [=](quint32 points)
-	{
-		singleWgt->updatePoints(points);
-		//QMetaObject::invokeMethod(soundCtrl, &SoundController::rowDeleted);
-	});
+	connect(generalCtrl, &GeneralController::newPointsSignal, singleWgt, &SingleWgt::updatePoints);
 	connect(generalCtrl, &GeneralController::newPointsSignal, soundCtrl, &SoundController::rowDeleted);
-	connect(generalCtrl, &GeneralController::newLevelSignal, this, [=](quint16 level)
-	{
-		offlineCtrl->newLevel(level);
-		singleWgt->updateLevel(level);
-	});
+	connect(generalCtrl, &GeneralController::newLevelSignal, offlineCtrl, &OfflineController::newLevel);
+	connect(generalCtrl, &GeneralController::newLevelSignal, singleWgt, &SingleWgt::updateLevel);
 	connect(generalCtrl, &GeneralController::getNewFigureSignal, offlineCtrl, &OfflineController::getNewFigure);
 	connect(generalCtrl, &GeneralController::newFigureSignal, singleWgt, &SingleWgt::updateFigure);
-	connect(generalCtrl, &GeneralController::defeatSignal, this, [=]()
-	{
-		generalCtrl->stop();
-		offlineCtrl->stop();
-		singleWgt->defeat();
-		//soundCtrl->defeat();
-		//QMetaObject::invokeMethod(soundCtrl, &SoundController::defeat);
-	});
+	connect(generalCtrl, &GeneralController::defeatSignal, generalCtrl, &GeneralController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, offlineCtrl, &OfflineController::stop);
+	connect(generalCtrl, &GeneralController::defeatSignal, singleWgt, &SingleWgt::defeat);
 	connect(generalCtrl, &GeneralController::defeatSignal, soundCtrl, &SoundController::defeat);
 	connect(generalCtrl, &GeneralController::rightSignal, soundCtrl, &SoundController::moveRight);
 	connect(generalCtrl, &GeneralController::leftSignal, soundCtrl, &SoundController::moveLeft);
 	connect(generalCtrl, &GeneralController::downSignal, soundCtrl, &SoundController::moveDown);
 	connect(generalCtrl, &GeneralController::rotateSignal, soundCtrl, &SoundController::rotate);
 	connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::terminate);
+	connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::deleteLater);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
 	
 	connect(soundCtrl, &SoundController::destroyed, soundThread, &QThread::terminate);
+	connect(soundCtrl, &SoundController::destroyed, soundThread, &QThread::deleteLater);
 	
 	connect(this, &MainWindow::moveRightSignal, generalCtrl, &GeneralController::moveRight);
 	connect(this, &MainWindow::moveLeftSignal, generalCtrl, &GeneralController::moveLeft);
@@ -176,13 +148,16 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::rotateSignal, generalCtrl, &GeneralController::rotate);
 	connect(this, &MainWindow::pauseBtnPress, singleWgt, &SingleWgt::pauseBtnPress);
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
-	connect(this, &MainWindow::destroySignal, this, [=]()
-	{
-		soundThread->terminate();
-		generalThread->terminate();
-	});
+	connect(this, &MainWindow::destroySignal, soundThread, &QThread::terminate);
+	connect(this, &MainWindow::destroySignal, generalThread, &QThread::terminate);
+	connect(this, &MainWindow::destroySignal, soundThread, &QThread::deleteLater);
+	connect(this, &MainWindow::destroySignal, generalThread, &QThread::deleteLater);
 	
-	generalCtrl->restart();
+	connect(generalThread, &QThread::started, generalCtrl, &GeneralController::restart);
+	
+	soundThread->start();
+	generalThread->start();
+	
 	offlineCtrl->restart();
 }
 
