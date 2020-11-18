@@ -39,8 +39,8 @@ signals:
 	void rotateSignal();
 	
 	void pauseBtnPress();
-	
 	void newLayout();
+	void destroySignal();
 	
 private:
 	void keyPressEvent(QKeyEvent *e) override;

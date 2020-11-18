@@ -10,7 +10,7 @@
 GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 	: m_blocks(blocks)
 {	
-	
+	qRegisterMetaType<QMap<qint16, QImage *> >("QMap<qint16, QImage *>");
 }
 
 GeneralController::~GeneralController()
