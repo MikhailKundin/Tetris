@@ -99,9 +99,9 @@ void MainWindow::openSingleLayout()
 	QThread *soundThread = new QThread(this);
 	soundCtrl->moveToThread(soundThread);
 	soundThread->start();
-//	QThread *generalThread = new QThread(this);
-//	generalCtrl->moveToThread(generalThread);
-//	generalThread->start();
+	QThread *generalThread = new QThread(this);
+	generalCtrl->moveToThread(generalThread);
+	generalThread->start();
 	
 	ui->scenePlace = singleWgt;
 	ui->scenePlace->setMinimumSize(singleWgt->size());
@@ -140,10 +140,9 @@ void MainWindow::openSingleLayout()
 	connect(generalCtrl, &GeneralController::newPointsSignal, this, [=](quint32 points)
 	{
 		singleWgt->updatePoints(points);
-		//soundCtrl->rowDeleted();
-		QMetaObject::invokeMethod(soundCtrl, &SoundController::rowDeleted);
+		//QMetaObject::invokeMethod(soundCtrl, &SoundController::rowDeleted);
 	});
-	//connect(generalCtrl, &GeneralController::newPointsSignal, soundCtrl, &SoundController::rowDeleted);
+	connect(generalCtrl, &GeneralController::newPointsSignal, soundCtrl, &SoundController::rowDeleted);
 	connect(generalCtrl, &GeneralController::newLevelSignal, this, [=](quint16 level)
 	{
 		offlineCtrl->newLevel(level);
@@ -156,13 +155,15 @@ void MainWindow::openSingleLayout()
 		generalCtrl->stop();
 		offlineCtrl->stop();
 		singleWgt->defeat();
-		soundCtrl->defeat();
+		//soundCtrl->defeat();
+		//QMetaObject::invokeMethod(soundCtrl, &SoundController::defeat);
 	});
+	connect(generalCtrl, &GeneralController::defeatSignal, soundCtrl, &SoundController::defeat);
 	connect(generalCtrl, &GeneralController::rightSignal, soundCtrl, &SoundController::moveRight);
 	connect(generalCtrl, &GeneralController::leftSignal, soundCtrl, &SoundController::moveLeft);
 	connect(generalCtrl, &GeneralController::downSignal, soundCtrl, &SoundController::moveDown);
 	connect(generalCtrl, &GeneralController::rotateSignal, soundCtrl, &SoundController::rotate);
-	//connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::terminate);
+	connect(generalCtrl, &GeneralController::destroyed, generalThread, &QThread::terminate);
 	
 	connect(offlineCtrl, &OfflineController::tickSignal, generalCtrl, &GeneralController::newTick);
 	connect(offlineCtrl, &OfflineController::newFigureSignal, generalCtrl, &GeneralController::getNextFigure);
@@ -178,7 +179,7 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::destroySignal, this, [=]()
 	{
 		soundThread->terminate();
-		//generalThread->terminate();
+		generalThread->terminate();
 	});
 	
 	generalCtrl->restart();

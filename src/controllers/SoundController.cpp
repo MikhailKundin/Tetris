@@ -56,7 +56,6 @@ void SoundController::stopMainTheme()
 
 void SoundController::moveDown()
 {
-	qDebug() << sounds[Name::RowDeleted]->isPlaying();
 	bool check = true;
 	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
@@ -145,35 +144,17 @@ void SoundController::rotate()
 
 void SoundController::rowDeleted()
 {
-//	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
-//	{
-//		if (it.key() == Name::RowDeleted)
-//		{
-//			qDebug() << 1;
-//			it.value()->play();
-//		}
-//		else
-//		{
-//			it.value()->stop();
-//		}
-//	}
-	bool check = true;
-	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::RowDeleted)
 		{
-			sound = it.value();
-			if (sound->isPlaying())
-			{
-				check = false;
-				break;
-			}
+			qDebug() << 1;
+			it.value()->play();
 		}
-	}
-	if (check && sound != nullptr)
-	{
-		sound->play();
+		else
+		{
+			it.value()->stop();
+		}
 	}
 }
 
