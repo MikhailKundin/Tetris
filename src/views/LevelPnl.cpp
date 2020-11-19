@@ -17,7 +17,7 @@ LevelPnl::LevelPnl(quint16 nextFigureWidth, quint16 pointsHeight, qreal mult, QW
 	back->resize(size());
 	back->setPixmap(img.scaled(back->size()));
 	
-	QFont font = ui->levelLbl->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<qint32>(BASE_FONT_SIZE*mult));
 	ui->levelLbl->setFont(font);
 }

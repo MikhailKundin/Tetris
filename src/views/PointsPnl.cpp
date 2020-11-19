@@ -12,7 +12,7 @@ PointsPnl::PointsPnl(quint16 width, qreal mult, QWidget *parent) : QWidget(paren
 	ui->backLbl->resize(size());
 	ui->backLbl->setPixmap(img.scaled(size()));
 	
-	QFont font = ui->pointsLbl->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<qint32>(BASE_FONT_SIZE*mult));
 	ui->pointsLbl->setFont(font);
 	

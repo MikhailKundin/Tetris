@@ -54,4 +54,5 @@ compile_commands.json
 *.pdb
 *.ilk
 object_script.*
-build/temp/
+build/Windows/temp/
+build/Unix/temp/

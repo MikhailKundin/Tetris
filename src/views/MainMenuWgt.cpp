@@ -34,7 +34,7 @@ MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
 	ui->verticalLayout->addWidget(onlineBtn.get());
 	ui->verticalLayout->addWidget(exitBtn.get());
 	
-	QFont font = singleBtn->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 	singleBtn->setFont(font);
 	onlineBtn->setFont(font);

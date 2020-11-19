@@ -16,7 +16,7 @@ ButtonPanel::ButtonPanel(QString info, QList<QString> buttons,
 	
 	infoLbl = std::make_unique<QLabel>(info, this);
 	
-	QFont font = infoLbl->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 	infoLbl->setFont(font);
 	
@@ -68,7 +68,7 @@ void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> p
 	QPalette pal(palette());
 	QColor col;
 	col.setRgb(0, 0, 0, 200);
-	pal.setColor(QPalette::Background, col);
+	pal.setColor(QPalette::Window, col);
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
@@ -79,9 +79,10 @@ void ButtonPanel::buildPanel(QList<QString> buttons, QHash<QString, QPixmap *> p
 		pushLabel->loadPixmaps(pixmaps["enter"], pixmaps["leave"]);
 		pushLabel->loadSounds(sounds["enterSound"]);
 		
-		QFont font = pushLabel->font();
+		QFont font("Segoe Print", -1, QFont::Bold);
 		font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 		pushLabel->setFont(font);
+		pushLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 		
 		QPalette pal;
 		pal.setColor(QPalette::WindowText, Qt::yellow);

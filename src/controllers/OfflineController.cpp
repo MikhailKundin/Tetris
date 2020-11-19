@@ -42,7 +42,8 @@ void OfflineController::stop()
 
 void OfflineController::restart()
 {
-	timer->setInterval(START_INTERVAL);
+	currentInterval = START_INTERVAL;
+	timer->setInterval(currentInterval);
 	timer->start();
 }
 

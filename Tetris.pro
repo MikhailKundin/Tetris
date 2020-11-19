@@ -5,19 +5,31 @@ CONFIG += resources_big
 CONFIG -= debug_and_release debug_and_release_target
 
 CONFIG(debug, debug|release){
-DESTDIR = build/debug
-OBJECTS_DIR = build/temp/debug/obj
-MOC_DIR = build/temp/debug/moc
-RCC_DIR = build/temp/debug/rcc
-UI_DIR = build/temp/debug/ui
+win32:DESTDIR = build/Windows/debug
+win32:OBJECTS_DIR = build/Windows/temp/debug/obj
+win32:MOC_DIR = build/Windows/temp/debug/moc
+win32:RCC_DIR = build/Windows/temp/debug/rcc
+win32:UI_DIR = build/Windows/temp/debug/ui
+
+unix:DESTDIR = build/Unix/debug
+unix:OBJECTS_DIR = build/Unix/temp/debug/obj
+unix:MOC_DIR = build/Unix/temp/debug/moc
+unix:RCC_DIR = build/Unix/temp/debug/rcc
+unix:UI_DIR = build/Unix/temp/debug/ui
 }
 
 CONFIG(release, debug|release){
-DESTDIR = build/release
-OBJECTS_DIR = build/temp/release/obj
-MOC_DIR = build/temp/release/moc
-RCC_DIR = build/temp/release/rcc
-UI_DIR = build/temp/release/ui
+win32:DESTDIR = build/Windows/release
+win32:OBJECTS_DIR = build/Windows/temp/release/obj
+win32:MOC_DIR = build/Windows/temp/release/moc
+win32:RCC_DIR = build/Windows/temp/release/rcc
+win32:UI_DIR = build/Windows/temp/release/ui
+
+unix:DESTDIR = build/Unix/release
+unix:OBJECTS_DIR = build/Unix/temp/release/obj
+unix:MOC_DIR = build/Unix/temp/release/moc
+unix:RCC_DIR = build/Unix/temp/release/rcc
+unix:UI_DIR = build/Unix/temp/release/ui
 }
 
 SOURCES += \

@@ -31,11 +31,14 @@ SaveResultsWgt::SaveResultsWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, Q
 	saveBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	cancelBtn->setFixedSize(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 	
-	QFont font = ui->lineEdit->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 	ui->lineEdit->setFont(font);
 	saveBtn->setFont(font);
 	cancelBtn->setFont(font);
+	ui->lineEdit->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	saveBtn->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	cancelBtn->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 	
 	QPalette btnPal;
 	btnPal.setColor(QPalette::WindowText, Qt::yellow);
@@ -52,7 +55,7 @@ SaveResultsWgt::SaveResultsWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, Q
 	QPalette pal(palette());
 	QColor col;
 	col.setRgb(0, 0, 0, 200);
-	pal.setColor(QPalette::Background, col);
+	pal.setColor(QPalette::Window, col);
 	setAutoFillBackground(true);
 	setPalette(pal);
 	

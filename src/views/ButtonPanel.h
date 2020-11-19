@@ -50,7 +50,7 @@ private:
 	const quint16 BASE_ELEMENT_HEIGHT = 30;
 	const quint16 BASE_ELEMENT_WIDTH = 180;
 	const quint16 BASE_BORDER = 20;
-	const quint8 BASE_FONT = 20;
+	const quint8 BASE_FONT = 16;
 	const quint16 BASE_SPACE = 30;
 	const qreal MULT;
 };

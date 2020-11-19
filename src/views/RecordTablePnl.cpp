@@ -45,7 +45,7 @@ RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QW
 		name->setPalette(palette);
 		point->setPalette(palette);
 		
-		QFont font = name->font();
+		QFont font("Segoe Print", -1, QFont::Bold);
 		font.setPixelSize(static_cast<qint32>(BASE_FONT_SIZE*MULT));
 		name->setFont(font);
 		point->setFont(font);

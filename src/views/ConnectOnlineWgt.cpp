@@ -57,12 +57,16 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QHash<QString, QPixmap *>, QHash<QStrin
 	ui->verticalLayout->addSpacerItem(spacer2.get());
 	ui->verticalLayout->addWidget(cancelBtn.get());
 	
-	QFont font = createBtn->font();
+	QFont font("Segoe Print", -1, QFont::Bold);
 	font.setPixelSize(static_cast<quint8>(BASE_FONT*MULT));
 	createBtn->setFont(font);
 	connectBtn->setFont(font);
 	cancelBtn->setFont(font);
 	ipLine->setFont(font);
+	createBtn->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	connectBtn->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	cancelBtn->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
+	ipLine->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 	
 	QPalette btnPal;
 	btnPal.setColor(QPalette::WindowText, Qt::yellow);
@@ -77,7 +81,7 @@ ConnectOnlineWgt::ConnectOnlineWgt(QPair<QHash<QString, QPixmap *>, QHash<QStrin
 	QPalette pal(palette());
 	QColor col;
 	col.setRgb(0, 0, 0, 200);
-	pal.setColor(QPalette::Background, col);
+	pal.setColor(QPalette::Window, col);
 	setAutoFillBackground(true);
 	setPalette(pal);
 	

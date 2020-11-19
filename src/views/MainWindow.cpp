@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	setWindowIcon(QIcon(":Images/Icons/Icon.png"));
 	
 	QPalette pal(palette());
-	pal.setColor(QPalette::Background, Qt::black);
+	pal.setColor(QPalette::Window, Qt::black);
 	setAutoFillBackground(true);
 	setPalette(pal);
 	
