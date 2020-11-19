@@ -232,7 +232,14 @@ QList<qint16> AbstractFigure::getCells() const
 
 QImage *AbstractFigure::getImage()
 {
-	return blocks.at(0).getImage();
+	if (!blocks.isEmpty())
+	{
+		return blocks.at(0).getImage();
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void AbstractFigure::updateCoords(const QList<QPair<qint8, qint8> > &coords)

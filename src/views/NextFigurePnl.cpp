@@ -29,9 +29,15 @@ NextFigurePnl::NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent) : QW
 
 void NextFigurePnl::update(AbstractFigure *&figure)
 {
-	image = figure->getBlocks().at(0).getImage();
-	type = figure->getType();
-	repaint();
+	if (figure != nullptr)
+	{
+		image = figure->getImage();
+		if (image != nullptr)
+		{
+			type = figure->getType();
+			repaint();
+		}
+	}
 }
 
 void NextFigurePnl::clear()
