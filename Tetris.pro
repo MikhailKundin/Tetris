@@ -19,13 +19,13 @@ unix:UI_DIR = build/Unix/temp/debug/ui
 }
 
 CONFIG(release, debug|release){
-win32:DESTDIR = build/Windows/release
+win32:DESTDIR = build/Windows/Tetris
 win32:OBJECTS_DIR = build/Windows/temp/release/obj
 win32:MOC_DIR = build/Windows/temp/release/moc
 win32:RCC_DIR = build/Windows/temp/release/rcc
 win32:UI_DIR = build/Windows/temp/release/ui
 
-unix:DESTDIR = build/Unix/release
+unix:DESTDIR = build/Unix/Tetris
 unix:OBJECTS_DIR = build/Unix/temp/release/obj
 unix:MOC_DIR = build/Unix/temp/release/moc
 unix:RCC_DIR = build/Unix/temp/release/rcc
