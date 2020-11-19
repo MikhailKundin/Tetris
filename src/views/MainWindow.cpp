@@ -161,9 +161,6 @@ void MainWindow::openSingleLayout()
 	
 	generalCtrl->restart();
 	offlineCtrl->restart();
-	
-	connect(soundCtrl, &SoundController::destroyed, this, [](){qDebug() << "soundCtrl";});
-	connect(soundThread, &QThread::destroyed, this, [](){qDebug() << "soundThread";});
 }
 
 void MainWindow::openOnlineLayout()
