@@ -206,7 +206,6 @@ void GeneralController::figureFall()
 {
 	QList<qint16> cells = figure->getCells();
 	checkRows(cells);
-	stop();
 	emit getNewFigureSignal();
 }
 
@@ -241,7 +240,6 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	
 	if (isReadyToStart)
 	{
-		start();
 		moveDownSignal();
 	}
 	else if (!isReadyToStart && figure != nullptr)
@@ -410,5 +408,7 @@ void GeneralController::startGame()
 	addFigure(figure->getCells());
 	emit update(grid);
 	m_points = 0;
+	//emit newPointsSignal(m_points);
 	level = 1;
+	//emit newLevelSignal(level);
 }
