@@ -206,8 +206,8 @@ void GeneralController::figureFall()
 {
 	QList<qint16> cells = figure->getCells();
 	checkRows(cells);
-	emit getNewFigureSignal();
 	stop();
+	emit getNewFigureSignal();
 }
 
 void GeneralController::getNextFigure(quint8 newFigure)

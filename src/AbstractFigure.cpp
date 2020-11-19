@@ -244,6 +244,11 @@ QImage *AbstractFigure::getImage()
 
 void AbstractFigure::updateCoords(const QList<QPair<qint8, qint8> > &coords)
 {
+	if (blocks.isEmpty())
+	{
+		return;
+	}
+	
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
 		blocks[i].setCell(TetrisInfo::getCell(coords.at(i)));
