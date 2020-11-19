@@ -97,11 +97,8 @@ void MainWindow::openSingleLayout()
 	OfflineController *offlineCtrl = new OfflineController;
 	SoundController *soundCtrl = new SoundController(SoundController::Playground);
 	
-	QThread *ctrlThread = new QThread(this);
 	QThread *soundThread = new QThread(this);
 	
-	generalCtrl->moveToThread(ctrlThread);
-	offlineCtrl->moveToThread(ctrlThread);
 	soundCtrl->moveToThread(soundThread);
 	
 	ui->scenePlace = singleWgt;
@@ -121,7 +118,6 @@ void MainWindow::openSingleLayout()
 	connect(singleWgt, &SingleWgt::restartSignal, soundCtrl, &SoundController::unmute);
 	connect(singleWgt, &SingleWgt::exitSignal, generalCtrl, &GeneralController::deleteLater);
 	connect(singleWgt, &SingleWgt::exitSignal, offlineCtrl, &OfflineController::deleteLater);
-	connect(singleWgt, &SingleWgt::exitSignal, ctrlThread, &QThread::quit);
 	connect(singleWgt, &SingleWgt::exitSignal, soundCtrl, &SoundController::deleteLater);
 	connect(singleWgt, &SingleWgt::exitSignal, this, &MainWindow::openMainMenuLayout);
 	
@@ -155,21 +151,19 @@ void MainWindow::openSingleLayout()
 	connect(this, &MainWindow::newLayout, singleWgt, &SingleWgt::deleteLater);
 	connect(this, &MainWindow::destroySignal, this, [=]()
 	{
-		disconnect(ctrlThread, &QThread::finished, ctrlThread, &QThread::deleteLater);
 		disconnect(soundThread, &QThread::finished, soundThread, &QThread::deleteLater);
-		
-		ctrlThread->terminate();
 		soundThread->terminate();
 	});
 	
-	connect(ctrlThread, &QThread::started, generalCtrl, &GeneralController::restart);
-	connect(ctrlThread, &QThread::started, offlineCtrl, &OfflineController::restart);
-	connect(ctrlThread, &QThread::finished, ctrlThread, &QThread::deleteLater);
-	
 	connect(soundThread, &QThread::finished, soundThread, &QThread::deleteLater);
 	
-	ctrlThread->start();
 	soundThread->start();
+	
+	generalCtrl->restart();
+	offlineCtrl->restart();
+	
+	connect(soundCtrl, &SoundController::destroyed, this, [](){qDebug() << "soundCtrl";});
+	connect(soundThread, &QThread::destroyed, this, [](){qDebug() << "soundThread";});
 }
 
 void MainWindow::openOnlineLayout()
