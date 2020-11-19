@@ -34,4 +34,7 @@
         <file alias="RowDeleted.wav">etc/Sounds/RowDeleted.wav</file>
         <file alias="MainMenu.wav">etc/Sounds/MainMenu.wav</file>
     </qresource>
+    <qresource prefix="/Images/Icons">
+        <file alias="Icon.png">etc/Images/Icons/Icon.png</file>
+    </qresource>
 </RCC>

@@ -22,7 +22,7 @@ protected:
 	QSoundEffect *enter;
 	
 private:
-	const quint16 BASE_SCREEN_HEIGHT = 768;
+	const quint16 BASE_SCREEN_HEIGHT = 680;
 };
 
 #endif // WIDGETINFO_H
