@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	
 	setWindowTitle("Tetris");
-	setWindowIcon(QIcon(":Images/Icons/Icon.png"));
+	setWindowIcon(QIcon(":Images/Icons/Icon.ico"));
 	
 	QPalette pal(palette());
 	pal.setColor(QPalette::Window, Qt::black);

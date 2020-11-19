@@ -53,6 +53,7 @@ compile_commands.json
 *.obj
 *.pdb
 *.ilk
+*.rc
 object_script.*
 build/Windows/temp/
 build/Unix/temp/

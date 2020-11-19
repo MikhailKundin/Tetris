@@ -97,6 +97,8 @@ FORMS += \
 
 RESOURCES += \
 	resources.qrc
+	
+win32:RC_ICONS = $$PWD/etc/Images/Icons/Icon.ico
 
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
