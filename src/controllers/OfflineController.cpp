@@ -6,10 +6,15 @@
 
 OfflineController::OfflineController()
 {
-	timer = std::make_unique<QTimer>(this);
-	connect(timer.get(), &QTimer::timeout, this, &OfflineController::tick);
+	timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, this, &OfflineController::tick);
 	random.seed(static_cast<quint32>(QTime::currentTime().msecsSinceStartOfDay()));
 	updatePool();
+}
+
+OfflineController::~OfflineController()
+{
+	timer->deleteLater();
 }
 
 void OfflineController::tick()

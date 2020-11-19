@@ -1,8 +1,6 @@
-QT       += core gui network sql multimedia
+QT += core gui widgets network sql multimedia
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-CONFIG += c++11
+CONFIG += c++17
 CONFIG += resources_big
 CONFIG -= debug_and_release debug_and_release_target
 
@@ -21,10 +19,6 @@ MOC_DIR = build/temp/release/moc
 RCC_DIR = build/temp/release/rcc
 UI_DIR = build/temp/release/ui
 }
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     src/Database.cpp \
@@ -77,11 +71,6 @@ HEADERS += \
 	src/views/SingleWgt.h \
 	src/views/WidgetInfo.h
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
 FORMS += \
 	src/ui/MainMenuWgt.ui \
 	src/ui/MainWindow.ui \
@@ -96,3 +85,7 @@ FORMS += \
 
 RESOURCES += \
 	resources.qrc
+
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target

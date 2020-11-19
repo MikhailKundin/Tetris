@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QRandomGenerator>
+#include <memory>
 
 class QTimer;
 
@@ -12,6 +13,7 @@ class OfflineController : public QObject
 	
 public:
 	OfflineController();
+	~OfflineController();
 	
 public slots:
 	void tick();
@@ -29,7 +31,7 @@ signals:
 private:
 	void updatePool();
 	
-	std::unique_ptr<QTimer> timer;
+	QTimer *timer;
 	
 	const quint16 START_INTERVAL = 1000;
 	const qreal INTERVAL_DIV = 2;
