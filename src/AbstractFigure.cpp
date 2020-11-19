@@ -232,23 +232,11 @@ QList<qint16> AbstractFigure::getCells() const
 
 QImage *AbstractFigure::getImage()
 {
-	if (!blocks.isEmpty())
-	{
-		return blocks.at(0).getImage();
-	}
-	else
-	{
-		return nullptr;
-	}
+	return blocks.at(0).getImage();
 }
 
 void AbstractFigure::updateCoords(const QList<QPair<qint8, qint8> > &coords)
-{
-	if (blocks.isEmpty())
-	{
-		return;
-	}
-	
+{	
 	for (qint8 i = 0; i < blocks.length(); i++)
 	{
 		blocks[i].setCell(TetrisInfo::getCell(coords.at(i)));
