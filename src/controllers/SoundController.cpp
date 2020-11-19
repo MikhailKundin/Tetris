@@ -56,11 +56,6 @@ void SoundController::stopMainTheme()
 
 void SoundController::moveDown()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	bool check = true;
 	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
@@ -83,11 +78,6 @@ void SoundController::moveDown()
 
 void SoundController::moveRight()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	bool check = true;
 	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
@@ -110,11 +100,6 @@ void SoundController::moveRight()
 
 void SoundController::moveLeft()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	bool check = true;
 	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
@@ -137,11 +122,6 @@ void SoundController::moveLeft()
 
 void SoundController::rotate()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	bool check = true;
 	QSoundEffect *sound = nullptr;
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
@@ -164,11 +144,6 @@ void SoundController::rotate()
 
 void SoundController::rowDeleted()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::RowDeleted)
@@ -184,11 +159,6 @@ void SoundController::rowDeleted()
 
 void SoundController::defeat()
 {
-	if (m_stop)
-	{
-		return;
-	}
-	
 	for (QHash<Name, QSoundEffect *>::ConstIterator it = sounds.begin(); it != sounds.end(); it++)
 	{
 		if (it.key() == Name::Defeat)
@@ -219,16 +189,6 @@ void SoundController::unmute()
 {
 	setMute(false);
 }
-
-//void SoundController::stop()
-//{
-//	m_stop = true;
-//}
-
-//void SoundController::start()
-//{
-//	m_stop = false;
-//}
 
 void SoundController::makeMainMenu()
 {
