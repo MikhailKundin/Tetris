@@ -40,7 +40,6 @@ signals:
 	void newLevelSignal(quint16 level);
 	void newFigureSignal(AbstractFigure *secondFigure);
 	void getNewFigureSignal();
-	void readyToStart();
 	void moveDownSignal();
 	void defeatSignal();
 	

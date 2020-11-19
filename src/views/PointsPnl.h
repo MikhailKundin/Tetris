@@ -9,8 +9,6 @@ class PointsWgt;
 
 class PointsPnl : public QWidget
 {
-	Q_OBJECT
-	
 public:
 	explicit PointsPnl(quint16 width, qreal mult, QWidget *parent = nullptr);
 	~PointsPnl();

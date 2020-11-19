@@ -5,7 +5,6 @@
 
 class AbstractFigure
 {
-	
 public:
 	virtual ~AbstractFigure() = default;
 	

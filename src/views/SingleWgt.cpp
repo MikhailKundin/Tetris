@@ -126,7 +126,7 @@ void SingleWgt::restart()
 	lfPnl->setLevel(1);
 }
 
-void SingleWgt::saveBtnPush(QString name)
+void SingleWgt::saveBtnPush(const QString &name)
 {
 	rtPnl->saveResult(name);
 	createDefeatPanel();
@@ -135,7 +135,7 @@ void SingleWgt::saveBtnPush(QString name)
 	srWgt->deleteLater();
 }
 
-void SingleWgt::buttonsFilter(QString objName)
+void SingleWgt::buttonsFilter(const QString &objName)
 {
 	if (sender()->objectName() == PAUSE_NAME)
 	{

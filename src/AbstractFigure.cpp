@@ -2,8 +2,6 @@
 
 #include "TetrisInfo.h"
 
-#include <QDebug>
-
 bool AbstractFigure::moveRight()
 {
 	QList<QPair<qint8, qint8> > coords;

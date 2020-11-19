@@ -3,8 +3,6 @@
 #include <QGridLayout>
 #include <QLabel>
 
-#include <QDebug>
-
 RecordTablePnl::RecordTablePnl(quint16 height, qreal mult, QWidget *parent) : QWidget(parent), MULT(mult)
 {
 	gBox = std::make_unique<QGridLayout>(this);

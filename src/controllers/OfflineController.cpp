@@ -4,8 +4,6 @@
 #include <QTime>
 #include <QTimer>
 
-#include <QDebug>
-
 OfflineController::OfflineController()
 {
 	timer = std::make_unique<QTimer>(this);

@@ -26,7 +26,7 @@ public:
 	~ButtonPanel();
 	
 signals:
-	void clicked(QString objectName);
+	void clicked(const QString &objectName);
 	
 private slots:
 	void buttonClicked();

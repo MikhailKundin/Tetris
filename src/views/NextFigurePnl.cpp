@@ -7,8 +7,6 @@
 #include "../TetrisInfo.h"
 #include "../AbstractFigure.h"
 
-#include <QDebug>
-
 NextFigurePnl::NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent) : QWidget(parent)
 {
 	BLOCK_SIZE = static_cast<quint16>(blockSize * mult);
@@ -27,7 +25,7 @@ NextFigurePnl::NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent) : QW
 	clear();
 }
 
-void NextFigurePnl::update(AbstractFigure *&figure)
+void NextFigurePnl::update(AbstractFigure *figure)
 {
 	image = figure->getImage();
 	type = figure->getType();

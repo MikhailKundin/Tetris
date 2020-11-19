@@ -6,8 +6,6 @@
 
 #include "PushLabel.h"
 
-#include <QDebug>
-
 ConnectOnlineWgt::ConnectOnlineWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
 								   qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::ConnectOnlineWgt), MULT(mult)

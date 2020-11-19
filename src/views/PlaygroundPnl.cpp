@@ -5,8 +5,6 @@
 
 #include "../TetrisInfo.h"
 
-#include <QDebug>
-
 PlaygroundPnl::PlaygroundPnl(quint8 blockSize, qreal mult, QWidget *parent) : 
 	QWidget(parent), BLOCK_SIZE(blockSize)
 {

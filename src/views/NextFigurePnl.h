@@ -11,7 +11,7 @@ class NextFigurePnl : public QWidget
 public:
 	NextFigurePnl(quint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	
-	void update(AbstractFigure *&figure);
+	void update(AbstractFigure *figure);
 	void clear();
 	
 private:

@@ -20,7 +20,7 @@ public:
 	~SaveResultsWgt();
 	
 signals:
-	void saveResult(QString name);
+	void saveResult(const QString &name);
 	
 private slots:
 	void cancelBtnPush();

@@ -5,8 +5,6 @@
 #include <QtMath>
 #include <QImage>
 
-#include <QDebug>
-
 GeneralController::GeneralController(QMap<qint8, QImage *> &blocks)
 	: m_blocks(blocks)
 {	
@@ -240,7 +238,7 @@ void GeneralController::getNextFigure(quint8 newFigure)
 	
 	if (isReadyToStart)
 	{
-		moveDownSignal();
+		emit moveDownSignal();
 	}
 	else if (!isReadyToStart && figure != nullptr)
 	{
@@ -408,7 +406,5 @@ void GeneralController::startGame()
 	addFigure(figure->getCells());
 	emit update(grid);
 	m_points = 0;
-	//emit newPointsSignal(m_points);
 	level = 1;
-	//emit newLevelSignal(level);
 }

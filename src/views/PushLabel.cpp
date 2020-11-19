@@ -4,8 +4,6 @@
 #include <QPixmap>
 #include <QSoundEffect>
 
-#include <QDebug>
-
 PushLabel::PushLabel(QString name, QWidget *parent) : QLabel(parent)
 {
 	setObjectName(name);

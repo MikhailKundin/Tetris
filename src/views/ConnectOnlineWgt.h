@@ -28,7 +28,7 @@ private slots:
 	
 signals:
 	void createSignal();
-	void connectSignal(QString ip);
+	void connectSignal(const QString &ip);
 	void exitSignal();
 	
 private:

@@ -3,8 +3,6 @@
 
 #include "PushLabel.h"
 
-#include <QDebug>
-
 MainMenuWgt::MainMenuWgt(WidgetInfo *parent) :
 	WidgetInfo(parent), ui(new Ui::MainMenuWdt)
 {

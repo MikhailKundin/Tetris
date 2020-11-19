@@ -2,7 +2,8 @@
 #define ONLINECONTROLLER_H
 
 #include <QObject>
-#include <QTcpSocket>
+
+class QTcpSocket;
 
 class OnlineController : public QObject
 {
@@ -22,7 +23,6 @@ signals:
 	void defeatSignal();
 	
 	void connectedSignal();
-	void startSignal();
 	void disconnectSignal();
 	void cannotConnectSignal();
 	

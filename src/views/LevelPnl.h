@@ -11,8 +11,6 @@ class LevelPnl;
 
 class LevelPnl : public QWidget
 {
-	Q_OBJECT
-	
 public:
 	explicit LevelPnl(quint16 nextFigureWidth, quint16 pointsHeight, qreal mult, QWidget *parent = nullptr);
 	~LevelPnl();

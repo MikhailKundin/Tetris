@@ -5,8 +5,6 @@
 
 #include "PushLabel.h"
 
-#include <QDebug>
-
 SaveResultsWgt::SaveResultsWgt(QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
 							   qreal mult, QWidget *parent) :
 	QWidget(parent), ui(new Ui::SaveResultsWgt), MULT(mult)

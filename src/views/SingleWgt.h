@@ -44,8 +44,8 @@ public slots:
 	void defeat();
 	
 private slots:
-	void saveBtnPush(QString name);
-	void buttonsFilter(QString objName);
+	void saveBtnPush(const QString &name);
+	void buttonsFilter(const QString &objName);
 	
 private:
 	void resizeEvent(QResizeEvent *e) override;

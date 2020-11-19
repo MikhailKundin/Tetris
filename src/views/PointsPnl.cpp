@@ -1,8 +1,6 @@
 #include "PointsPnl.h"
 #include "ui_PointsPnl.h"
 
-#include <QDebug>
-
 PointsPnl::PointsPnl(quint16 width, qreal mult, QWidget *parent) : QWidget(parent), ui(new Ui::PointsWgt)
 {
 	ui->setupUi(this);

@@ -10,8 +10,6 @@
 #include "ConnectOnlineWgt.h"
 #include "ButtonPanel.h"
 
-#include <QDebug>
-
 OnlineWgt::OnlineWgt(QWidget *parent) :
 	WidgetInfo(parent), ui(new Ui::OnlineWgt)
 {

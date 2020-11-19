@@ -1,11 +1,10 @@
 #include "OnlineController.h"
 
 #include <QTcpServer>
+#include <QTcpSocket>
 #include <QTimer>
 
 #include "../TetrisInfo.h"
-
-#include <QDebug>
 
 OnlineController::OnlineController()
 {

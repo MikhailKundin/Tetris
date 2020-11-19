@@ -1,8 +1,7 @@
 #include "Database.h"
 
 #include <QSqlQuery>
-
-#include <QDebug>
+#include <QVariant>
 
 Database::Database(const QString &connectionName)
 {

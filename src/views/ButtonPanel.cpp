@@ -7,8 +7,6 @@
 
 #include "PushLabel.h"
 
-#include <QDebug>
-
 ButtonPanel::ButtonPanel(QString info, QList<QString> buttons, 
 						 QPair<QHash<QString, QPixmap *>, QHash<QString, QSoundEffect *> > media, 
 						 qreal mult, QWidget *parent) :

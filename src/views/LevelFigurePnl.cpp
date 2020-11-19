@@ -7,8 +7,6 @@
 #include "NextFigurePnl.h"
 #include "../TetrisInfo.h"
 
-#include <QDebug>
-
 LevelFigurePnl::LevelFigurePnl(quint16 pointsHeight, quint8 blockSize, qreal mult, QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::LevelFigurePnl)
@@ -43,7 +41,7 @@ void LevelFigurePnl::setLevel(quint16 level)
 	levelPnl->setLevel(level);
 }
 
-void LevelFigurePnl::setFigure(AbstractFigure *&figure)
+void LevelFigurePnl::setFigure(AbstractFigure *figure)
 {
 	nextFigurePnl->update(figure);
 }

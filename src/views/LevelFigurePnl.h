@@ -14,14 +14,12 @@ class LevelFigurePnl;
 
 class LevelFigurePnl : public QWidget
 {
-	Q_OBJECT
-	
 public:
 	explicit LevelFigurePnl(quint16 pointsHeight, quint8 blockSize, qreal mult, QWidget *parent = nullptr);
 	~LevelFigurePnl() override;
 	
 	void setLevel(quint16 level);
-	void setFigure(AbstractFigure *&figure);
+	void setFigure(AbstractFigure *figure);
 	void clearFigure();
 	
 private:
