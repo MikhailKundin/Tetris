@@ -12,8 +12,6 @@
 #include "SaveResultsWgt.h"
 #include "ButtonPanel.h"
 
-#include <QDebug>
-
 SingleWgt::SingleWgt(QWidget *parent) : 
 	WidgetInfo(parent), ui(new Ui::SingleWgt)
 {

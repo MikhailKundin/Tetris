@@ -171,7 +171,6 @@ void MainWindow::openOnlineLayout()
 	OnlineWgt *onlineWgt = new OnlineWgt;
 	GeneralController *ofGeneralCtrl = new GeneralController(blocks);
 	GeneralController *onGeneralCtrl = new GeneralController(blocks);
-	onGeneralCtrl->setObjectName("Online");
 	OfflineController *offlineCtrl = new OfflineController;
 	OnlineController *onlineCtrl = new OnlineController;
 	SoundController *ofSoundCtrl = new SoundController(SoundController::Playground);

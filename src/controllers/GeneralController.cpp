@@ -34,7 +34,7 @@ const QMap<qint16, QImage *> &GeneralController::getGrid() const
 
 void GeneralController::moveRight()
 {
-	if (m_stop)
+	if (m_stop || figure == nullptr)
 	{
 		return;
 	}
@@ -60,7 +60,7 @@ void GeneralController::moveRight()
 
 void GeneralController::moveLeft()
 {
-	if (m_stop)
+	if (m_stop || figure == nullptr)
 	{
 		return;
 	}
@@ -86,7 +86,7 @@ void GeneralController::moveLeft()
 
 void GeneralController::rotate()
 {
-	if (m_stop)
+	if (m_stop || figure == nullptr)
 	{
 		return;
 	}
@@ -112,7 +112,7 @@ void GeneralController::rotate()
 
 void GeneralController::moveDown()
 {
-	if (m_stop)
+	if (m_stop || figure == nullptr)
 	{
 		return;
 	}
@@ -140,7 +140,6 @@ void GeneralController::moveDown()
 	}
 }
 
-#include <QDebug>
 void GeneralController::newTick()
 {
 	if (m_stop)
@@ -148,7 +147,6 @@ void GeneralController::newTick()
 		return;
 	}
 	
-	qDebug() << grid;
 	QList<qint16> cells = figure->getCells();
 	if (!isObstacle(cells))
 	{
@@ -167,7 +165,8 @@ void GeneralController::newTick()
 void GeneralController::restart()
 {
 	isReadyToStart = false;
-	grid.clear();
+	clearFigure();
+	clearGrid();
 	m_stop = false;
 	emit getNewFigureSignal();
 	emit getNewFigureSignal();
