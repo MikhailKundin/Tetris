@@ -140,6 +140,7 @@ void GeneralController::moveDown()
 	}
 }
 
+#include <QDebug>
 void GeneralController::newTick()
 {
 	if (m_stop)
@@ -147,6 +148,7 @@ void GeneralController::newTick()
 		return;
 	}
 	
+	qDebug() << grid;
 	QList<qint16> cells = figure->getCells();
 	if (!isObstacle(cells))
 	{

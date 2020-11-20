@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
 	
 	MainWindow window;
 	window.move(750, 0);
-	window.showFullScreen();
+	window.showMaximized();
+	//window.showFullScreen();
 	
 	return app.exec();
 }

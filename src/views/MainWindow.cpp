@@ -171,6 +171,7 @@ void MainWindow::openOnlineLayout()
 	OnlineWgt *onlineWgt = new OnlineWgt;
 	GeneralController *ofGeneralCtrl = new GeneralController(blocks);
 	GeneralController *onGeneralCtrl = new GeneralController(blocks);
+	onGeneralCtrl->setObjectName("Online");
 	OfflineController *offlineCtrl = new OfflineController;
 	OnlineController *onlineCtrl = new OnlineController;
 	SoundController *ofSoundCtrl = new SoundController(SoundController::Playground);
@@ -210,6 +211,8 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onlineWgt, &OnlineWgt::restart);
+	connect(onlineWgt, &OnlineWgt::startGame, ofSoundCtrl, &SoundController::unmute);
+	connect(onlineWgt, &OnlineWgt::startGame, onSoundCtrl, &SoundController::unmute);
 	connect(onlineWgt, &OnlineWgt::stopSignal, ofGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::stop);
 	connect(onlineWgt, &OnlineWgt::stopSignal, onGeneralCtrl, &GeneralController::clearFigure);
