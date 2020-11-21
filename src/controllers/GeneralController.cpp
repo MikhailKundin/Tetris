@@ -17,21 +17,6 @@ GeneralController::~GeneralController()
 	delete secondFigure;
 }
 
-void GeneralController::setPoints(quint32 points)
-{
-	m_points = points;
-}
-
-quint32 GeneralController::getPoints() const
-{
-	return m_points;
-}
-
-const QMap<qint16, QImage *> &GeneralController::getGrid() const
-{
-	return grid;
-}
-
 void GeneralController::moveRight()
 {
 	if (m_stop || figure == nullptr)

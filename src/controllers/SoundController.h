@@ -19,7 +19,6 @@ public:
 	
 public slots:
 	void playMainTheme();
-	void stopMainTheme();
 	
 	void moveDown();
 	void moveRight();

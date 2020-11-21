@@ -13,9 +13,6 @@ class GeneralController : public QObject
 public:
 	GeneralController(QMap<qint8, QImage *> &blocks);
 	virtual ~GeneralController();
-	void setPoints(quint32 points);
-	quint32 getPoints() const;
-	const QMap<qint16, QImage *> &getGrid() const;
 	
 public slots:
 	void moveRight();

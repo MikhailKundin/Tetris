@@ -41,17 +41,6 @@ void SoundController::playMainTheme()
 	}
 }
 
-void SoundController::stopMainTheme()
-{
-	for (QHash<Name, QSoundEffect *>::Iterator it = sounds.begin(); it != sounds.end(); it++)
-	{
-		if (it.key() == Name::MainTheme)
-		{
-			it.value()->stop();
-		}
-	}
-}
-
 void SoundController::moveDown()
 {
 	bool check = true;
