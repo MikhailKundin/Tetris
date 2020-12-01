@@ -206,8 +206,8 @@ void MainWindow::openOnlineLayout()
 	connect(onlineWgt, &OnlineWgt::disconnectSignal, onlineWgt, &OnlineWgt::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onlineCtrl, &OnlineController::start);
 	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::clearFigure);
-	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onGeneralCtrl, &GeneralController::restart);
+	connect(onlineWgt, &OnlineWgt::startGame, ofGeneralCtrl, &GeneralController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, offlineCtrl, &OfflineController::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, onlineWgt, &OnlineWgt::restart);
 	connect(onlineWgt, &OnlineWgt::startGame, ofSoundCtrl, &SoundController::unmute);

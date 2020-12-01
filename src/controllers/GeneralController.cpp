@@ -127,7 +127,7 @@ void GeneralController::moveDown()
 
 void GeneralController::newTick()
 {
-	if (m_stop)
+	if (m_stop || figure == nullptr)
 	{
 		return;
 	}
