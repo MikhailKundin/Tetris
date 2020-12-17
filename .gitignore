@@ -57,3 +57,4 @@ compile_commands.json
 object_script.*
 build/Windows/temp/
 build/Unix/temp/
+build/Windows/Tetris.txt

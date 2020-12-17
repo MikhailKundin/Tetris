@@ -181,7 +181,7 @@ void SoundController::makeMainMenu()
 {
 	QSoundEffect *sound = new QSoundEffect(this);
 	sound->setSource(QUrl::fromLocalFile(":Sounds/MainMenu.wav"));
-	sound->setVolume(0.25);
+	sound->setVolume(0.15);
 	sound->setLoopCount(QSoundEffect::Infinite);
 	sounds.insert(Name::MainTheme, sound);
 }
